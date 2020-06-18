@@ -1,6 +1,20 @@
 version: "3.7"
 services:
 
+  micoo-nginx:
+    image: micoo-nginx:latest
+    ports:
+      - "8080:80"
+    networks:
+      - nginx-network
+    volumes:
+      - "exchange-volume:/exchange"
+      - "./nginx/nginx.conf:/etc/nginx/nginx.conf"
+    depends_on:
+      - micoo-dashboard
+      - micoo-engine
+      - micoo-postern
+
   micoo-mongodb:
     image: mongo:latest
     environment:
@@ -11,7 +25,7 @@ services:
       - "27017:27017"
     networks:
       - micoo-network
-      - nginx-network
+#      - nginx-network
     volumes:
       - "database-volume:/data/db"
       - "./initializer:/docker-entrypoint-initdb.d"
@@ -61,16 +75,16 @@ services:
       - micoo-network
       - nginx-network
 
-  micoo-file-service:
-#    image: ariman/micoo-file-service:latest
-    image: micoo-file-service:latest
-    ports:
-      - "8123:8123"
-    volumes:
-      - "exchange-volume:/exchange"
-    networks:
-      - micoo-network
-      - nginx-network
+#  micoo-file-service:
+##    image: ariman/micoo-file-service:latest
+#    image: micoo-file-service:latest
+#    ports:
+#      - "8123:8123"
+#    volumes:
+#      - "exchange-volume:/exchange"
+#    networks:
+#      - micoo-network
+#      - nginx-network
 
 volumes:
   database-volume:
@@ -79,4 +93,4 @@ volumes:
 networks:
   micoo-network:
   nginx-network:
-    external: true
+#    external: true
