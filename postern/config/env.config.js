@@ -8,7 +8,7 @@ switch (process.env.MICOO_ENV) {
         exchangeRootDir = "/exchange";
         break;
     default:
-        exchangeRootDir = path.join(os.homedir(), "Workspace/share-folder/exchange");
+        exchangeRootDir = "../exchange";
         break;
 }
 

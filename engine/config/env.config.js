@@ -11,7 +11,7 @@ switch (process.env.MICOO_ENV) {
         break;
     default:
         fileServerHost = "http://localhost:8123";
-        exchangeRootDir = path.join(os.homedir(), "Workspace/share-folder/exchange");
+        exchangeRootDir = "../exchange";
         mongodbUrl = `mongodb://${process.env.MICOO_DB_USERNAME}:${process.env.MICOO_DB_PASSWORD}@localhost:27017/micoo`;
         break;
 }
