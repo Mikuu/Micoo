@@ -5,7 +5,7 @@ services:
     image: micoo-nginx:latest
     container_name: micoo-nginx
     ports:
-      - "8080:80"
+      - "8123:80"
     networks:
       - nginx-network
     volumes:
@@ -35,7 +35,7 @@ services:
     container_name: micoo-dashboard
     environment:
       - MICOO_ENV=docker
-      - MICOO_FS_HOST_URL=http://localhost:8080
+      - MICOO_FS_HOST_URL=http://localhost:8123
       - MICOO_DB_USERNAME=micoo-user
       - MICOO_DB_PASSWORD=micoo-password
     volumes:
@@ -50,7 +50,7 @@ services:
     container_name: micoo-engine
     environment:
       - MICOO_ENV=docker
-      - MICOO_FS_HOST_URL=http://localhost:8080
+      - MICOO_FS_HOST_URL=http://localhost:8123
       - MICOO_DB_USERNAME=micoo-user
       - MICOO_DB_PASSWORD=micoo-password
     volumes:

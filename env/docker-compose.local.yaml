@@ -9,7 +9,7 @@ services:
     networks:
       - nginx-network
     volumes:
-      - "exchange-volume:/exchange"
+      - "../exchange:/exchange"
       - "./nginx/nginx.file-service.conf:/etc/nginx/nginx.conf"
 
   micoo-mongodb:
@@ -25,9 +25,6 @@ services:
     volumes:
       - "database-volume:/data/db"
       - "./initializer:/docker-entrypoint-initdb.d"
-
-volumes:
-  database-volume:
 
 networks:
   micoo-network:
