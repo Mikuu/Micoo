@@ -6,9 +6,15 @@ services:
     container_name: micoo-nginx
     ports:
       - "8123:80"
+    networks:
+      - nginx-network
     volumes:
-      - "../exchange:/exchange"
-      - "./nginx/nginx.file-service.conf:/etc/nginx/nginx.conf"
+      - "exchange-volume:/exchange"
+      - "./nginx/nginx.reverse-proxy.conf:/etc/nginx/nginx.conf"
+    depends_on:
+      - micoo-dashboard
+      - micoo-engine
+      - micoo-postern
 
   micoo-mongodb:
     image: mongo:latest
@@ -17,11 +23,55 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=mgadmin
       - MONGO_INITDB_ROOT_PASSWORD=Password1
       - MONGO_INITDB_DATABASE=micoo
-    ports:
-      - "27017:27017"
+    networks:
+      - micoo-network
     volumes:
       - "database-volume:/data/db"
       - "./initializer:/docker-entrypoint-initdb.d"
 
+  micoo-dashboard:
+    image: micoo-dashboard:latest
+    container_name: micoo-dashboard
+    environment:
+      - MICOO_ENV=docker
+      - MICOO_FS_HOST_URL=http://localhost:8123
+      - MICOO_DB_USERNAME=micoo-user
+      - MICOO_DB_PASSWORD=micoo-password
+    volumes:
+      - "exchange-volume:/exchange"
+    networks:
+      - micoo-network
+      - nginx-network
+
+  micoo-engine:
+    image: micoo-engine:latest
+    container_name: micoo-engine
+    environment:
+      - MICOO_ENV=docker
+      - MICOO_FS_HOST_URL=http://localhost:8123
+      - MICOO_DB_USERNAME=micoo-user
+      - MICOO_DB_PASSWORD=micoo-password
+    volumes:
+      - "exchange-volume:/exchange"
+    networks:
+      - micoo-network
+      - nginx-network
+
+  micoo-postern:
+    image: micoo-postern:latest
+    container_name: micoo-postern
+    environment:
+      - MICOO_ENV=docker
+    volumes:
+      - "exchange-volume:/exchange"
+    networks:
+      - micoo-network
+      - nginx-network
+
 volumes:
   database-volume:
+  exchange-volume:
+
+networks:
+  micoo-network:
+  nginx-network:
