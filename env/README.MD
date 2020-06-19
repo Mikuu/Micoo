@@ -8,6 +8,11 @@ deploying with images from Docker Hub.
 
 #### Local development
 
+- create exchange directory
+```commandline
+mkdir exchange
+```
+
 - containerize micoo-nginx service
 ```commandline
 cd env/nginx/containerize
