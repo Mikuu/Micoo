@@ -1,0 +1,124 @@
+extends dashboard-breadcrumb-layout
+
+block breadcrumb
+    li.breadcrumb-item.active(aria-current="page") #{projectName}
+
+block projectAction
+    .d-flex.flex-row.mr-4
+        button#cleanProjectButton.btn(type="button" data-toggle="modal" data-target="#cleanProjectModal")
+            i.fa.fa-eraser.fa-1x.action-fbi(aria-hidden="true")
+        button#deleteProjectButton.btn(type="button" data-toggle="modal" data-target="#deleteProjectModal")
+            i.fas.fa-trash-alt.fa-1x.action-fbi(aria-hidden="true")
+        #cleanProjectModal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="cleanProjectModalLabel" aria-hidden="true")
+            .modal-dialog.modal-dialog-centered(role="document")
+                .modal-content(style="background-color: #222427")
+                    .d-flex.flex-row.pt-3.pb-3.pl-5.pr-4
+                        img(src="/public/image/miku-wow.webp" alt="...")
+                        .modal-body.d-flex.align-items-center.justify-content-center.h3.font-weight-light.text-white
+                            | Clean all test Builds?
+                    .modal-footer
+                        button.btn.btn-outline-success(type="button" data-dismiss="modal") I&apos;m joking
+                        form.mb-1(action="/admin/project/clean/"+pid method="post")
+                            button.btn.btn-outline-danger(type="submit") Just do it
+        #deleteProjectModal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="deleteProjectModalLabel" aria-hidden="true")
+            .modal-dialog.modal-dialog-centered(role="document")
+                .modal-content(style="background-color: #222427")
+                    .d-flex.flex-row.pt-3.pb-3.pl-5.pr-4
+                        img(src="/public/image/miku-wow.webp" alt="...")
+                        .modal-body.d-flex.align-items-center.justify-content-center.h3.font-weight-light.text-white
+                            | Delete this Project?
+                    .modal-footer
+                        button.btn.btn-outline-success(type="button" data-dismiss="modal") I&apos;m joking
+                        form.mb-1(action="/admin/project/delete/"+pid method="post")
+                            button.btn.btn-outline-danger(type="submit") Just do it
+
+block pageAction
+    nav(aria-label="page-navigation")
+        ul.pagination.mb-0
+
+            if navigation.hasPrevPage
+                li.page-item
+                    a.page-link(href=navigatorUrls.url_prev aria-label="Previous")
+                        span(aria-hidden="true") «
+                        span.sr-only Previous
+            else
+                li.page-item.disabled
+                    a.page-link(href=navigatorUrls.url_prev aria-label="Previous")
+                        span(aria-hidden="true") «
+                        span.sr-only Previous
+
+
+            if navigation.page === navigators.navigator_1
+                li.page-item.active
+                    a.page-link(href=navigatorUrls.url_1) #{navigators.navigator_1}
+            else
+                li.page-item
+                    a.page-link(href=navigatorUrls.url_1) #{navigators.navigator_1}
+
+
+            if navigators.navigator_2 <= navigation.totalPages
+                if navigation.page === navigators.navigator_2
+                    li.page-item.active
+                        a.page-link(href=navigatorUrls.url_2) #{navigators.navigator_2}
+                else
+                    li.page-item
+                        a.page-link(href=navigatorUrls.url_2) #{navigators.navigator_2}
+
+
+
+            if navigators.navigator_3 <= navigation.totalPages
+                if navigation.page === navigators.navigator_3
+                    li.page-item.active
+                        a.page-link(href=navigatorUrls.url_3) #{navigators.navigator_3}
+                else
+                    li.page-item
+                        a.page-link(href=navigatorUrls.url_3) #{navigators.navigator_3}
+
+
+            if navigation.hasNextPage
+                li.page-item
+                    a.page-link(href=navigatorUrls.url_next aria-label="Next")
+                        span(aria-hidden="true") »
+                        span.sr-only Next
+            else
+                li.page-item.disabled
+                    a.page-link(href=navigatorUrls.url_next aria-label="Next")
+                        span(aria-hidden="true") »
+                        span.sr-only Next
+
+block main
+    .container.table-container
+        table.table.table-borderless
+            thead.thead-dark.text-center.pb-3
+                tr
+                    th(scope="col") Build Number
+                    th(scope="col") Build Version
+                    th(scope="col") Build Datetime
+                    th(scope="col") Cases Count
+                    th(scope="col") Build Result
+                    th(scope="col") Baseline
+            tbody.text-center
+                 each build in builds
+                     tr
+                         th(scope="row")
+                             a(href="/build/" + build.bid) #{build.buildIndex}
+                         td #{build.buildVersion}
+                         td #{timeFormatter(build.createdAt)}
+                         td #{build.caseCount}
+                         case build.buildResult
+                             when "passed"
+                                 td.text-success #{build.buildResult}
+                             when "failed"
+                                 td.text-danger #{build.buildResult}
+                             default
+                                td.text-info #{build.buildResult}
+                         if build.isBaseline
+                             td
+                                 .d-flex.align-items-center.justify-content-center.icon-baseline
+                                     ion-icon(name="ribbon-outline")
+
+    script(src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous")
+    script.
+        window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"><\\/script>')
+    script(src="https://getbootstrap.com/docs/4.4/dist/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous")
+    script(src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js")

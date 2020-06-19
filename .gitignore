@@ -1,0 +1,8 @@
+/.idea/
+/node_modules/
+/dashboard/node_modules/
+/engine/node_modules/
+/engine/screenshots/
+/postern/node_modules/
+/clients/nodejs/node_modules/
+/testing/latest/

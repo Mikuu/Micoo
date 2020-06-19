@@ -1,0 +1,70 @@
+extends dashboard-breadcrumb-layout
+
+block breadcrumb
+    li.breadcrumb-item
+        a(href="/project/" + pid + "/page/1") #{projectName}
+    li.breadcrumb-item.active(aria-current="page") #{buildIndex}
+
+block pageAction
+    .d-flex.justify-content-end.align-items-center(style="height: 35px;")
+        .pr-3
+            if isBaseline
+                .d-flex.align-items-center.justify-content-center.icon-baseline
+                    ion-icon(name="ribbon-outline")
+            else
+                .d-flex.align-items-center.justify-content-center.icon-baseline-disabled
+                    ion-icon(name="ribbon-outline")
+
+
+        .pl-3.pr-1.border-left
+
+            if ableToRebase
+                form.mb-0(action="/build/rebase/" + bid method="post")
+                    button#rebase-button.btn.btn-sm.btn-outline-success(type="submit") Rebase
+            else
+                form.mb-0(action="/build/rebase/" + bid method="post")
+                    button#rebase-button.btn.btn-sm.btn-outline-success(disabled type="submit") Rebase
+        .pl-2.pr-1
+            if isBaseline
+                form.mb-0(action="/build/debase/" + bid method="post")
+                    button#rebase-button.btn.btn-sm.btn-outline-warning(type="submit") Debase
+            else
+                form.mb-0(action="/build/debase/" + bid method="post")
+                    button#rebase-button.btn.btn-sm.btn-outline-warning(disabled type="submit") Debase
+
+block main
+    .container.table-container
+        .pr-5.pl-5.pt-3
+            .row.pb-3
+                .col.col-md-8
+                    | Test Case
+                .col.col-md-2
+                    | Difference
+                .col.col-md-2
+                    | Result
+            each testCase in allCases
+                .font-weight-light.row.pt-2.pb-2
+                    .col.col-md-8
+                        a(href="/case/" + testCase.cid) #{testCase.caseName}
+                    .col.col-md-2
+                        if testCase.diffPercentage > 0
+                            | #{Number(testCase.diffPercentage * 100).toFixed(4)}%
+                        else if testCase.diffPercentage === 0
+                            | 0.0000%
+                        else
+                            | N/A
+                    .col.col-md-2
+                        case testCase.caseResult
+                            when "passed"
+                                .text-success #{testCase.caseResult}
+                            when "failed"
+                                .text-danger #{testCase.caseResult}
+                            default
+                                .text-info #{testCase.caseResult}
+
+
+    script(src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous")
+    script.
+        window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"><\\/script>')
+    script(src="https://getbootstrap.com/docs/4.4/dist/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous")
+    script(src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js")

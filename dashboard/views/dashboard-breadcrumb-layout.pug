@@ -1,0 +1,15 @@
+extends dashboard-layout
+
+block body
+    .container
+        .breadcrumb.d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-4.pb-3.border-bottom.rounded-0
+            .d-flex.justify-content-end.align-items-center(style="height: 35px;")
+                nav(aria-label="breadcrumb")
+                    ol.breadcrumb
+                        li.breadcrumb-item
+                            a(href="/dashboard") Home
+                        block breadcrumb
+            .d-flex.justify-content-end.align-items-center(style="height: 35px;")
+                block projectAction
+                block pageAction
+    block main

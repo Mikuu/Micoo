@@ -1,0 +1,181 @@
+<html lang="en">
+<head><!-- Required meta tags-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- Icon-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <title>Hello, world!</title>
+    <style>
+        .breadcrumb {
+            margin-bottom: unset;
+            background-color: unset;
+            padding: unset;
+        }
+
+        .table-container {
+            min-height: 650px;
+        }
+
+        .self-case-title {
+            padding: 1rem 15px 1rem 0;
+        }
+
+    </style>
+    <link href="/stylesheets/expressing-dashboard.css" rel="stylesheet"><!-- customer style-->
+    <link href="/stylesheets/project.css" rel="stylesheet">
+</head>
+<body>
+<header>
+    <div class="bg-dark collapse" id="navbarHeader">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-md-7 py-4"><h4 class="text-white">About</h4>
+                    <p class="text-muted">this is a report dashboard for a visual testing service, which is composed of
+                        several tech components:<a href="https://jestjs.io/"> Jest</a>,<a
+                                href="https://github.com/Prior99/jest-screenshot"> Jest-screenshot</a>,<a
+                                href="https://expressjs.com/"> ExpressJS</a>,<a href="https://getbootstrap.com/">
+                            Bootstrap</a>,<a href="https://pugjs.org/"> Pug</a>, and<a href="https://www.mongodb.com/">
+                            MongoDB.</a></p></div>
+                <div class="col-sm-4 offset-md-1 py-4"><h4 class="text-white">Author</h4>
+                    <ul class="list-unstyled">
+                        <li><a class="text-white" href="#">biaofu@thoughtworks.com</a></li><!--li-->
+                        <!--    a.text-white(href="#") Like on Facebook--><!--li-->
+                        <!--    a.text-white(href="#") Email me--></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container d-flex justify-content-between"><a class="navbar-brand d-flex align-items-center"
+                                                                 href="#"><strong>Home</strong></a>
+            <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarHeader"
+                    aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation"><span
+                    class="navbar-toggler-icon"></span></button>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="breadcrumb d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-4 pb-3 border-bottom rounded-0">
+        <div class="d-flex justify-content-end align-items-center" style="height: 35px;">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/project/PID32bd7ee761824e85970932fedb986f5c">dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">1</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="d-flex justify-content-end align-items-center" style="height: 35px;">
+            <div class="pr-3">
+                <i class="fas fa-balance-scale fa-lg" style="color: indigo; opacity: 0.2"></i>
+            </div>
+            <div class="pl-3 pr-1 border-left">
+<!--                <button class="btn btn-sm btn-outline-success" id="rebase-button" type="button"-->
+<!--                        onclick="rebase()">Rebase-->
+<!--                </button>-->
+                <form action="/build/rebase/bidxxxxx" method="post" class="mb-0">
+                    <button type="submit" class="btn btn-sm btn-outline-success" id="rebase-button">Rebase</button>
+                </form>
+            </div>
+            <div class="pl-2 pr-1">
+<!--                <button class="btn btn-sm btn-outline-warning" id="debase-button" type="button" onclick="debase()">-->
+<!--                    Debase-->
+<!--                </button>-->
+                <form action="/build/debase/bidxxxxx" method="post" class="mb-0">
+                    <button type="submit" class="btn btn-sm btn-outline-warning" id="debase-button">Debase</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container table-container">
+    <div class="pr-5 pl-5 pt-3">
+        <div class="row pb-3">
+            <div class="col col-md-8">
+                Test Case
+            </div>
+            <div class="col col-md-2">
+                Difference
+            </div>
+            <div class="col col-md-2">
+                Result
+            </div>
+        </div>
+
+        <div class="font-weight-light row pt-2 pb-2">
+            <div class="col col-md-8">
+                <a href="#">main-content.png</a>
+            </div>
+            <div class="col col-md-2">
+                0.00%
+            </div>
+            <div class="col col-md-2">
+                <div class="text-success">passed</div>
+            </div>
+        </div>
+
+        <div class="font-weight-light row pt-2 pb-2">
+            <div class="col col-md-8">
+                <a href="#">sub-content.png</a>
+            </div>
+            <div class="col col-md-2">
+                0.12%
+            </div>
+            <div class="col col-md-2">
+                <div class="text-danger">failed</div>
+            </div>
+        </div>
+
+        <div class="font-weight-light row pt-2 pb-2">
+            <div class="col col-md-8">
+                <a href="#">partial-page.png</a>
+            </div>
+            <div class="col col-md-2">
+                N/A
+            </div>
+            <div class="col col-md-2">
+                <div class="text-info">undetermined</div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"><\\/script>')</script>
+<script src="https://getbootstrap.com/docs/4.4/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm"
+        crossorigin="anonymous"></script>
+<script>
+    const serverUrlRoot = "http://localhost:3001";
+
+    async function rebase() {
+        // document.getElementById("rebase-button").classList.remove("btn");
+        document.getElementById("rebase-button").disabled = true;
+        // document.getElementById("debase-button").classList.add("btn");
+        document.getElementById("debase-button").disabled = false;
+    }
+
+    async function debase() {
+        // document.getElementById("debase-button").classList.remove("btn");
+        document.getElementById("debase-button").disabled = true;
+        // document.getElementById("rebase-button").classList.add("btn");
+        document.getElementById("rebase-button").disabled = false;
+    }
+
+</script>
+<footer class="text-muted">
+    <div class="container"><p class="float-right"><a href="#">Back to top</a></p>
+        <p>Album example is © Bootstrap, but please download and customize it for yourself!</p></div>
+</footer>
+</body>
+</html>

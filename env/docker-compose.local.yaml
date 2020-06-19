@@ -1,0 +1,22 @@
+version: "3.7"
+services:
+
+  micoo-mongodb:
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mgadmin
+      - MONGO_INITDB_ROOT_PASSWORD=Password1
+      - MONGO_INITDB_DATABASE=micoo
+    ports:
+      - "27017:27017"
+    networks:
+      - micoo-network
+    volumes:
+      - "database-volume:/data/db"
+      - "./initializer:/docker-entrypoint-initdb.d"
+
+volumes:
+  database-volume:
+
+networks:
+  micoo-network:

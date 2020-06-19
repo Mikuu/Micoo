@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <style>
+        .self-sidebar {
+            height: -webkit-fill-available;
+        }
+
+        .self-case-title {
+            padding: 1rem 15px 1rem 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container container-fluid">
+    <div class="row self-sidebar pt-3">
+        <nav class="col-lg-3 d-none d-md-block sidebar">
+            <div class="h-100 bg-light">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="#" role="button"
+                           class="btn list-group-item list-group-item-action font-weight-light border-0 bg-light">
+                            main-content.png
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" role="button"
+                           class="list-group-item list-group-item-action font-weight-light border-0 bg-light">
+                            partial-page.png
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" role="button"
+                           class="list-group-item list-group-item-action font-weight-light border-0 bg-light">
+                            sub-content.png
+                        </a>
+                    </li>
+                    <li>
+                        <button type="button"
+                                onclick="switchImage()"
+                                class="list-group-item list-group-item-action font-weight-light border-0 bg-light">
+                            switch.png
+                        </button>
+                    </li>
+                </ul>
+
+            </div>
+        </nav>
+
+        <main role="main" class="col-lg-9 ml-sm-auto">
+
+            <div class="row self-case-title">
+                <div class="col-9 d-flex align-items-center">
+                    <h4>main-content.png</h4>
+                </div>
+                <div class="col-1 d-flex align-items-center justify-content-center pr-0">
+                    <a href="#" class="pt-1"><i class="fas fa-crosshairs fa-lg" style="color: indigo"></i></a>
+                </div>
+                <div class="col-1 d-flex align-items-center">
+                    <button type="button" class="btn btn-sm btn-outline-success">Passed</button>
+                </div>
+                <div class="col-1 d-flex align-items-center">
+                    <button type="button" class="btn btn-sm btn-outline-danger">Failed</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <figure class="figure">
+                        <figcaption class="figure-caption text-center font-weight-light pb-2">Baseline</figcaption>
+                        <img id="baseline"
+                             src="http://localhost:8080/file-server/projects/dashboard/latest/main-content.png"
+                             alt="main-content" class="img-fluid">
+                    </figure>
+                </div>
+                <div class="col-6">
+                    <figure class="figure">
+                        <figcaption class="figure-caption text-center font-weight-light pb-2">Latest</figcaption>
+                        <img id="latest"
+                             src="http://localhost:8080/file-server/projects/dashboard/latest/main-content.png"
+                             alt="main-content" class="img-fluid">
+                    </figure>
+                </div>
+            </div>
+
+
+        </main>
+    </div>
+</div>
+
+<script>
+    function switchImage() {
+        document.getElementById("baseline").src = "http://localhost:8080/file-server/projects/dashboard/latest/partial-page.png";
+    }
+</script>
+
+</body>
+</html>

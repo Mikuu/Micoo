@@ -1,0 +1,61 @@
+extends dashboard-layout
+
+block body
+    main(role="main")
+        section.jumbotron.text-center
+            .container
+                h1 Visual Testing service Dashboard
+                p.lead.text-muted.mt-4
+                    | #{dashboardContent}
+        .album.py-5.bg-light
+            .container
+                .row
+                    .col-md-4.card-height.mb-5
+                        .card.mb-4.shadow-sma.h-100
+                            form.m-0(action="/admin/project/create" method="post")
+                                .form-group.m-0
+                                    .card-img-top(style="width: 100%; height: 225px;")
+                                        img.project-image-img(src="/public/image/space.webp")
+                                        .text-center.project-image-text
+                                            input.input-FBI.form-control.text-center.bg-transparent.text-white.border-0(type="text" name="projectName" autocomplete="off" placeholder="New Project" onkeyup="manage(this)")
+                                    .card-body.card-body-new
+                                        .text-center
+                                            button#newProjectButton.btn.add-btn(type="submit" disabled="")
+                                                i.fa.fa-plus-circle.fa-5x.border.border-white.rounded-circle.bg-white.icon-new(aria-hidden="true")
+                            .d-flex.justify-content-center
+                                .w-50
+                                    p.p-FBI.text-center input project name to create a new project
+
+                    each project in projects
+                        .col-md-4.card-height.mb-5
+                            .card.mb-4.shadow-sma
+                                a.card-link(href="/project/" + project.pid + "/page/1")
+                                .card-img-top(style="width: 100%; height: 225px;")
+                                    img.project-image-img(src=project.projectImageUrl)
+                                    .text-center.project-image-text
+                                        h4 #{project.projectDisplayName}
+                                .card-body
+                                    div
+                                        .d-flex.w-100.justify-content-between
+                                            p.font-weight-light Latest build result
+
+                                            case project.latestBuildResult
+                                                when "passed"
+                                                    small.text-success(style="padding-top: 4px;") #{project.latestBuildResult}
+                                                when "failed"
+                                                    small.text-danger(style="padding-top: 4px;") #{project.latestBuildResult}
+                                                default
+                                                    small.text-info(style="padding-top: 4px;") #{project.latestBuildResult}
+
+                                        .d-flex.w-100.justify-content-between
+                                            p.font-weight-light Latest build time
+                                            small.text-muted(style="padding-top: 4px;") #{project.latestBuildTime}
+                                        .d-flex.w-100.justify-content-between
+                                            p.font-weight-light Total builds number
+                                            small.text-muted(style="padding-top: 4px;") #{project.totalBuildsNumber}
+
+    script(src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous")
+    script.
+        window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"><\\/script>')
+    script(src="https://getbootstrap.com/docs/4.4/dist/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous")
+

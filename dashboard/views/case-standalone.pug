@@ -1,0 +1,107 @@
+extends dashboard-breadcrumb-layout
+
+block breadcrumb
+    li.breadcrumb-item
+        a(href="/project/" + pid + "/page/1") #{projectName}
+    li.breadcrumb-item
+        a(href="/build/" + bid) #{buildIndex}
+    li.breadcrumb-item.active(aria-current="page") #{caseName}
+
+block pageAction
+    .d-flex.justify-content-end.align-items-center(style="height: 35px;")
+
+        if diffPercentage
+            .pr-3
+                .font-weight-light.text-danger DP #{Number(diffPercentage * 100).toFixed(4)}%
+
+        if caseResult === "passed"
+             .pr-3(style="width: 48px;")
+                 .d-flex.align-items-center.justify-content-center.icon-result-passed
+                     ion-icon(name="checkmark-outline")
+        else if caseResult === "failed"
+            .pr-3(style="width: 48px;")
+                .d-flex.align-items-center.justify-content-center.icon-result-failed
+                    ion-icon(name="close-outline")
+
+
+
+        .pl-2.pr-2.border-left.d-flex
+            .d-flex.align-items-center.justify-content-center
+
+                if prevCase !== null
+                    a.d-flex.align-items-center.justify-content-center.font-weight-bold.case-nav-icon(href="/case/" + prevCase.cid)
+                        ion-icon(name="arrow-back-outline")
+                else
+                    .d-flex.align-items-center.justify-content-center.font-weight-bold.case-nav-disabled-icon
+                        ion-icon(name="arrow-back-outline")
+
+                if nextCase !== null
+                    a.d-flex.align-items-center.justify-content-center.font-weight-bold.case-nav-icon(href="/case/" + nextCase.cid)
+                        ion-icon(name="arrow-forward-outline")
+                else
+                    .d-flex.align-items-center.justify-content-center.font-weight-bold.case-nav-disabled-icon
+                        ion-icon(name="arrow-forward-outline")
+
+
+
+        .pl-3.pr-1.border-left
+            if caseResult === "passed"
+                form.mb-0(action="/case/pass/" + cid method="post")
+                    button#pass-case-button.btn.btn-sm.btn-outline-success(disabled type="submit") Passed
+            else
+                form.mb-0(action="/case/pass/" + cid method="post")
+                    button#pass-case-button.btn.btn-sm.btn-outline-success(type="submit") Passed
+        .pl-2.pr-1
+            if caseResult === "failed"
+                form.mb-0(action="/case/fail/" + cid method="post")
+                    button#pass-case-button.btn.btn-sm.btn-outline-danger(disabled type="submit") Failed
+            else
+                form.mb-0(action="/case/fail/" + cid method="post")
+                    button#pass-case-button.btn.btn-sm.btn-outline-danger(type="submit") Failed
+
+block main
+    case view
+        when 1
+            .table-container.pl-3.pr-3.pt-5.pb-5
+                .row.justify-content-center
+                    .col-10.d-flex.justify-content-center
+                        figure.figure
+                            figcaption.figure-caption.text-center.font-weight-light.pb-2 Latest
+                            img#latest.img-fluid(src=latestUrl alt="latest-image")
+        when 2
+            .table-container.pl-3.pr-3.pt-5.pb-5
+                .row.justify-content-center
+                    .col-5.d-flex.justify-content-center
+                        figure.figure
+                            figcaption.figure-caption.text-center.font-weight-light.pb-2 Baseline
+                            img#baseline.img-fluid(src=baselineUrl alt="baseline-image")
+                    .col-5.d-flex.justify-content-center
+                        figure.figure
+                            figcaption.figure-caption.text-center.font-weight-light.pb-2 Latest
+                            img#latest.img-fluid(src=latestUrl alt="latest-image")
+        default
+            .table-container.pl-3.pr-3.pt-5.pb-5
+                .row
+                    .col-4.d-flex.justify-content-center
+                        figure.figure
+                            figcaption.figure-caption.text-center.font-weight-light.pb-2 Baseline
+                            img#baseline.img-fluid(src=baselineUrl alt="latest-image")
+                    .col-4.d-flex.justify-content-center
+                        figure.figure
+                            figcaption.figure-caption.text-center.font-weight-light.pb-2 Diff
+                            .overlay-container
+                                div
+                                    img.img-fluid(src=latestUrl alt="overlay-latest")
+                                .overlay
+                                .overlay
+                                    img.img-fluid(src=diffUrl alt="overlay-diff")
+                    .col-4.d-flex.justify-content-center
+                        figure.figure
+                            figcaption.figure-caption.text-center.font-weight-light.pb-2 Latest
+                            img#latest.img-fluid(src=latestUrl alt="latest-image")
+
+    script(src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous")
+    script.
+        window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"><\\/script>')
+    script(src="https://getbootstrap.com/docs/4.4/dist/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous")
+    script(src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js")

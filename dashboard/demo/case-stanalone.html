@@ -1,0 +1,253 @@
+<html lang="en">
+<head><!-- Required meta tags-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- Icon-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <title>Hello, world!</title>
+    <style>
+        .breadcrumb {
+            margin-bottom: unset;
+            background-color: unset;
+            padding: unset;
+        }
+
+        .table-container {
+            min-height: 650px;
+        }
+
+        .self-case-title {
+            padding: 1rem 15px 1rem 0;
+        }
+        .overlay-container {
+            position: relative;
+        }
+        .overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(255,255,255,0.7);
+            z-index: 2;
+        }
+        .result-passed-mark {
+            font-size: xx-large;
+            color: mediumspringgreen;
+        }
+        .result-failed-mark {
+            font-size: xx-large;
+            color: red;
+        }
+        .case-nev-icon {
+            font-size: xx-large;
+        }
+        .case-nav-disabled-icon {
+            font-size: xx-large;
+            color: #007bfe26;
+        }
+
+    </style>
+    <link href="/stylesheets/expressing-dashboard.css" rel="stylesheet"><!-- customer style-->
+    <link href="/stylesheets/project.css" rel="stylesheet">
+</head>
+<body>
+<header>
+    <div class="bg-dark collapse" id="navbarHeader">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-md-7 py-4"><h4 class="text-white">About</h4>
+                    <p class="text-muted">this is a report dashboard for a visual testing service, which is composed of
+                        several tech components:<a href="https://jestjs.io/"> Jest</a>,<a
+                                href="https://github.com/Prior99/jest-screenshot"> Jest-screenshot</a>,<a
+                                href="https://expressjs.com/"> ExpressJS</a>,<a href="https://getbootstrap.com/">
+                            Bootstrap</a>,<a href="https://pugjs.org/"> Pug</a>, and<a href="https://www.mongodb.com/">
+                            MongoDB.</a></p></div>
+                <div class="col-sm-4 offset-md-1 py-4"><h4 class="text-white">Author</h4>
+                    <ul class="list-unstyled">
+                        <li><a class="text-white" href="#">biaofu@thoughtworks.com</a></li><!--li-->
+                        <!--    a.text-white(href="#") Like on Facebook--><!--li-->
+                        <!--    a.text-white(href="#") Email me--></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container d-flex justify-content-between"><a class="navbar-brand d-flex align-items-center"
+                                                                 href="#"><strong>Home</strong></a>
+            <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarHeader"
+                    aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation"><span
+                    class="navbar-toggler-icon"></span></button>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="breadcrumb d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-4 pb-3 border-bottom rounded-0">
+        <div class="d-flex justify-content-end align-items-center" style="height: 35px;">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/project/PID32bd7ee761824e85970932fedb986f5c">dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item"><a href="/project/PID32bd7ee761824e85970932fedb986f5c">1</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">main-content.png</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="d-flex justify-content-end align-items-center" style="height: 35px;">
+            <div class="pr-3">
+                <div class="font-weight-light text-danger">DP 10.2323%</div>
+            </div>
+            <div class="pr-3">
+                <div class="d-flex align-items-center justify-content-center font-weight-bold result-passed-mark">
+                    <ion-icon name="checkmark-outline"/>
+                </div>
+            </div>
+
+
+            <div class="pl-2 pr-2 border-left d-flex">
+                <div class="d-flex align-items-center justify-content-center">
+                    <a class="d-flex align-items-center justify-content-center font-weight-bold case-nev-icon" href="#"><ion-icon name="arrow-back-outline"/></a>
+                </div>
+                <div class="d-flex align-items-center justify-content-center font-weight-bold case-nav-disabled-icon">
+                    <ion-icon name="arrow-forward-outline"/>
+                </div>
+            </div>
+
+
+            <div class="pl-3 pr-1 border-left">
+<!--                <button class="btn btn-sm btn-outline-success" id="pass-case-button" type="button"-->
+<!--                        onclick="passCase()">Passed-->
+<!--                </button>-->
+                <form action="/case/pass/cidxxxxx" method="post" class="mb-0">
+                    <button type="submit" class="btn btn-sm btn-outline-success" id="pass-case-button">Passed</button>
+                </form>
+            </div>
+            <div class="pl-2 pr-1">
+<!--                <button class="btn btn-sm btn-outline-danger" id="fail-case-button" type="button" onclick="failCase()">-->
+<!--                    Failed-->
+<!--                </button>-->
+                <form action="/case/fail/cidxxxxx" method="post" class="mb-0">
+                    <button type="submit" class="btn btn-sm btn-outline-danger" id="fail-case-button">Failed</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="pl-3 pr-3 pt-5 pb-5">
+
+        <div class="row justify-content-center">
+            <div class="col-10 d-flex justify-content-center">
+                <figure class="figure">
+                    <figcaption class="figure-caption text-center font-weight-light pb-2">Latest</figcaption>
+                    <img id="latest"
+                         src="http://localhost:8080/file-server/projects/TEST/builds/build_1/aircraft-carrier.latest.png"
+                         alt="main-content" class="img-fluid">
+                </figure>
+            </div>
+        </div>
+
+<!--        <div class="row justify-content-center">-->
+<!--            <div class="col-5">-->
+<!--                <figure class="figure">-->
+<!--                    <figcaption class="figure-caption text-center font-weight-light pb-2">Baseline</figcaption>-->
+<!--                    <img id="baseline"-->
+<!--                         src="http://localhost:8080/file-server/projects/dashboard/baseline/main-content.baseline.png"-->
+<!--                         alt="main-content" class="img-fluid">-->
+<!--                </figure>-->
+<!--            </div>-->
+<!--            <div class="col-5">-->
+<!--                <figure class="figure">-->
+<!--                    <figcaption class="figure-caption text-center font-weight-light pb-2">Latest</figcaption>-->
+<!--                    <img id="latest"-->
+<!--                         src="http://localhost:8080/file-server/projects/dashboard/builds/build_3/main-content.latest.png"-->
+<!--                         alt="main-content" class="img-fluid">-->
+<!--                </figure>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--    <div class="row">-->
+<!--        <div class="col-4">-->
+<!--            <figure class="figure">-->
+<!--                <figcaption class="figure-caption text-center font-weight-light pb-2">Baseline</figcaption>-->
+<!--                <img id="baseline"-->
+<!--                     src="http://localhost:8080/file-server/projects/dashboard/baseline/main-content.baseline.png"-->
+<!--                     alt="main-content" class="img-fluid">-->
+<!--            </figure>-->
+<!--        </div>-->
+<!--        <div class="col-4">-->
+<!--            <figure class="figure">-->
+<!--                <figcaption class="figure-caption text-center font-weight-light pb-2">Diff</figcaption>-->
+<!--                <div class="overlay-container">-->
+<!--                    <div>-->
+<!--                        <img src="http://localhost:8080/file-server/projects/dashboard/builds/build_3/main-content.latest.png" class="img-fluid" alt="Responsive image">-->
+<!--                    </div>-->
+<!--                    <div class="overlay"></div>-->
+<!--                    <div class="overlay">-->
+<!--                        <img src="http://localhost:8080/file-server/projects/dashboard/builds/build_3/main-content.4748.diff.png" class="img-fluid" alt="Responsive image">-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </figure>-->
+<!--        </div>-->
+<!--        <div class="col-4">-->
+<!--            <figure class="figure">-->
+<!--                <figcaption class="figure-caption text-center font-weight-light pb-2">Latest</figcaption>-->
+<!--                <img id="latest"-->
+<!--                     src="http://localhost:8080/file-server/projects/dashboard/builds/build_3/main-content.latest.png"-->
+<!--                     alt="main-content" class="img-fluid">-->
+<!--            </figure>-->
+<!--        </div>-->
+<!--    </div>-->
+
+
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"><\\/script>')</script>
+<script src="https://getbootstrap.com/docs/4.4/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm"
+        crossorigin="anonymous"></script>
+<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+<script>
+    const serverUrlRoot = "http://localhost:3001";
+
+    async function rebase(bid) {
+        console.log("rebase called");
+        const rebaseUrl = `${serverUrlRoot}/build/rebase/${bid}`;
+        const response = await fetch(rebaseUrl, {method: "POST", mode: 'cors'});
+        console.log(await response.json());
+    }
+
+    async function passCase() {
+        document.getElementById("case-result-icon").className = "fas fa-check fa-lg text-success";
+        document.getElementById("pass-case-button").classList.remove("btn");
+        document.getElementById("pass-case-button").disabled = true;
+        document.getElementById("fail-case-button").classList.add("btn");
+        document.getElementById("fail-case-button").disabled = false;
+    }
+
+    async function failCase() {
+        document.getElementById("case-result-icon").className = "fas fa-times fa-lg text-danger";
+        document.getElementById("fail-case-button").classList.remove("btn");
+        document.getElementById("fail-case-button").disabled = true;
+        document.getElementById("pass-case-button").classList.add("btn");
+        document.getElementById("pass-case-button").disabled = false;
+    }
+
+</script>
+<footer class="text-muted">
+    <div class="container"><p class="float-right"><a href="#">Back to top</a></p>
+        <p>Album example is © Bootstrap, but please download and customize it for yourself!</p></div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "micooc",
+  "version": "0.1.2",
+  "description": "Micoo NodeJS client",
+  "main": "micooc.js",
+  "scripts": {
+    "test": "echo \"no tests\""
+  },
+  "author": "sherry_0678@outlook.com",
+  "license": "MIT",
+  "dependencies": {
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5"
+  }
+}

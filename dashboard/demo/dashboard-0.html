@@ -1,0 +1,203 @@
+<html lang="en">
+<head><!-- Required meta tags-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- Icon-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <title>Team Visual Test</title>
+    <style>
+        .card-link {
+            z-index: 1;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            text-decoration: none;
+        }
+
+        .card-link:hover {
+            text-decoration: none;
+        }
+        .project-image-text {
+            position: absolute; /* Position the background text */
+            top: 20%; /* At the bottom. Use top:0 to append it to the top */
+            background: rgba(0, 0, 0, 0.5); /* Black background with 0.5 opacity */
+            color: #f1f1f1; /* Grey text */
+            width: 100%; /* Full width */
+            padding: 20px; /* Some padding */
+        }
+        .project-image-img {
+            filter: blur(2px);
+            height: 225px;
+            width: 100%;
+        }
+        .card-height {
+            height: 392px;
+        }
+        .card-body-new {
+            position: relative;
+            margin-top: -56px;
+        }
+        .icon-new {
+            border-width: thick !important;
+        }
+        .input-FBI {
+            font-size: 1.5rem;
+        }
+        .add-btn {
+            color: #062852;;
+        }
+        .add-btn:hover {
+            color: #001834;
+        }
+        .add-btn:disabled {
+            color: #0628527d;
+            opacity: 1;
+            cursor: unset;
+        }
+        .p-FBI {
+            color: #00000052;
+            font-size: 12px;
+        }
+    </style><!-- expressing dashboard default javascript-->
+    <script async="" src="/javascript/app.js"></script><!-- expressing dashboard default style-->
+    <link href="/stylesheets/expressing-dashboard.css" rel="stylesheet"><!-- customer style-->
+    <link href="/stylesheets/album.css" rel="stylesheet">
+</head>
+<body>
+<header>
+    <div class="bg-dark collapse" id="navbarHeader">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-md-7 py-4"><h4 class="text-white">About</h4>
+                    <p class="text-muted">this is a report dashboard for a visual testing service, which is composed of
+                        several tech components:<a href="https://jestjs.io/"> Jest</a>,<a
+                                href="https://github.com/Prior99/native-image-diff#readme"> Native-image-diff</a>,<a
+                                href="https://expressjs.com/"> ExpressJS</a>,<a href="https://getbootstrap.com/">
+                            Bootstrap</a>,<a href="https://pugjs.org/"> Pug</a>, and<a href="https://www.mongodb.com/">
+                            MongoDB.</a></p></div>
+                <div class="col-sm-4 offset-md-1 py-4"><h4 class="text-white">Author</h4>
+                    <ul class="list-unstyled">
+                        <li><a class="text-white" href="#">biaofu@thoughtworks.com</a></li><!--li-->
+                        <!--    a.text-white(href="#") Like on Facebook--><!--li-->
+                        <!--    a.text-white(href="#") Email me--></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container d-flex justify-content-between"><a class="navbar-brand d-flex align-items-center"
+                                                                 href="/dashboard"><strong>Team Automation
+            Testing</strong></a>
+            <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarHeader"
+                    aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation"><span
+                    class="navbar-toggler-icon"></span></button>
+        </div>
+    </div>
+</header>
+<main role="main">
+    <section class="jumbotron text-center">
+        <div class="container"><h1>Visual Testing service Dashboard</h1>
+            <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator,
+                etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p></div>
+    </section>
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-4 card-height pb-5">
+                    <div class="card mb-4 shadow-sma h-100"><a class="card-link" href="/project/PID32bd7ee761824e85970932fedb986f5c/page/1"></a>
+                        <div class="card-img-top" style="width: 100%; height: 225px;">
+                            <img class="project-image-img" src="http://localhost:8080/file-server/assets/project-team-image/team-dashboard.348x225.webp">
+                            <div class="text-center project-image-text"><h4>Dashboard</h4></div>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <div class="d-flex w-100 justify-content-between"><p class="font-weight-light">Latest
+                                    build result</p><small class="text-success" style="padding-top: 4px;">passed</small>
+                                </div>
+                                <div class="d-flex w-100 justify-content-between"><p class="font-weight-light">Latest
+                                    build time</p><small class="text-muted" style="padding-top: 4px;">2020-2-7
+                                    00:04:21</small></div>
+                                <div class="d-flex w-100 justify-content-between"><p class="font-weight-light">Total
+                                    builds number</p><small class="text-muted" style="padding-top: 4px;">22</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 card-height  pb-5">
+                    <div class="card mb-4 shadow-sma h-100">
+                        <form action="/non-endpoint/" method="post" class="m-0">
+                            <div class="form-group m-0">
+                                <div class="card-img-top" style="width: 100%; height: 225px;">
+                                    <img class="project-image-img" src="http://localhost:8123/file-server/assets/default/space.webp">
+                                    <div class="text-center project-image-text">
+                                        <input type="text" name="projectName" autocomplete="off" class="input-FBI form-control text-center bg-transparent text-white  border-0" placeholder="New Project"  onkeyup="manage(this)">
+                                    </div>
+                                </div>
+                                <div class="card-body card-body-new">
+                                    <div class="text-center">
+                                        <button id="newProjectButton" type="submit" class="btn add-btn" disabled>
+                                            <i class="fa fa-plus-circle fa-5x border border-white rounded-circle bg-white icon-new" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="d-flex justify-content-center">
+                            <div class="w-50">
+                                <p class="p-FBI text-center">input project name to create a new project</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 card-height  pb-4">
+                    <div class="card mb-4 shadow-sma h-100"><a class="card-link"
+                                                         href="/project/PID1bd20b69ba8d4ac5859ff766e717e07c/page/1"></a>
+                        <div class="card-img-top" style="width: 100%; height: 225px;">
+                            <img class="project-image-img" src="http://localhost:8080/file-server/assets/project-team-image/team-TEST.348x225.webp">
+                            <div class="text-center project-image-text"><h4>DEMO</h4></div>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <div class="d-flex w-100 justify-content-between"><p class="font-weight-light">Latest
+                                    build result</p><small class="text-info" style="padding-top: 4px;"></small></div>
+                                <div class="d-flex w-100 justify-content-between"><p class="font-weight-light">Latest
+                                    build time</p><small class="text-muted" style="padding-top: 4px;"></small></div>
+                                <div class="d-flex w-100 justify-content-between"><p class="font-weight-light">Total
+                                    builds number</p><small class="text-muted" style="padding-top: 4px;">0</small></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    function manage(txt) {
+        let bt = document.getElementById('newProjectButton');
+        bt.disabled = txt.value === '';
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"><\\/script>')</script>
+<script src="https://getbootstrap.com/docs/4.4/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm"
+        crossorigin="anonymous"></script>
+<footer class="text-muted text-center font-weight-light">
+    <div class="container"><p>save regular time from automation, then spend it in exploring</p></div>
+</footer>
+</body>
+</html>
