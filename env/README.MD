@@ -11,6 +11,7 @@ deploying with images from Docker Hub.
 - create exchange directory
 ```commandline
 mkdir exchange
+npm install
 ```
 
 - containerize micoo-nginx service
@@ -28,21 +29,21 @@ docker-compose -f docker-compose.env.yaml up
 - start micoo-dashboard service
 ```commandline
 cd dashboard
-npm build
+npm install
 MICOO_DB_USERNAME=micoo-user export MICOO_DB_PASSWORD=micoo-password npm start
 ```
 
 - start micoo-engine service
 ```commandline
 cd engine
-npm build
+npm install
 MICOO_DB_USERNAME=micoo-user export MICOO_DB_PASSWORD=micoo-password npm start
 ```
 
 - start micoo-postern service
 ```commandline
 cd postern
-npm build
+npm install
 MICOO_DB_USERNAME=micoo-user export MICOO_DB_PASSWORD=micoo-password npm start
 ```
 
