@@ -1,6 +1,17 @@
 version: "3.7"
 services:
 
+  micoo-nginx:
+    image: micoo-nginx:latest
+    container_name: micoo-nginx
+    ports:
+      - "8080:80"
+    networks:
+      - nginx-network
+    volumes:
+      - "exchange-volume:/exchange"
+      - "./nginx/nginx.file-service.conf:/etc/nginx/nginx.conf"
+
   micoo-mongodb:
     image: mongo:latest
     environment:

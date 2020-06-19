@@ -3,13 +3,14 @@ services:
 
   micoo-nginx:
     image: micoo-nginx:latest
+    container_name: micoo-nginx
     ports:
       - "8080:80"
     networks:
       - nginx-network
     volumes:
       - "exchange-volume:/exchange"
-      - "./nginx/nginx.conf:/etc/nginx/nginx.conf"
+      - "./nginx/nginx.reverse-proxy.conf:/etc/nginx/nginx.conf"
     depends_on:
       - micoo-dashboard
       - micoo-engine
@@ -17,15 +18,13 @@ services:
 
   micoo-mongodb:
     image: mongo:latest
+    container_name: micoo-mongodb
     environment:
       - MONGO_INITDB_ROOT_USERNAME=mgadmin
       - MONGO_INITDB_ROOT_PASSWORD=Password1
       - MONGO_INITDB_DATABASE=micoo
-    ports:
-      - "27017:27017"
     networks:
       - micoo-network
-#      - nginx-network
     volumes:
       - "database-volume:/data/db"
       - "./initializer:/docker-entrypoint-initdb.d"
@@ -33,13 +32,12 @@ services:
   micoo-dashboard:
 #    image: ariman/micoo-dashboard:latest
     image: micoo-dashboard:latest
+    container_name: micoo-dashboard
     environment:
       - MICOO_ENV=docker
-      - MICOO_FS_HOST_URL=http://localhost:8123
+      - MICOO_FS_HOST_URL=http://localhost:8080
       - MICOO_DB_USERNAME=micoo-user
       - MICOO_DB_PASSWORD=micoo-password
-    ports:
-      - "3001:3001"
     volumes:
       - "exchange-volume:/exchange"
     networks:
@@ -49,13 +47,12 @@ services:
   micoo-engine:
 #    image: ariman/micoo-engine:latest
     image: micoo-engine:latest
+    container_name: micoo-engine
     environment:
       - MICOO_ENV=docker
-      - MICOO_FS_HOST_URL=http://localhost:8123
+      - MICOO_FS_HOST_URL=http://localhost:8080
       - MICOO_DB_USERNAME=micoo-user
       - MICOO_DB_PASSWORD=micoo-password
-    ports:
-      - "3002:3002"
     volumes:
       - "exchange-volume:/exchange"
     networks:
@@ -65,26 +62,14 @@ services:
   micoo-postern:
 #    image: ariman/micoo-postern:latest
     image: micoo-postern:latest
+    container_name: micoo-postern
     environment:
       - MICOO_ENV=docker
-    ports:
-      - "3003:3003"
     volumes:
       - "exchange-volume:/exchange"
     networks:
       - micoo-network
       - nginx-network
-
-#  micoo-file-service:
-##    image: ariman/micoo-file-service:latest
-#    image: micoo-file-service:latest
-#    ports:
-#      - "8123:8123"
-#    volumes:
-#      - "exchange-volume:/exchange"
-#    networks:
-#      - micoo-network
-#      - nginx-network
 
 volumes:
   database-volume:
@@ -93,4 +78,3 @@ volumes:
 networks:
   micoo-network:
   nginx-network:
-#    external: true
