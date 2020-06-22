@@ -1,4 +1,0 @@
-Micoo
---
-
-Micoo is ...
