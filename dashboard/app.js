@@ -4,6 +4,7 @@ let path = require("path");
 let cookieParser = require("cookie-parser");
 let logger = require("morgan");
 let favicon = require("serve-favicon");
+const fileUpload = require("express-fileupload");
 
 let adminRouter = require("./routes/admin");
 let dashboardRouter = require("./routes/dashboard");
@@ -14,6 +15,7 @@ let statsRouter = require("./routes/stats");
 let envConfig = require("./config/env.config");
 
 let app = express();
+app.use(fileUpload({}));
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

@@ -34,7 +34,7 @@ docker-compose -f docker-compose.env.yaml up
 ```commandline
 cd dashboard
 npm install
-MICOO_DB_USERNAME=micoo-user MICOO_DB_PASSWORD=micoo-password npm start
+./run.sh
 ```
 
 - start micoo-engine service
@@ -42,7 +42,7 @@ MICOO_DB_USERNAME=micoo-user MICOO_DB_PASSWORD=micoo-password npm start
 ```commandline
 cd engine
 npm install
-MICOO_DB_USERNAME=micoo-user MICOO_DB_PASSWORD=micoo-password npm start
+./run.sh
 ```
 
 then, visit `http://localhost:3001`.
@@ -101,7 +101,7 @@ go through the same steps as described in `Local development` above, then
 ```commandline
 cd postern
 npm install
-MICOO_DB_USERNAME=micoo-user MICOO_DB_PASSWORD=micoo-password npm start
+./run.sh
 ```
 
 ##### local Docker image with Postern

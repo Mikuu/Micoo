@@ -39,6 +39,18 @@ const projectInitializeFolders = projectName => {
     };
 };
 
+const projectImageRelativeLocation = projectName => {
+    return `/file-server/assets/project-team-image/team-${projectName}.348x225.webp`;
+};
+
+const projectImagePath = projectName => {
+    return exchangeRootDir + projectImageRelativeLocation(projectName);
+};
+
+const projectImageUrl = projectName => {
+    return fileServerHost + projectImageRelativeLocation(projectName);
+};
+
 module.exports = {
     errorImage: errorImage,
     mongodbUrl: mongodbUrl,
@@ -55,4 +67,6 @@ module.exports = {
 
     projectRootPath,
     projectInitializeFolders,
+    projectImagePath,
+    projectImageUrl,
 };

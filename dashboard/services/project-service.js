@@ -34,6 +34,11 @@ const deleteProject = async pid => {
     return await Project.deleteOne({ pid: pid });
 };
 
+const updateProjectImageUrl = async (pid, projectImageUrl) => {
+    const project = await getProjectByPid(pid);
+    await project.updateProjectImageUrl(projectImageUrl);
+};
+
 module.exports = {
     createProject,
     getAllProjects,
@@ -41,4 +46,5 @@ module.exports = {
     getSharedProjectRootPath,
     deleteProject,
     isProjectNameExist,
+    updateProjectImageUrl,
 };

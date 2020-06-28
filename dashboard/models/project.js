@@ -41,6 +41,11 @@ ProjectSchema.methods = {
         this.pid = uuidUtils.projectUuid();
         return this.save();
     },
+
+    updateProjectImageUrl: function(projectImageUrl) {
+        this.projectImageUrl = projectImageUrl;
+        return this.save();
+    },
 };
 
 module.exports = {

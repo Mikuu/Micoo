@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const { check, validationResult } = require("express-validator");
 
 const router = express.Router();
@@ -8,6 +9,19 @@ const projectService = require("../services/project-service");
 const buildService = require("../services/build-service");
 const caseService = require("../services/case-service");
 const fileService = require("../services/file-service");
+
+const response = message => {
+    return {
+        succeed: {
+            code: 200,
+            message: message,
+        },
+        failed: {
+            code: 400,
+            message: message,
+        },
+    };
+};
 
 router.get("/env", function(req, res, next) {
     const env = {
@@ -28,7 +42,7 @@ router.post(
             }
 
             const projectDisplayName = req.body.projectName;
-            const projectName = req.body.projectName.toLowerCase().replace(" ", "_");
+            const projectName = req.body.projectName.toLowerCase().replace(/\s/g, "_");
 
             try {
                 if (await projectService.isProjectNameExist(projectName)) {
@@ -91,6 +105,7 @@ router.post("/project/delete/:pid", function(req, res, next) {
             await projectService.deleteProject(project.pid);
 
             fileService.deleteProjectDirectory(project.projectName);
+            fileService.deleteProjectImage(project.projectName);
 
             await console.log(`deleted project pid=${project.pid}`);
 
@@ -99,6 +114,47 @@ router.post("/project/delete/:pid", function(req, res, next) {
             console.error(error);
             next(error);
         }
+    })();
+});
+
+/**
+ * Upload project card background image
+ * */
+router.post("/project/image/:pid", function(req, res, next) {
+    (async () => {
+        if (!req.params || !req.params.pid) {
+            return res.status(400).send(response("missing 'pid'").failed);
+        }
+
+        if (!req.files || Object.keys(req.files).length === 0) {
+            return res.status(400).send(response("no image").failed);
+        }
+
+        if (!req.files.projectImage) {
+            return res.status(400).send(response("missing 'projectImage'").failed);
+        }
+
+        const project = await projectService.getProjectByPid(req.params.pid);
+
+        if (!project) {
+            res.status(400).send(response({ error: `pid ${req.params.pid} not exist` }).failed);
+        }
+
+        const projectImage = req.files.projectImage;
+        const imageFilePath = envConfig.projectImagePath(project.projectName);
+
+        projectImage.mv(imageFilePath, function(err) {
+            if (err) {
+                return res.status(500).send(err);
+            }
+
+            (async () => {
+                await projectService.updateProjectImageUrl(project.pid, envConfig.projectImageUrl(project.projectName));
+            })();
+
+            console.log(`FBI --> Info: updated card image for project ${project.projectName}`);
+            res.redirect(`/project/${project.pid}/page/1`);
+        });
     })();
 });
 

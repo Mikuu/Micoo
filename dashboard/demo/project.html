@@ -90,6 +90,12 @@
         <div class="d-flex justify-content-end align-items-center" style="height: 35px;">
 
             <div class="d-flex flex-row mr-4">
+                <div class="border-right mr-3 pr-3">
+                    <button id="changeProjectImageButton" type="button" class="btn" data-toggle="modal" data-target="#changeProjectImageModal">
+                        <i class="fa fa-file-image fa-1x action-fbi" aria-hidden="true"></i>
+                    </button>
+                </div>
+
                 <button id="cleanProjectButton" type="button" class="btn" data-toggle="modal" data-target="#cleanProjectModal">
                     <i class="fa fa-eraser fa-1x action-fbi" aria-hidden="true"></i>
                 </button>
@@ -97,6 +103,27 @@
                 <button id="deleteProjectButton" type="button" class="btn" data-toggle="modal" data-target="#deleteProjectModal">
                     <i class="fas fa-trash-alt fa-1x action-fbi" aria-hidden="true"></i>
                 </button>
+
+                <div class="modal fade" id="changeProjectImageModal" tabindex="-1" role="dialog" aria-labelledby="cleanProjectModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content" style="background-color: #222427">
+
+                            <form action="http://localhost:3001/admin/project/image/PID15ccaeb96d0f473db3af0d6c4b9f237b" method="post" enctype="multipart/form-data">
+                                <div class="d-flex flex-row pt-3 pb-3 pl-5 pr-4 align-items-center" style="min-height: 120px;">
+                                    <div class="custom-file">
+                                        <input type="file" name="projectImage" class="custom-file-input" id="customFile">
+                                        <label class="custom-file-label font-weight-lighter" for="customFile">choose image file for your project card</label>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-info" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-outline-success">Upload</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
 
                 <div class="modal fade" id="cleanProjectModal" tabindex="-1" role="dialog" aria-labelledby="cleanProjectModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -216,6 +243,16 @@
         integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm"
         crossorigin="anonymous"></script>
 <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+<script>
+    bsCustomFileInput.init()
+
+    let btn = document.getElementById('btnResetForm')
+    let form = document.querySelector('form')
+    btn.addEventListener('click', function () {
+        form.reset()
+    })
+</script>
 <footer class="text-muted">
     <div class="container"><p class="float-right"><a href="#">Back to top</a></p>
         <p>Album example is © Bootstrap, but please download and customize it for yourself!</p></div>

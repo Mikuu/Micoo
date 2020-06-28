@@ -10,7 +10,7 @@ identify baseline/reactjs.png
 
 - paint characters on image
 ```commandline
-convert baseline/reactjs.png -gravity Center  -pointsize 120 -annotate 0 "diff" latest/reactjs.png
+convert baseline/bing.png -gravity Center  -pointsize 120 -annotate 0 "diff" latest/bing.png
 ```
 
 - convert png to webp

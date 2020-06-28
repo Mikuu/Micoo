@@ -5,10 +5,24 @@ block breadcrumb
 
 block projectAction
     .d-flex.flex-row.mr-4
+        .border-right.mr-3.pr-3
+            button#changeProjectImageButton.btn(type="button" data-toggle="modal" data-target="#changeProjectImageModal")
+                i.fa.fa-file-image.fa-1x.action-fbi(aria-hidden="true")
         button#cleanProjectButton.btn(type="button" data-toggle="modal" data-target="#cleanProjectModal")
             i.fa.fa-eraser.fa-1x.action-fbi(aria-hidden="true")
         button#deleteProjectButton.btn(type="button" data-toggle="modal" data-target="#deleteProjectModal")
             i.fas.fa-trash-alt.fa-1x.action-fbi(aria-hidden="true")
+        #changeProjectImageModal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="cleanProjectModalLabel" aria-hidden="true")
+            .modal-dialog.modal-dialog-centered(role="document")
+                .modal-content(style="background-color: #222427")
+                    form(action="/admin/project/image/"+pid method="post" enctype="multipart/form-data")
+                        .d-flex.flex-row.pt-3.pb-3.pl-5.pr-4.align-items-center(style="min-height: 120px;")
+                            .custom-file
+                                input#customFile.custom-file-input(type="file" name="projectImage")
+                                label.custom-file-label.font-weight-lighter(for="customFile") choose image file for your project card
+                        .modal-footer
+                            button.btn.btn-outline-info(type="button" data-dismiss="modal") Cancel
+                            button.btn.btn-outline-success(type="submit") Upload
         #cleanProjectModal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="cleanProjectModalLabel" aria-hidden="true")
             .modal-dialog.modal-dialog-centered(role="document")
                 .modal-content(style="background-color: #222427")
@@ -122,3 +136,11 @@ block main
         window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"><\\/script>')
     script(src="https://getbootstrap.com/docs/4.4/dist/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous")
     script(src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js")
+    script(src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js")
+    script.
+        bsCustomFileInput.init()
+        let btn = document.getElementById('btnResetForm')
+        let form = document.querySelector('form')
+        btn.addEventListener('click', function () {
+            form.reset()
+        })

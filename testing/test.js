@@ -2,7 +2,7 @@ const { newBuild, buildStats, latestBuildStats } = require("../clients/nodejs/mi
 
 async function testNewBuild() {
     const host = "http://localhost:8123/engine";
-    const pid = "PIDda3d81cc576a4bc482a7a2f79a35d011";
+    const pid = "PIDc9df791bacd545f1ab31171c7c6ff09b";
     const buildVersion = "5fafc0478af24af2da45fa19ddd06c17dd5d0d45";
     const screenshotDirectory = "./latest";
 
@@ -26,8 +26,8 @@ async function testLatestBuildStats() {
 function test() {
     (async () => {
         await testNewBuild();
-        await testBuildStats();
-        await testLatestBuildStats();
+        // await testBuildStats();
+        // await testLatestBuildStats();
     })();
 }
 

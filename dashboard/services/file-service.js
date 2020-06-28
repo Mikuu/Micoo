@@ -62,6 +62,10 @@ const getDiskSpace = async () => {
     };
 };
 
+const deleteProjectImage = projectName => {
+    fileUtils.deleteFile(envConfig.projectImagePath(projectName));
+};
+
 module.exports = {
     createNewProjectFolders,
     isProjectExist,
@@ -72,4 +76,5 @@ module.exports = {
     deleteZipAll,
 
     getDiskSpace,
+    deleteProjectImage,
 };
