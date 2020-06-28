@@ -2,7 +2,7 @@ version: "3.7"
 services:
 
   micoo-nginx:
-    image: micoo-nginx:latest
+    image: ariman/micoo-nginx:latest
     container_name: micoo-nginx
     ports:
       - "8123:80"
@@ -14,6 +14,7 @@ services:
     depends_on:
       - micoo-dashboard
       - micoo-engine
+      - micoo-postern
 
   micoo-mongodb:
     image: mongo:latest
@@ -29,7 +30,7 @@ services:
       - "./initializer:/docker-entrypoint-initdb.d"
 
   micoo-dashboard:
-    image: micoo-dashboard:latest
+    image: ariman/micoo-dashboard:latest
     container_name: micoo-dashboard
     environment:
       - MICOO_ENV=docker
@@ -43,13 +44,24 @@ services:
       - nginx-network
 
   micoo-engine:
-    image: micoo-engine:latest
+    image: ariman/micoo-engine:latest
     container_name: micoo-engine
     environment:
       - MICOO_ENV=docker
       - MICOO_FS_HOST_URL=http://localhost:8123
       - MICOO_DB_USERNAME=micoo-user
       - MICOO_DB_PASSWORD=micoo-password
+    volumes:
+      - "exchange-volume:/exchange"
+    networks:
+      - micoo-network
+      - nginx-network
+
+  micoo-postern:
+    image: ariman/micoo-postern:latest
+    container_name: micoo-postern
+    environment:
+      - MICOO_ENV=docker
     volumes:
       - "exchange-volume:/exchange"
     networks:

@@ -14,7 +14,6 @@ services:
     depends_on:
       - micoo-dashboard
       - micoo-engine
-      - micoo-postern
 
   micoo-mongodb:
     image: mongo:latest
@@ -51,17 +50,6 @@ services:
       - MICOO_FS_HOST_URL=http://localhost:8123
       - MICOO_DB_USERNAME=micoo-user
       - MICOO_DB_PASSWORD=micoo-password
-    volumes:
-      - "exchange-volume:/exchange"
-    networks:
-      - micoo-network
-      - nginx-network
-
-  micoo-postern:
-    image: ariman/micoo-postern:latest
-    container_name: micoo-postern
-    environment:
-      - MICOO_ENV=docker
     volumes:
       - "exchange-volume:/exchange"
     networks:
