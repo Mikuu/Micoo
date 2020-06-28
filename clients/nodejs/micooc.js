@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const requestPromise = require("request-promise");
+const fetch = require("node-fetch");
 
 const uploadFile = async (uploadScreenshotsUrl, pid, filePath) => {
     const formData = {
@@ -51,16 +52,35 @@ const triggerNewBuild = async (initializeBuildUrl, pid, buildVersion) => {
     });
 };
 
-const newBuild = (host, pid, buildVersion, screenshotsDirectory) => {
-    (async () => {
-        const initializeBuildUrl = host + "/slave/build/initialize";
-        const uploadScreenshotsUrl = host + "/slave/images/project-tests";
+const newBuild = async (host, pid, buildVersion, screenshotsDirectory) => {
+    const initializeBuildUrl = host + "/slave/build/initialize";
+    const uploadScreenshotsUrl = host + "/slave/images/project-tests";
 
-        await uploadTestScreenshots(uploadScreenshotsUrl, pid, screenshotsDirectory);
-        await triggerNewBuild(initializeBuildUrl, pid, buildVersion);
-    })();
+    await uploadTestScreenshots(uploadScreenshotsUrl, pid, screenshotsDirectory);
+    await triggerNewBuild(initializeBuildUrl, pid, buildVersion);
+};
+
+const fetching = async url => {
+    try {
+        const response = await fetch(url);
+        return await response.json();
+    } catch (error) {
+        console.log(error.response.body);
+    }
+};
+
+const buildStats = async (host, bid) => {
+    const url = host + "/stats/build?bid=" + bid;
+    return await fetching(url);
+};
+
+const latestBuildStats = async (host, pid) => {
+    const url = host + "/stats/build/latest?pid=" + pid;
+    return await fetching(url);
 };
 
 module.exports = {
     newBuild,
+    buildStats,
+    latestBuildStats,
 };
