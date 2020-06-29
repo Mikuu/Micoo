@@ -1,5 +1,4 @@
 const express = require("express");
-const path = require("path");
 const { check, validationResult } = require("express-validator");
 
 const router = express.Router();
@@ -49,10 +48,14 @@ router.post(
 
             try {
                 if (await projectService.isProjectNameExist(projectName)) {
-                    res.status(400).send({
-                        code: 400,
-                        message: `project name '${req.body.projectName}' already exists`,
-                    });
+                    const errorMessage = `project name '${req.body.projectName}' already exists`;
+                    res.render("error-miku-c", { errorMessage });
+
+                    // res.status(400).send({
+                    //     code: 400,
+                    //     message: `project name '${req.body.projectName}' already exists`,
+                    // });
+
                     return;
                 }
 
