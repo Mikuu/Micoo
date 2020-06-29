@@ -1,4 +1,6 @@
 /.idea/
+/.DS_Store
+/testing/.DS_Store
 /node_modules/
 /dashboard/node_modules/
 /engine/node_modules/
