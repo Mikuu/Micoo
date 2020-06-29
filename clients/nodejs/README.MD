@@ -28,7 +28,7 @@ testNewBuild();
 * `host` - the Micoo's base URL plus `/engine`,
 * `pid` - your Micoo project's PID, it can be found from the Micoo project page's URL,
 * `buildVersion` - this build version is neither parts of Micoo, nor your UI automation test, it needs to be the version of you SUT application, most of the case, it's the git revision number. `buildVersion` is a useful setup of mappings between your visual tests and the SUT application. Anyway, technically, it's just a string which will be displayed in Micoo's project board, you can use anything which is meaningful to you.
-* `screenshotDirectory` - the directory where contains all screenshots to be uploaded, only `.png` file will be uploaded.
+* `screenshotDirectory` - the directory where contains all screenshots to be uploaded, only `.png` file will be uploaded. All the uploaded screenshot filename becomes the test case name, so there are some restriction to the filename, it must shorter than 100 letters and match [a-zA-Z0-9-_&()#].
 
 ### About `buildVersion`
 `buildVersion` comes from the SUT application Version Control System, e.g. GIT, SVN, and they are probably differentiate from different test builds, especially when integrate the visual test in CI.
