@@ -17,7 +17,7 @@ block body
                                     .card-img-top(style="width: 100%; height: 225px;")
                                         img.project-image-img(src="/public/image/space.webp")
                                         .text-center.project-image-text
-                                            input.input-FBI.form-control.text-center.bg-transparent.text-white.border-0(type="text" name="projectName" autocomplete="off" placeholder="New Project" onkeyup="manage(this)")
+                                            input.input-FBI.form-control.text-center.bg-transparent.text-white.border-0(type="text" name="projectName" autocomplete="off" placeholder="New Project" onkeyup="manage(this)" maxlength="20" title="[a-zA-Z0-9\\s\\-_]" pattern="[a-zA-Z0-9\\s\\-_]+" )
                                     .card-body.card-body-new
                                         .text-center
                                             button#newProjectButton.btn.add-btn(type="submit" disabled="")

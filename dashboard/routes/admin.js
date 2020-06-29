@@ -33,7 +33,10 @@ router.get("/env", function(req, res, next) {
 
 router.post(
     "/project/create",
-    [check("projectName", "project name, length must less than 18").isLength({ min: 1, max: 18 })],
+    [
+        check("projectName", "project name, length must less than 20").isLength({ min: 1, max: 20 }),
+        check("projectName", "only accept letters in [a-zA-Z0-9\\s\\-_]").matches(/^[a-zA-Z0-9\-_\s]+$/),
+    ],
     function(req, res, next) {
         (async () => {
             const errors = validationResult(req);
