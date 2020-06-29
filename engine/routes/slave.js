@@ -5,6 +5,7 @@ const buildService = require("../services/build-service");
 const compareService = require("../services/compare-service");
 const fileService = require("../services/file-service");
 const envConfig = require("../config/env.config");
+const screenshotService = require("../services/screenshots-service");
 
 const response = message => {
     return {
@@ -70,6 +71,11 @@ router.post("/images/project-tests/:pid", function(req, res, next) {
 
         let eachFile;
         for (eachFile in req.files) {
+            if (!screenshotService.isUploadedScreenshotValid(req.files[eachFile].name)) {
+                console.error(`FBI -> Error: received image: ${req.files[eachFile].name} not acceptable`);
+                continue;
+            }
+
             console.log(`FBI -> Info: received image: ${req.files[eachFile].name}`);
 
             req.files[eachFile].mv(

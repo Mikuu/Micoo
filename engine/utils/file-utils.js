@@ -112,6 +112,29 @@ const removePercentageToDiffFile = filename => {
     return filename.replace(`.${diffSuffer}.`, ".");
 };
 
+const screenshotFilenameFilter = screenshotFilename => {
+    const parsedFilename = path.parse(screenshotFilename);
+
+    if (parsedFilename.ext !== ".png") {
+        console.log(`filename unacceptable: "${screenshotFilename}", not a .png file`);
+        return false;
+    }
+
+    const lengthLimit = 100;
+    if (screenshotFilename.length > lengthLimit) {
+        console.log(`filename unacceptable: "${screenshotFilename}", longer than ${lengthLimit}`);
+        return false;
+    }
+
+    const format = /^[a-zA-Z0-9\-_&()#]+$/;
+    if (!format.test(parsedFilename.name)) {
+        console.log(`filename unacceptable: "${screenshotFilename}", only support letters in [a-zA-Z0-9-_&()#]`);
+        return false;
+    }
+
+    return true;
+};
+
 module.exports = {
     moveFiles,
     moveInBaselineFilesAccordingToLatestFiles,
@@ -126,4 +149,5 @@ module.exports = {
     toDiffFileWithPercentage,
     percentageFromDiffFile,
     removePercentageToDiffFile,
+    screenshotFilenameFilter,
 };

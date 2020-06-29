@@ -20,19 +20,45 @@ const uploadFile = async (uploadScreenshotsUrl, pid, filePath) => {
     });
 };
 
+const screenshotFilenameFilter = screenshotFilename => {
+    const parsedFilename = path.parse(screenshotFilename);
+
+    if (parsedFilename.ext !== ".png") {
+        console.log(`filename unacceptable: "${screenshotFilename}", not a .png file`);
+        return false;
+    }
+
+    const lengthLimit = 100;
+    if (screenshotFilename.length > lengthLimit) {
+        console.log(`filename unacceptable: "${screenshotFilename}", longer than ${lengthLimit}`);
+        return false;
+    }
+
+    const format = /^[a-zA-Z0-9\-_&()#]+$/;
+    if (!format.test(parsedFilename.name)) {
+        console.log(`filename unacceptable: "${screenshotFilename}", only support letters in [a-zA-Z0-9-_&()#]`);
+        return false;
+    }
+
+    return true;
+};
+
 const uploadTestScreenshots = async (uploadScreenshotsUrl, pid, screenshotsDirectory) => {
+    let counter = 0;
     const promises = fs.readdirSync(screenshotsDirectory).map(async screenshot => {
         const screenshotFile = path.join(screenshotsDirectory, screenshot);
 
         const fstats = fs.lstatSync(screenshotFile);
-        if (fstats.isFile() && path.extname(screenshotFile) === ".png") {
+        if (fstats.isFile() && screenshotFilenameFilter(path.basename(screenshotFile))) {
             await uploadFile(uploadScreenshotsUrl, pid, screenshotFile);
+            counter += 1;
         }
     });
 
     // Promise.all ensure all loops completed before return, but not guarantee the order in the loop,
     // If it require the inner callback function to be executed sequentially, use for...of loop.
     await Promise.all(promises);
+    return counter;
 };
 
 const triggerNewBuild = async (initializeBuildUrl, pid, buildVersion) => {
@@ -56,8 +82,10 @@ const newBuild = async (host, pid, buildVersion, screenshotsDirectory) => {
     const initializeBuildUrl = host + "/slave/build/initialize";
     const uploadScreenshotsUrl = host + "/slave/images/project-tests";
 
-    await uploadTestScreenshots(uploadScreenshotsUrl, pid, screenshotsDirectory);
-    await triggerNewBuild(initializeBuildUrl, pid, buildVersion);
+    const uploadedScreenshotsCount = await uploadTestScreenshots(uploadScreenshotsUrl, pid, screenshotsDirectory);
+    if (uploadedScreenshotsCount) {
+        await triggerNewBuild(initializeBuildUrl, pid, buildVersion);
+    }
 };
 
 const fetching = async url => {

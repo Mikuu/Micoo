@@ -1,8 +1,9 @@
 const { newBuild, buildStats, latestBuildStats } = require("../clients/nodejs/micooc");
 
 async function testNewBuild() {
-    const host = "http://localhost:8123/engine";
-    const pid = "PIDc9df791bacd545f1ab31171c7c6ff09b";
+    // const host = "http://localhost:8123/engine";
+    const host = "http://localhost:3002";
+    const pid = "PID603d64ccc931429085e1f1e0190257a7";
     const buildVersion = "5fafc0478af24af2da45fa19ddd06c17dd5d0d45";
     const screenshotDirectory = "./latest";
 

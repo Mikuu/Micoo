@@ -121,6 +121,10 @@ const createScreenshotsRootDirectory = projectName => {
     fileUtils.createDirectory(envConfig.localTestScreenshotsBaselinePath(projectName));
 };
 
+const isUploadedScreenshotValid = screenshotFilename => {
+    return fileUtils.screenshotFilenameFilter(screenshotFilename);
+};
+
 module.exports = {
     moveInTestScreenshots,
     moveInBaseline,
@@ -130,4 +134,5 @@ module.exports = {
     withBaselineScreenshots,
     allCasesInBuild,
     createScreenshotsRootDirectory,
+    isUploadedScreenshotValid,
 };
