@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker build --rm -f ./Dockerfile --tag=micoo-postern .
+docker build --rm -f ./Dockerfile --tag=micoo-postern:dev .

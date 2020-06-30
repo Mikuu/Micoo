@@ -2,7 +2,7 @@ version: "3.7"
 services:
 
   micoo-nginx:
-    image: micoo-nginx:latest
+    image: micoo-nginx:dev
     container_name: micoo-nginx
     ports:
       - "8123:80"
@@ -30,7 +30,7 @@ services:
       - "./initializer:/docker-entrypoint-initdb.d"
 
   micoo-dashboard:
-    image: micoo-dashboard:latest
+    image: micoo-dashboard:dev
     container_name: micoo-dashboard
     environment:
       - MICOO_ENV=docker
@@ -44,7 +44,7 @@ services:
       - nginx-network
 
   micoo-engine:
-    image: micoo-engine:latest
+    image: micoo-engine:dev
     container_name: micoo-engine
     environment:
       - MICOO_ENV=docker
@@ -58,7 +58,7 @@ services:
       - nginx-network
 
   micoo-postern:
-    image: micoo-postern:latest
+    image: micoo-postern:dev
     container_name: micoo-postern
     environment:
       - MICOO_ENV=docker

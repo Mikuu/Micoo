@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker build --rm -f ./Dockerfile --tag=micoo-engine .
+docker build --rm -f ./Dockerfile --tag=micoo-engine:dev .

@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker build --rm -f ./Dockerfile --tag=micoo-nginx .
+docker build --rm -f ./Dockerfile --tag=micoo-nginx:dev .
