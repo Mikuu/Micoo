@@ -8,26 +8,14 @@ const projectService = require("../services/project-service");
 const buildService = require("../services/build-service");
 const caseService = require("../services/case-service");
 const fileService = require("../services/file-service");
-
-const response = message => {
-    return {
-        succeed: {
-            code: 200,
-            message: message,
-        },
-        failed: {
-            code: 400,
-            message: message,
-        },
-    };
-};
+const validatorUtils = require("../utils/validator-utils");
 
 router.get("/env", function(req, res, next) {
     const env = {
-        serviceEnv: process.env.VISUAL_TEST_SERVICE_ENV,
-        serviceHostUrl: process.env.VTS_HOST_URL,
+        serviceEnv: process.env.MICOO_ENV,
+        serviceHostUrl: process.env.MICOO_FS_HOST_URL,
     };
-    res.send(env);
+    res.status(200).json(env);
 });
 
 router.post(
@@ -129,38 +117,52 @@ router.post("/project/delete/:pid", function(req, res, next) {
 router.post("/project/image/:pid", function(req, res, next) {
     (async () => {
         if (!req.params || !req.params.pid) {
-            return res.status(400).send(response("missing 'pid'").failed);
+            return res.status(400).json({ message: "missing PID" });
         }
 
         if (!req.files || Object.keys(req.files).length === 0) {
-            return res.status(400).send(response("no image").failed);
+            return res.status(400).json({ message: "no image content" });
         }
 
         if (!req.files.projectImage) {
-            return res.status(400).send(response("missing 'projectImage'").failed);
+            return res.status(400).json({ message: "missing projectImage" });
         }
 
         const project = await projectService.getProjectByPid(req.params.pid);
 
         if (!project) {
-            res.status(400).send(response({ error: `pid ${req.params.pid} not exist` }).failed);
+            return res.render("error-miku-c", { errorMessage: `pid ${req.params.pid} not exist` });
         }
 
-        const projectImage = req.files.projectImage;
-        const imageFilePath = envConfig.projectImagePath(project.projectName);
+        const validationResult = validatorUtils.projectImageValidator(req.files.projectImage.name);
+        if (validationResult !== true) {
+            return res.render("error-miku-c", { errorMessage: validationResult });
+        }
 
-        projectImage.mv(imageFilePath, function(err) {
-            if (err) {
-                return res.status(500).send(err);
-            }
+        try {
+            const projectImage = req.files.projectImage;
+            const imageFilePath = envConfig.projectImagePath(project.projectName);
 
-            (async () => {
-                await projectService.updateProjectImageUrl(project.pid, envConfig.projectImageUrl(project.projectName));
-            })();
+            projectImage.mv(imageFilePath, function(err) {
+                if (err) {
+                    // ToDo: this error is not handled by UI.
+                    return res.status(500).send(err);
+                }
 
-            console.log(`FBI --> Info: updated card image for project ${project.projectName}`);
-            res.redirect(`/project/${project.pid}/page/1`);
-        });
+                (async () => {
+                    await projectService.updateProjectImageUrl(
+                        project.pid,
+                        envConfig.projectImageUrl(project.projectName)
+                    );
+                })();
+
+                console.log(`FBI --> Info: updated card image for project ${project.projectName}`);
+                res.redirect(`/project/${project.pid}/page/1`);
+            });
+        } catch (error) {
+            console.error(error);
+            next(error);
+        }
     })();
 });
 
