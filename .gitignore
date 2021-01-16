@@ -9,3 +9,7 @@
 /clients/nodejs/node_modules/
 /testing/latest/
 /exchange/
+/clients/python/pypi-token.tmp
+/clients/python/build/
+/clients/python/dist/
+/clients/python/micooc.egg-info/
