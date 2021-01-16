@@ -6,6 +6,11 @@ The Python client library for Micoo. This library provide below functions:
 - build_stats
 - latest_build_stats
 
+## Installation
+```commandline
+pip install micooc
+```
+
 ## newBuild
 Upload screenshots to and trigger visual test build in Micoo.
 Return a dictionary of the new created build's bid and build_index.
