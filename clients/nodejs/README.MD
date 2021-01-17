@@ -6,6 +6,11 @@ The NodeJS client library for Micoo. This library provide below functions:
 - buildStats
 - latestBuildStats
 
+## Installation
+```commandline
+npm install micooc
+```
+
 ## newBuild
 Upload screenshots to and trigger visual test build in Micoo.
 

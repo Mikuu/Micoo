@@ -61,6 +61,7 @@ const uploadTestScreenshots = async (uploadScreenshotsUrl, pid, screenshotsDirec
     return counter;
 };
 
+// Deprecated.
 const triggerNewBuild = async (initializeBuildUrl, pid, buildVersion) => {
     const url = `${initializeBuildUrl}?pid=${pid}&buildVersion=${buildVersion}`;
     await requestPromise.post({ url: url }, function optionalCallback(err, httpResponse, body) {
@@ -78,13 +79,29 @@ const triggerNewBuild = async (initializeBuildUrl, pid, buildVersion) => {
     });
 };
 
+const triggerNewBuildAdv = async (initializeBuildUrl, pid, buildVersion) => {
+    const url = `${initializeBuildUrl}?pid=${pid}&buildVersion=${buildVersion}`;
+
+    const response = await fetch(url, {method: 'post'});
+    if (response.ok) {
+        const responseJson = await response.json();
+        return {
+            pid: responseJson.pid,
+            bid: responseJson.bid,
+            buildIndex: responseJson.buildIndex
+        }
+    } else {
+        return console.error("trigger new build failed:", await response.text());
+    }
+};
+
 const newBuild = async (host, pid, buildVersion, screenshotsDirectory) => {
     const initializeBuildUrl = host + "/slave/build/initialize";
     const uploadScreenshotsUrl = host + "/slave/images/project-tests";
 
     const uploadedScreenshotsCount = await uploadTestScreenshots(uploadScreenshotsUrl, pid, screenshotsDirectory);
     if (uploadedScreenshotsCount) {
-        await triggerNewBuild(initializeBuildUrl, pid, buildVersion);
+        return await triggerNewBuildAdv(initializeBuildUrl, pid, buildVersion)
     }
 };
 

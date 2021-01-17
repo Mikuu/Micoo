@@ -11,7 +11,7 @@ The Python client library for Micoo. This library provide below functions:
 pip install micooc
 ```
 
-## newBuild
+## new_build
 Upload screenshots to and trigger visual test build in Micoo.
 Return a dictionary of the new created build's bid and build_index.
 

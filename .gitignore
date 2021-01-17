@@ -13,3 +13,5 @@
 /clients/python/build/
 /clients/python/dist/
 /clients/python/micooc.egg-info/
+/testing/nodejs/package.json
+/testing/nodejs/node_modules/
