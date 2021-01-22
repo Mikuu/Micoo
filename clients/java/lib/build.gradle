@@ -1,0 +1,15 @@
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.1'
+    implementation 'org.springframework:spring-web:5.3.3'
+    implementation 'org.springframework:spring-mock:2.0.8'
+
+    testImplementation 'junit:junit:4.13'
+}
