@@ -1,16 +1,12 @@
-package service;
-
-import org.junit.Test;
+package micooc;
 
 import micooc.model.BuildStats;
 import micooc.model.InitializedBuild;
 import micooc.model.LatestBuildStats;
-import micooc.service.MicooService;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
-import static org.junit.Assert.assertTrue;
-
-public class MicoocServiceTest {
-
+public class MicoocTest {
     private final String serviceHost = "http://localhost:8123";
 
     @Test
@@ -20,7 +16,7 @@ public class MicoocServiceTest {
         String screenshotDirectory = "/Users/ariman/Workspace/Expressing/Micoo/testing/latest";
         String serviceEngineUrl = serviceHost + "/engine";
 
-        InitializedBuild initializedBuild = MicooService.newBuild(serviceEngineUrl, pid, buildVersion, screenshotDirectory);
+        InitializedBuild initializedBuild = Micooc.newBuild(serviceEngineUrl, pid, buildVersion, screenshotDirectory);
         assertTrue(initializedBuild.getPid().equals(pid));
         assertTrue(initializedBuild.getBid().matches("BID\\S+"));
         assertTrue(initializedBuild.getBuildIndex() > 0);
@@ -29,7 +25,7 @@ public class MicoocServiceTest {
     @Test
     public void testBuildStats() {
         String bid = "BID699d387482b743d1b7ceee907d5e3628";
-        BuildStats buildStats = MicooService.getBuildStats(serviceHost, bid);
+        BuildStats buildStats = Micooc.getBuildStats(serviceHost, bid);
         assertTrue(buildStats.getStatus().matches("\\S+"));
         assertTrue(buildStats.getResult().matches("\\S+"));
     }
@@ -37,7 +33,7 @@ public class MicoocServiceTest {
     @Test
     public void testLatestBuildStats() {
         String pid = "PIDa9aa03c236a7426cb696e795f43e81f3";
-        LatestBuildStats latestBuildStats = MicooService.getLatestBuildStats(serviceHost, pid);
+        LatestBuildStats latestBuildStats = Micooc.getLatestBuildStats(serviceHost, pid);
         assertTrue(latestBuildStats.getBid().matches("BID\\S+"));
         assertTrue(latestBuildStats.getIndex() > 0);
         assertTrue(latestBuildStats.getStatus().matches("\\S+"));

@@ -6,10 +6,27 @@ repositories {
     jcenter()
 }
 
+version = '0.1.0'
+group = 'com.github.mikuu'
+
 dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.1'
     implementation 'org.springframework:spring-web:5.3.3'
     implementation 'org.springframework:spring-mock:2.0.8'
 
     testImplementation 'junit:junit:4.13'
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+tasks.named('jar') {
+    manifest {
+        attributes(
+                'Implementation-Title': project.name,
+                'Implementation-Version': project.version
+        )
+    }
 }
