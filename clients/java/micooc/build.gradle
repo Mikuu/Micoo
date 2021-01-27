@@ -1,18 +1,20 @@
 plugins {
     id 'java-library'
+    id 'maven-publish'
+    id 'signing'
 }
 
 repositories {
     jcenter()
 }
 
-version = '0.1.0'
 group = 'com.github.mikuu'
+version = '0.1.0'
 
 dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.1'
     implementation 'org.springframework:spring-web:5.3.3'
-    implementation 'org.springframework:spring-mock:2.0.8'
+    implementation 'org.springframework:spring-test:5.3.3'
 
     testImplementation 'junit:junit:4.13'
 }
@@ -20,6 +22,67 @@ dependencies {
 java {
     withJavadocJar()
     withSourcesJar()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = 'micooc'
+                description = 'Java client for Micoo service'
+                url = 'https://github.com/Mikuu/Micoo/tree/master/clients/java'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'ariman'
+                        name = 'Biao Fu'
+                        email = 'biaofu@thoughtworks.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/Mikuu/Micoo.git'
+                    developerConnection = 'scm:git:https://github.com/Mikuu/Micoo.git'
+                    url = 'https://github.com/Mikuu/Micoo/tree/master/clients/java'
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            credentials {
+                username = "${NEXUS_USERNAME}"
+                password = "${NEXUS_PASSWORD}"
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}
+
+javadoc {
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
 }
 
 tasks.named('jar') {
