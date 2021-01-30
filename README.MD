@@ -16,4 +16,16 @@ Micoo does `NOT`:
 
 So, what Micoo targets at is the most stable and straightforward function for comparing screenshots. Micoo is not, and probably, would never be a powerful thing, like `JVM`, but hope to be an always useful helper, like `string.replace()`.
 
-For more detailed information, please visit this [document](https://arxman.com/micoo/).
+For more detailed information including installation and usage, please visit this [document](https://arxman.com/micoo/).
+
+### Micooc clients
+Micoo provides below client implementation, please check them for detailed installation and usage 
+- [NodeJS](https://github.com/Mikuu/Micoo/tree/master/clients/nodejs)
+- [Python](https://github.com/Mikuu/Micoo/tree/master/clients/python)
+- [Java](https://github.com/Mikuu/Micoo/tree/master/clients/java)
+
+### Backend APIs
+Micoo currently only provides client implementations to limited language list above, if these clients can't satisfy your requirement, please refer the 
+below native Micoo backend APIs, then you can implement the corresponding API consumers in your own coding language.
+
+
