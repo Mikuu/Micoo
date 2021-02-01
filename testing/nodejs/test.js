@@ -6,7 +6,7 @@ async function testNewBuild() {
 
      // host for engine service lunched from local source code.
 //    const host = "http://localhost:3002";
-    const pid = "PIDa9aa03c236a7426cb696e795f43e81f3";
+    const pid = "PIDb0e05f2555dc41a7a121eafe880db49c";
     const buildVersion = "5fafc0478af24af2da45fa19ddd06c17dd5d0d45";
     const screenshotDirectory = "../latest";
 
@@ -15,14 +15,14 @@ async function testNewBuild() {
 
 async function testBuildStats() {
     const host = "http://localhost:8123";
-    const bid = "BID699d387482b743d1b7ceee907d5e3628";
+    const bid = "BID0d2ba08c32d44b4c964868e8788972a6";
 
     console.log(await buildStats(host, bid));
 }
 
 async function testLatestBuildStats() {
     const host = "http://localhost:8123";
-    const pid = "PIDa9aa03c236a7426cb696e795f43e81f3";
+    const pid = "PIDb0e05f2555dc41a7a121eafe880db49c";
 
     console.log(await latestBuildStats(host, pid));
 }

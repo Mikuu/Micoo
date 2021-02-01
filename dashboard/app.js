@@ -14,8 +14,30 @@ let caseRouter = require("./routes/case");
 let statsRouter = require("./routes/stats");
 let envConfig = require("./config/env.config");
 
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
 let app = express();
 app.use(fileUpload({}));
+
+// Swagger setup
+const swaggerDefinition = {
+    openapi: '3.0.0',
+    info: {
+      title: 'Micoo service API doc',
+      version: '1.0.0',
+      description: 'This doc describes the APIs exposed to Micooc clients',
+    }
+};
+
+const options = {
+swaggerDefinition,
+apis: ['./routes/stats.js', './routes/engin-doc.js'],
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

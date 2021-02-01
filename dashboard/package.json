@@ -19,6 +19,8 @@
     "pug": "^2.0.4",
     "rimraf": "^3.0.2",
     "serve-favicon": "^2.5.0",
+    "swagger-jsdoc": "^6.0.2",
+    "swagger-ui-express": "^4.1.6",
     "uuid": "^3.4.0",
     "zip-local": "^0.3.4"
   },
