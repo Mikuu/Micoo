@@ -2,11 +2,11 @@ import { newBuild, buildStats, latestBuildStats } from "../../clients/nodejs/mic
 
 async function testNewBuild() {
     // host for containerized service.
-     const host = "http://localhost:8123/engine";
+//     const host = "http://localhost:8123/engine";
 
      // host for engine service lunched from local source code.
-//    const host = "http://localhost:3002";
-    const pid = "PIDb0e05f2555dc41a7a121eafe880db49c";
+    const host = "http://localhost:3002";
+    const pid = "PID8a05414a8a5b489a98cd47f9a18add72";
     const buildVersion = "5fafc0478af24af2da45fa19ddd06c17dd5d0d45";
     const screenshotDirectory = "../latest";
 
@@ -14,15 +14,15 @@ async function testNewBuild() {
 }
 
 async function testBuildStats() {
-    const host = "http://localhost:8123";
-    const bid = "BID0d2ba08c32d44b4c964868e8788972a6";
+    const host = "http://localhost:3001";
+    const bid = "BIDc66ea5287ce9497781a2c35f95019e1a";
 
     console.log(await buildStats(host, bid));
 }
 
 async function testLatestBuildStats() {
-    const host = "http://localhost:8123";
-    const pid = "PIDb0e05f2555dc41a7a121eafe880db49c";
+    const host = "http://localhost:3001";
+    const pid = "PID8a05414a8a5b489a98cd47f9a18add72";
 
     console.log(await latestBuildStats(host, pid));
 }

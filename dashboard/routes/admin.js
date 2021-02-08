@@ -9,6 +9,7 @@ const buildService = require("../services/build-service");
 const caseService = require("../services/case-service");
 const fileService = require("../services/file-service");
 const validatorUtils = require("../utils/validator-utils");
+const { authenticateJWT } = require("../utils/auth-utils");
 
 router.get("/env", function(req, res, next) {
     const env = {
@@ -21,6 +22,7 @@ router.get("/env", function(req, res, next) {
 router.post(
     "/project/create",
     [
+        authenticateJWT,
         check("projectName", "project name, length must less than 20").isLength({ min: 1, max: 20 }),
         check("projectName", "only accept letters in [a-zA-Z0-9\\s\\-_]").matches(/^[a-zA-Z0-9\-_\s]+$/),
     ],
@@ -69,7 +71,7 @@ router.post(
     }
 );
 
-router.post("/project/clean/:pid", function(req, res, next) {
+router.post("/project/clean/:pid", authenticateJWT, function(req, res, next) {
     (async () => {
         try {
             const project = await projectService.getProjectByPid(req.params.pid);
@@ -89,7 +91,7 @@ router.post("/project/clean/:pid", function(req, res, next) {
     })();
 });
 
-router.post("/project/delete/:pid", function(req, res, next) {
+router.post("/project/delete/:pid", authenticateJWT, function(req, res, next) {
     (async () => {
         try {
             const project = await projectService.getProjectByPid(req.params.pid);
@@ -114,7 +116,7 @@ router.post("/project/delete/:pid", function(req, res, next) {
 /**
  * Upload project card background image
  * */
-router.post("/project/image/:pid", function(req, res, next) {
+router.post("/project/image/:pid", authenticateJWT, function(req, res, next) {
     (async () => {
         if (!req.params || !req.params.pid) {
             return res.status(400).json({ message: "missing PID" });

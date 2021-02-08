@@ -2,10 +2,11 @@ let express = require("express");
 const buildService = require("../services/build-service");
 const projectService = require("../services/project-service");
 const caseService = require("../services/case-service");
+const { authenticateJWT } = require("../utils/auth-utils");
 
 let router = express.Router();
 
-router.get("/:cid", function(req, res, next) {
+router.get("/:cid", authenticateJWT, function(req, res, next) {
     (async () => {
         try {
             const { prevCase, testCase, nextCase } = await caseService.getCaseWithNeighborsByCid(req.params.cid);
@@ -62,7 +63,7 @@ const checkAndUpdateBuildResult = async cid => {
     }
 };
 
-router.post("/pass/:cid", function(req, res, next) {
+router.post("/pass/:cid", authenticateJWT, function(req, res, next) {
     (async () => {
         try {
             await caseService.passCase(req.params.cid);
@@ -76,7 +77,7 @@ router.post("/pass/:cid", function(req, res, next) {
     })();
 });
 
-router.post("/fail/:cid", function(req, res, next) {
+router.post("/fail/:cid", authenticateJWT, function(req, res, next) {
     (async () => {
         try {
             await caseService.failCase(req.params.cid);

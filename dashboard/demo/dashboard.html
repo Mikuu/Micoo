@@ -65,9 +65,20 @@
         <div class="container d-flex justify-content-between"><a class="navbar-brand d-flex align-items-center"
                                                                  href="/dashboard"><strong>Team Automation
             Testing</strong></a>
-            <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarHeader"
-                    aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation"><span
-                    class="navbar-toggler-icon"></span></button>
+
+            <div class="pl-2 pr-2 d-flex">
+                <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarHeader"
+                        aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                        <ion-icon name="grid-outline"/>
+                </button>
+
+                <form action="/auth/logout" method="post" class="ml-3 mb-0 align-self-center">
+                    <button type="submit" class="navbar-toggler collapsed" id="log-out-outline">
+                        <ion-icon name="log-out-outline"/>
+                    </button>
+                </form>
+            </div>
+
         </div>
     </div>
 </header>
@@ -154,6 +165,7 @@
 <script src="https://getbootstrap.com/docs/4.4/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm"
         crossorigin="anonymous"></script>
+<script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 <footer class="text-muted text-center font-weight-light">
     <div class="container"><p>save regular time from automation, then spend it in exploring</p></div>
 </footer>

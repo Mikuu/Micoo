@@ -2,6 +2,7 @@ let express = require("express");
 const buildService = require("../services/build-service");
 const projectService = require("../services/project-service");
 const commonUtils = require("../utils/common-utils");
+const { authenticateJWT } = require("../utils/auth-utils");
 
 let router = express.Router();
 
@@ -9,7 +10,7 @@ const allBuilds = async pid => {
     return await buildService.getProjectBuilds(pid);
 };
 
-router.get("/:pid", function(req, res, next) {
+router.get("/:pid", authenticateJWT, function(req, res, next) {
     (async () => {
         try {
             console.log(`got pid: ${req.params.pid}`);
@@ -53,7 +54,7 @@ const prepareNavigators = navigation => {
     return { navigator_1, navigator_2, navigator_3 };
 };
 
-router.get("/:pid/page/:page", function(req, res, next) {
+router.get("/:pid/page/:page", authenticateJWT, function(req, res, next) {
     (async () => {
         try {
             console.log(`got pid: ${req.params.pid}`);
