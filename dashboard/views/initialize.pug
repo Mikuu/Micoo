@@ -1,0 +1,9 @@
+extend layout
+
+block content
+  .col-md-5.mx-auto.my-5(style='min-width: 520px')
+    img.mb-4(src='/public/image/micoo.webp' alt='')
+    p.font-weight-normal Welcome to Micoo, your passcode is
+    p.font-weight-bold #{passcode}
+    p.font-weight-light please record it properly, it's not retrievable after you close this page
+    a.btn.btn-outline-secondary(style='width: 120px' href='') Start

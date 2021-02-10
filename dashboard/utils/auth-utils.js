@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const CryptoJS = require('crypto-js');
 const { StatusCodes } = require('http-status-codes');
 
@@ -6,7 +7,6 @@ const expireTime = "4h";
 const authKey = "MicooAuthToken";
 
 const credential = {
-    passcode: "micooTestingPasscode",
     accessTokenSecret: "micooAccessTokenSecret",
 }
 
@@ -28,9 +28,13 @@ const authenticateJWT = (req, res, next) => {
     }
 };
 
-const decryptPasscode = encryptedPasscode => {
-    return CryptoJS.AES.decrypt(encryptedPasscode, credential.passcode).toString(CryptoJS.enc.Utf8);
-}
+const decryptPasscode = (encryptedPasscode, storedPasscode) => {
+    return CryptoJS.AES.decrypt(encryptedPasscode, storedPasscode).toString(CryptoJS.enc.Utf8);
+};
+
+const createPasscode = () => {
+    return crypto.randomBytes(9).toString('hex');
+};
 
 module.exports = {
     authKey,
@@ -38,4 +42,5 @@ module.exports = {
     credential,
     authenticateJWT,
     decryptPasscode,
+    createPasscode,
 };

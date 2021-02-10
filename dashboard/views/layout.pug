@@ -1,7 +1,29 @@
 doctype html
-html
+html(lang="en")
   head
-    title= title
-    link(rel='stylesheet', href='/public/stylesheets/style.css')
-  body
-    block content
+      // Required meta tags
+      meta(charset="utf-8")
+      //- meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+      // Bootstrap CSS
+      link(rel="stylesheet" href="/public/stylesheets/bootstrap.min.css" crossorigin="anonymous")
+      // Icon
+      //- link(rel="stylesheet" href="/public/stylesheets/fontawesome.all.min.css" crossorigin="anonymous")
+      title Micoo
+  body#grid.d-flex.flex-column.align-items-center
+    .mt-auto.text-center
+      block content
+    .mt-auto
+      footer.text-muted.text-center.font-weight-light
+        .container
+          p save your time by automation, spend it more in exploring
+  script(src="/public/javascript/aes.js")
+  script(src="/public/javascript/en.js")
+  link(href='/public/stylesheets/signin.css' rel='stylesheet')
+  link(href='/public/stylesheets/bg.css' rel='stylesheet')
+  script(src="/public/javascript/jquery-3.4.1.slim.min.js" crossorigin="anonymous")
+      script.
+          window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"><\\/script>')
+  script(src="/public/javascript/popper.min.js" crossorigin="anonymous")
+  script(src="/public/javascript/bootstrap.min.js" crossorigin="anonymous")
+  script(src="/public/javascript/bootstrap.bundle.min.js" crossorigin="anonymous")
+

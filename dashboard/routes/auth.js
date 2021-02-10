@@ -2,24 +2,58 @@ const express = require("express");
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const { StatusCodes } = require('http-status-codes');
+const { initializeAuth, getPasscode } = require('../services/auth-service');
 const { expireTime, authKey, credential, decryptPasscode, authenticateJWT } = require('../utils/auth-utils');
 
 router.get("/login", function(req, res, next) {
-    res.render('login', { loginFailed: false });
+
+    (async () => {
+        try {
+            let passcode = await getPasscode();
+
+            if (passcode === null) {
+                // the first time to initialize micoo service, create passcode.
+               passcode = await initializeAuth(); 
+               
+               res.render('initialize', { passcode: passcode });
+
+            } else {
+                // micoo service with passcode already been initialized, render normal login page.
+                res.render('login', { loginFailed: false });
+            }
+
+        } catch (error) {
+            console.error(error);
+            next(error);
+        }
+    })();
 });
 
 router.post("/login", (req, res) => {
-    const { passcode } = req.body;
-    const decryptedPasscode = decryptPasscode(passcode);
+    (async () => {
+        try {
+            const { passcode } = req.body;
+            const storedPasscode = await getPasscode();
 
-    if (decryptedPasscode === credential.passcode) {
-        const accessToken = jwt.sign({ user: 'authenticated'}, credential.accessTokenSecret, { expiresIn: expireTime});
-        res.cookie(authKey, accessToken);
-        res.redirect('/');
+            const decryptedPasscode = decryptPasscode(passcode, storedPasscode);
+            
+            if (decryptedPasscode === storedPasscode) {
+                const accessToken = jwt.sign({ user: 'authenticated'}, credential.accessTokenSecret, { expiresIn: expireTime});
+                res.cookie(authKey, accessToken);
+                res.redirect('/');
 
-    } else {
-        res.status(StatusCodes.FORBIDDEN).render('login', { loginFailed: true });
-    }
+            } else {
+                res.status(StatusCodes.FORBIDDEN).render('login', { loginFailed: true });
+            }
+            
+        }  catch (error) {
+            console.error(error);
+            next(error);
+        }
+    })();
+
+
+    
 });
 
 router.post('/logout', authenticateJWT, (req, res) => {
