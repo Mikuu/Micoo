@@ -14,7 +14,7 @@ router.get("/:pid", authenticateJWT, function(req, res, next) {
     (async () => {
         try {
             console.log(`got pid: ${req.params.pid}`);
-
+            
             const project = await projectService.getProjectByPid(req.params.pid);
             const builds = await allBuilds(req.params.pid);
 
@@ -83,6 +83,7 @@ router.get("/:pid/page/:page", authenticateJWT, function(req, res, next) {
                 navigators: navigators,
                 navigatorUrls: navigatorUrls,
                 timeFormatter: commonUtils.formatTime,
+                apiKey: project.getAPIKey(),
             });
         } catch (error) {
             console.error(error);

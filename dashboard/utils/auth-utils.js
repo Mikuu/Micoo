@@ -8,6 +8,7 @@ const authKey = "MicooAuthToken";
 
 const credential = {
     passcodeKey: "micooPasscodeKey!@#$%^&*()",
+    apiKeySecret: "micooProjectApiKey~!@#$%^&*()__+",
     accessTokenSecret: "micooAccessTokenSecret",
 }
 
@@ -46,6 +47,19 @@ const decryptPasscodeStore = encryptedPasscodeStore => {
     return CryptoJS.AES.decrypt(encryptedPasscodeStore, credential.passcodeKey).toString(CryptoJS.enc.Utf8);
 };
 
+const createEncryptedAPIKey = () => {
+    const APIKey = "AK"+crypto.randomBytes(9).toString('hex');
+    return encryptAPIKey(APIKey);
+};
+
+const encryptAPIKey = APIKey => {
+    return CryptoJS.AES.encrypt(APIKey, credential.apiKeySecret);
+};
+
+const decryptAPIKey = encryptedAPIKey => {
+    return CryptoJS.AES.decrypt(encryptedAPIKey, credential.apiKeySecret).toString(CryptoJS.enc.Utf8);
+};
+
 module.exports = {
     authKey,
     expireTime,
@@ -54,4 +68,6 @@ module.exports = {
     decryptPasscode,
     createEncryptedPasscode,
     decryptPasscodeStore,
+    createEncryptedAPIKey,
+    decryptAPIKey,
 };

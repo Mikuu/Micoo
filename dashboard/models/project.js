@@ -2,6 +2,7 @@
 
 const mongoose = require("mongoose");
 const uuidUtils = require("../utils/uuid-utils");
+const { createEncryptedAPIKey, decryptAPIKey } = require("../utils/auth-utils");
 
 const Schema = mongoose.Schema;
 
@@ -10,6 +11,7 @@ const Schema = mongoose.Schema;
  */
 const ProjectSchema = new Schema({
     pid: { type: String, default: "", trim: true, maxlength: 50 },
+    apiKey: { type: String, default: "", trim: true, maxlength: 100 },
     projectName: { type: String, default: "", trim: true, maxlength: 50 },
     projectDisplayName: { type: String, default: "", trim: true, maxlength: 50 },
     projectImageUrl: { type: String, default: "", trim: true, maxlength: 500 },
@@ -37,6 +39,7 @@ ProjectSchema.methods = {
         this.projectDisplayName = projectDisplayName;
         this.projectImageUrl = projectImageUrl;
         this.sharedProjectRootPath = sharedProjectRootPath;
+        this.apiKey = createEncryptedAPIKey();
 
         this.pid = uuidUtils.projectUuid();
         return this.save();
@@ -46,6 +49,10 @@ ProjectSchema.methods = {
         this.projectImageUrl = projectImageUrl;
         return this.save();
     },
+
+    getAPIKey: function() {
+        return decryptAPIKey(this.apiKey);
+    }
 };
 
 module.exports = {

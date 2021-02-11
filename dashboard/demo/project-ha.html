@@ -88,9 +88,16 @@
         <div class="d-flex justify-content-end align-items-center" style="height: 35px;">
             <div class="d-flex flex-row mr-4">
                 <div class="border-right mr-3 pr-3">
+
+                    <button class="btn" id="showAPIKeyButton" type="button" data-toggle="modal"
+                            data-target="#showAPIKeyModal">
+                        <i class="fa fa-key fa-1x action-fbi" aria-hidden="true"></i>
+                    </button>
+
                     <button class="btn" id="changeProjectImageButton" type="button" data-toggle="modal"
-                            data-target="#changeProjectImageModal"><i class="fa fa-file-image fa-1x action-fbi"
-                                                                      aria-hidden="true"></i></button>
+                            data-target="#changeProjectImageModal">
+                        <i class="fa fa-file-image fa-1x action-fbi" aria-hidden="true"></i>
+                    </button>
                 </div>
                 <button class="btn" id="cleanProjectButton" type="button" data-toggle="modal"
                         data-target="#cleanProjectModal"><i class="fa fa-eraser fa-1x action-fbi"
@@ -98,6 +105,24 @@
                 <button class="btn" id="deleteProjectButton" type="button" data-toggle="modal"
                         data-target="#deleteProjectModal"><i class="fas fa-trash-alt fa-1x action-fbi"
                                                              aria-hidden="true"></i></button>
+
+
+                <div class="modal fade" id="showAPIKeyModal" tabindex="-1" role="dialog"
+                     aria-labelledby="showAPIKeyModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content" style="background-color: #222427">
+                            <div class="d-flex justify-content-center flex-row pt-3 pb-3 pl-5 pr-4 mt-3">
+                                <p class="align-items-center font-weight-light text-white mr-3">Project API Key:</p>
+                                <p class="align-items-center font-weight-bold text-white">602535375973e94788adcda3</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-outline-success" type="button" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div class="modal fade" id="changeProjectImageModal" tabindex="-1" role="dialog"
                      aria-labelledby="cleanProjectModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
