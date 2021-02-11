@@ -12,6 +12,8 @@ let projectRouter = require("./routes/project");
 let buildRouter = require("./routes/build");
 let caseRouter = require("./routes/case");
 let statsRouter = require("./routes/stats");
+const authRouter = require("./routes/auth");
+
 let envConfig = require("./config/env.config");
 
 const swaggerJSDoc = require('swagger-jsdoc');
@@ -57,6 +59,7 @@ app.use("/project", projectRouter);
 app.use("/build", buildRouter);
 app.use("/case", caseRouter);
 app.use("/stats", statsRouter);
+app.use("/auth", authRouter);
 
 const databaseUtils = require("./utils/database-utils");
 

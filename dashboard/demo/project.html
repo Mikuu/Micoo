@@ -112,12 +112,12 @@
                                 <div class="d-flex flex-row pt-3 pb-3 pl-5 pr-4 align-items-center" style="min-height: 120px;">
                                     <div class="custom-file">
                                         <input type="file" name="projectImage" class="custom-file-input" id="customFile">
-                                        <label class="custom-file-label font-weight-lighter" for="customFile">choose image file for your project card</label>
+                                        <label class="custom-file-label font-weight-lighter" for="customFile" id="customFileLabel">choose image file for your project card</label>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-outline-info" data-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-outline-success">Upload</button>
+                                    <button type="submit" class="btn btn-outline-success" id="uploadFileButton" disabled>Upload</button>
                                 </div>
                             </form>
 
@@ -252,6 +252,18 @@
     btn.addEventListener('click', function () {
         form.reset()
     })
+</script>
+<script>
+    function setUploadButtonStats(fileInput) {
+        console.log("listener triggered");
+        const uploadButton = document.getElementById("uploadFileButton");
+        uploadButton.disabled = fileInput.value === "";
+    }
+
+    let fileInput = document.getElementById("customFile");
+    fileInput.addEventListener('input', function (evt) {
+        setUploadButtonStats(this);
+    });
 </script>
 <footer class="text-muted">
     <div class="container"><p class="float-right"><a href="#">Back to top</a></p>

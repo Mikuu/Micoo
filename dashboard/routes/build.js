@@ -2,6 +2,7 @@ let express = require("express");
 const buildService = require("../services/build-service");
 const projectService = require("../services/project-service");
 const caseService = require("../services/case-service");
+const { authenticateJWT } = require("../utils/auth-utils");
 
 let router = express.Router();
 
@@ -19,7 +20,7 @@ const allCasesPassed = allCases => {
     return allCasesPassed;
 };
 
-router.get("/:bid", function(req, res, next) {
+router.get("/:bid", authenticateJWT, function(req, res, next) {
     (async () => {
         try {
             const build = await buildService.getBuildByBid(req.params.bid);
@@ -45,7 +46,7 @@ router.get("/:bid", function(req, res, next) {
     })();
 });
 
-router.post("/rebase/:bid", function(req, res, next) {
+router.post("/rebase/:bid", authenticateJWT, function(req, res, next) {
     (async () => {
         try {
             const build = await buildService.getBuildByBid(req.params.bid);
@@ -61,7 +62,7 @@ router.post("/rebase/:bid", function(req, res, next) {
     })();
 });
 
-router.post("/debase/:bid", function(req, res, next) {
+router.post("/debase/:bid", authenticateJWT, function(req, res, next) {
     (async () => {
         try {
             const build = await buildService.getBuildByBid(req.params.bid);

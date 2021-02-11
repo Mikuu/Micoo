@@ -22,7 +22,7 @@ block projectAction
                                 label.custom-file-label.font-weight-lighter(for="customFile") choose image file for your project card
                         .modal-footer
                             button.btn.btn-outline-info(type="button" data-dismiss="modal") Cancel
-                            button.btn.btn-outline-success(type="submit") Upload
+                            button#uploadFileButton.btn.btn-outline-success(type="submit" disabled) Upload
         #cleanProjectModal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="cleanProjectModalLabel" aria-hidden="true")
             .modal-dialog.modal-dialog-centered(role="document")
                 .modal-content(style="background-color: #222427")
@@ -131,12 +131,12 @@ block main
                                  .d-flex.align-items-center.justify-content-center.icon-baseline
                                      ion-icon(name="ribbon-outline")
 
-    script(src="/public/javascript/jquery-3.4.1.slim.min.js" crossorigin="anonymous")
-    script.
-        window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"><\\/script>')
-    script(src="/public/javascript/bootstrap.bundle.min.js" crossorigin="anonymous")
-    script(src="/public/javascript/ionicons.js")
-    //script(src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js")
+    //- script(src="/public/javascript/jquery-3.4.1.slim.min.js" crossorigin="anonymous")
+    //- script.
+    //-     window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"><\\/script>')
+    //- script(src="/public/javascript/bootstrap.bundle.min.js" crossorigin="anonymous")
+    //- script(src="/public/javascript/ionicons.js")
+    //- //script(src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js")
     script(src="/public/javascript/bs-custom-file-input.min.js")
     script.
         bsCustomFileInput.init()
@@ -145,3 +145,14 @@ block main
         btn.addEventListener('click', function () {
             form.reset()
         })
+    script.
+      function setUploadButtonStats(fileInput) {
+      console.log("listener triggered");
+      const uploadButton = document.getElementById("uploadFileButton");
+      uploadButton.disabled = fileInput.value === "";
+      }
+      
+      let fileInput = document.getElementById("customFile");
+      fileInput.addEventListener('input', function (evt) {
+      setUploadButtonStats(this);
+      });

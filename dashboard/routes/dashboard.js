@@ -5,6 +5,7 @@ const projectService = require("../services/project-service");
 const buildService = require("../services/build-service");
 const commonUtils = require("../utils/common-utils");
 const appConfig = require("../config/app.config");
+const { authenticateJWT } = require("../utils/auth-utils");
 
 /****************************************************************
  * e.g.
@@ -44,7 +45,7 @@ const retrieveProjectInfo = async () => {
     return projects;
 };
 
-router.get("/", function(req, res, next) {
+router.get("/", authenticateJWT, function(req, res, next) {
     (async () => {
         try {
             res.render("dashboard", {
