@@ -80,121 +80,107 @@
         <div class="d-flex justify-content-end align-items-center" style="height: 35px;">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">dashboard</li>
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">nanoha</li>
                 </ol>
             </nav>
         </div>
-
-
         <div class="d-flex justify-content-end align-items-center" style="height: 35px;">
-
             <div class="d-flex flex-row mr-4">
                 <div class="border-right mr-3 pr-3">
-                    <button id="changeProjectImageButton" type="button" class="btn" data-toggle="modal" data-target="#changeProjectImageModal">
-                        <i class="fa fa-file-image fa-1x action-fbi" aria-hidden="true"></i>
-                    </button>
+                    <button class="btn" id="changeProjectImageButton" type="button" data-toggle="modal"
+                            data-target="#changeProjectImageModal"><i class="fa fa-file-image fa-1x action-fbi"
+                                                                      aria-hidden="true"></i></button>
                 </div>
-
-                <button id="cleanProjectButton" type="button" class="btn" data-toggle="modal" data-target="#cleanProjectModal">
-                    <i class="fa fa-eraser fa-1x action-fbi" aria-hidden="true"></i>
-                </button>
-
-                <button id="deleteProjectButton" type="button" class="btn" data-toggle="modal" data-target="#deleteProjectModal">
-                    <i class="fas fa-trash-alt fa-1x action-fbi" aria-hidden="true"></i>
-                </button>
-
-                <div class="modal fade" id="changeProjectImageModal" tabindex="-1" role="dialog" aria-labelledby="cleanProjectModalLabel" aria-hidden="true">
+                <button class="btn" id="cleanProjectButton" type="button" data-toggle="modal"
+                        data-target="#cleanProjectModal"><i class="fa fa-eraser fa-1x action-fbi"
+                                                            aria-hidden="true"></i></button>
+                <button class="btn" id="deleteProjectButton" type="button" data-toggle="modal"
+                        data-target="#deleteProjectModal"><i class="fas fa-trash-alt fa-1x action-fbi"
+                                                             aria-hidden="true"></i></button>
+                <div class="modal fade" id="changeProjectImageModal" tabindex="-1" role="dialog"
+                     aria-labelledby="cleanProjectModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content" style="background-color: #222427">
-
-                            <form action="http://localhost:3001/admin/project/image/PID15ccaeb96d0f473db3af0d6c4b9f237b" method="post" enctype="multipart/form-data">
-                                <div class="d-flex flex-row pt-3 pb-3 pl-5 pr-4 align-items-center" style="min-height: 120px;">
-                                    <div class="custom-file">
-                                        <input type="file" name="projectImage" class="custom-file-input" id="customFile">
-                                        <label class="custom-file-label font-weight-lighter" for="customFile" id="customFileLabel">choose image file for your project card</label>
-                                    </div>
+                            <form action="/admin/project/image/PID317e9c6935ca41cf962a0afa2d8bc9ca" method="post"
+                                  enctype="multipart/form-data">
+                                <div class="d-flex flex-row pt-3 pb-3 pl-5 pr-4 align-items-center"
+                                     style="min-height: 120px;">
+                                    <div class="custom-file"><input class="custom-file-input" id="customFile"
+                                                                    type="file" name="projectImage"><label
+                                            class="custom-file-label font-weight-lighter" for="customFile">choose image
+                                        file for your project card</label></div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-outline-info" data-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-outline-success" id="uploadFileButton" disabled>Upload</button>
+                                    <button class="btn btn-outline-info" type="button" data-dismiss="modal">Cancel
+                                    </button>
+                                    <button class="btn btn-outline-success" type="submit">Upload</button>
                                 </div>
                             </form>
-
                         </div>
                     </div>
                 </div>
-
-                <div class="modal fade" id="cleanProjectModal" tabindex="-1" role="dialog" aria-labelledby="cleanProjectModalLabel" aria-hidden="true">
+                <div class="modal fade" id="cleanProjectModal" tabindex="-1" role="dialog"
+                     aria-labelledby="cleanProjectModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content" style="background-color: #222427">
-                            <div class="d-flex flex-row pt-3 pb-3 pl-5 pr-4">
-                                <img src="http://localhost:8123/miku-wow.webp" alt="..." class="">
+                            <div class="d-flex flex-row pt-3 pb-3 pl-5 pr-4"><img src="public/image/miku-wow.webp"
+                                                                                  alt="...">
                                 <div class="modal-body d-flex align-items-center justify-content-center h3 font-weight-light text-white">
                                     Clean all test Builds?
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-outline-success" data-dismiss="modal">I'm joking</button>
-                                <form action="/admin/project/clean/PID12345/" method="post" class="mb-1">
-                                    <button type="submit" class="btn btn-outline-danger">Just do it</button>
+                                <button class="btn btn-outline-success" type="button" data-dismiss="modal">I'm joking
+                                </button>
+                                <form class="mb-1" action="/admin/project/clean/PID317e9c6935ca41cf962a0afa2d8bc9ca"
+                                      method="post">
+                                    <button class="btn btn-outline-danger" type="submit">Just do it</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="modal fade" id="deleteProjectModal" tabindex="-1" role="dialog" aria-labelledby="deleteProjectModalLabel" aria-hidden="true">
+                <div class="modal fade" id="deleteProjectModal" tabindex="-1" role="dialog"
+                     aria-labelledby="deleteProjectModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content" style="background-color: #222427">
-                            <div class="d-flex flex-row pt-3 pb-3 pl-5 pr-4">
-                                <img src="http://localhost:8123/miku-wow.webp" alt="..." class="">
+                            <div class="d-flex flex-row pt-3 pb-3 pl-5 pr-4"><img src="public/image/miku-wow.webp"
+                                                                                  alt="...">
                                 <div class="modal-body d-flex align-items-center justify-content-center h3 font-weight-light text-white">
                                     Delete this Project?
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-outline-success" data-dismiss="modal">I'm joking</button>
-                                <form action="/admin/project/delete/PID12345/" method="post" class="mb-1">
-                                    <button type="submit" class="btn btn-outline-danger">Just do it</button>
+                                <button class="btn btn-outline-success" type="button" data-dismiss="modal">I'm joking
+                                </button>
+                                <form class="mb-1" action="/admin/project/delete/PID317e9c6935ca41cf962a0afa2d8bc9ca"
+                                      method="post">
+                                    <button class="btn btn-outline-danger" type="submit">Just do it</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <nav aria-label="page-navigation">
                 <ul class="pagination mb-0">
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                            <span class="sr-only">Previous</span>
-                        </a>
+                    <li class="page-item disabled"><a class="page-link" aria-label="Previous"><span
+                            aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li>
+                    <li class="page-item active"><a class="page-link"
+                                                    href="/project/PID317e9c6935ca41cf962a0afa2d8bc9ca/page/1">1</a>
                     </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </li>
+                    <li class="page-item disabled"><a class="page-link" aria-label="Next"><span
+                            aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
                 </ul>
             </nav>
-
         </div>
-
-
     </div>
 </div>
-
-
 <div class="container table-container">
     <table class="table table-borderless">
-        <thead class="thead-dark">
-        <tr class="text-center" >
+        <thead class="thead-dark text-center pb-3">
+        <tr>
             <th scope="col">Build Number</th>
             <th scope="col">Build Version</th>
             <th scope="col">Build Datetime</th>
@@ -203,38 +189,11 @@
             <th scope="col">Baseline</th>
         </tr>
         </thead>
-        <tbody class="text-center" >
-        <tr>
-            <th scope="row"><a href="#">3</a></th>
-            <td>vfdasf7878ewfs7a88883242mlkj</td>
-            <td>23:35:36 2020-2-4</td>
-            <td>5</td>
-            <td class="text-success">undetermined</td>
-            <td><ion-icon name="heart" style="color: indigo;"></ion-icon></td>
-        </tr>
-        <tr>
-            <th scope="row"><a href="#">2</a></th>
-            <td>vfdasf7878ewfs7a88883242mlkj</td>
-            <td>22:41:42 2020-2-4</td>
-            <td>5</td>
-            <td class="text-success">undetermined</td>
-            <td><i class="material-icons" style="color: indigo;">face</i></td>
-        </tr>
-        <tr>
-            <th scope="row"><a href="#">1</a></th>
-            <td>vfdasf7878ewfs7a88883242mlkj</td>
-            <td>22:18:41 2020-2-4</td>
-            <td>5</td>
-            <td class="text-success">undetermined</td>
-            <td class="icon-baseline">
-                <div class="d-flex align-items-center justify-content-center">
-                    <ion-icon name="ribbon-outline"/>
-                </div>
-            </td>
-        </tr>
-        </tbody>
+        <tbody class="text-center"></tbody>
     </table>
 </div>
+
+
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>
@@ -253,18 +212,8 @@
         form.reset()
     })
 </script>
-<script>
-    function setUploadButtonStats(fileInput) {
-        console.log("listener triggered");
-        const uploadButton = document.getElementById("uploadFileButton");
-        uploadButton.disabled = fileInput.value === "";
-    }
 
-    let fileInput = document.getElementById("customFile");
-    fileInput.addEventListener('input', function (evt) {
-        setUploadButtonStats(this);
-    });
-</script>
+
 <footer class="text-muted">
     <div class="container"><p class="float-right"><a href="#">Back to top</a></p>
         <p>Album example is © Bootstrap, but please download and customize it for yourself!</p></div>

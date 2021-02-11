@@ -1,0 +1,165 @@
+.navbar-justify {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.jumbotron {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    margin-bottom: 0;
+    background-color: #fff;
+}
+
+@media (min-width: 768px) {
+    .jumbotron {
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+    }
+}
+
+.jumbotron p:last-child {
+    margin-bottom: 0;
+}
+
+.jumbotron h1 {
+    font-weight: 300;
+}
+
+.jumbotron .container {
+    max-width: 40rem;
+}
+
+footer {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+footer p {
+    margin-bottom: .25rem;
+}
+
+.card-link {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    text-decoration: none;
+}
+
+.card-link:hover {
+    text-decoration: none;
+}
+
+.self-sidebar {
+    height: -webkit-fill-available;
+}
+
+.self-case-title {
+    padding: 1rem 15px 1rem 0;
+}
+
+.breadcrumb {
+    margin-bottom: unset;
+    background-color: unset;
+    padding: unset;
+}
+
+.table-container {
+    min-height: 650px;
+}
+
+.overlay-container {
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.7);
+    z-index: 2;
+}
+
+.project-image-text {
+    position: absolute;
+    top: 20%;
+    background: rgba(0, 0, 0, 0.5);
+    color: #f1f1f1;
+    width: 100%;
+    padding: 20px;
+}
+
+.project-image-img {
+    filter: blur(2px);
+    height: 225px;
+    width: 100%;
+}
+
+.icon-baseline {
+    color: indigo;
+    font-size: x-large;
+    margin-top: 1px;
+}
+
+.icon-baseline-disabled {
+    color: indigo;
+    font-size: x-large;
+    margin-top: 1px;
+    opacity: 0.2;
+}
+
+.icon-result-passed {
+    font-size: xx-large;
+    color: mediumspringgreen;
+}
+
+.icon-result-failed {
+    font-size: xx-large;
+    color: red;
+}
+
+.case-nav-icon {
+    font-size: xx-large;
+}
+.case-nav-disabled-icon {
+    font-size: xx-large;
+    color: #007bfe26;
+}
+.card-height {
+    height: 388px;
+}
+.card-body-new {
+    position: relative;
+    margin-top: -56px;
+}
+.icon-new {
+    border-width: thick !important;
+}
+.input-FBI {
+    font-size: 1.5rem;
+}
+.add-btn {
+    color: #062852;;
+}
+.add-btn:hover {
+    color: #001834;
+}
+.add-btn:disabled {
+    color: #0628527d;
+    opacity: 1;
+    cursor: unset;
+}
+.p-FBI {
+    color: #00000052;
+    font-size: 12px;
+}
+.action-fbi {
+    color: darkgray;
+}
+.action-fbi:hover {
+    color: darkblue;
+}
