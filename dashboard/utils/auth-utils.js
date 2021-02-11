@@ -7,6 +7,7 @@ const expireTime = "4h";
 const authKey = "MicooAuthToken";
 
 const credential = {
+    passcodeKey: "micooPasscodeKey!@#$%^&*()",
     accessTokenSecret: "micooAccessTokenSecret",
 }
 
@@ -32,8 +33,17 @@ const decryptPasscode = (encryptedPasscode, storedPasscode) => {
     return CryptoJS.AES.decrypt(encryptedPasscode, storedPasscode).toString(CryptoJS.enc.Utf8);
 };
 
-const createPasscode = () => {
-    return crypto.randomBytes(9).toString('hex');
+const createEncryptedPasscode = () => {
+    const passcode = crypto.randomBytes(9).toString('hex');
+    return encryptPasscodeStore(passcode);
+};
+
+const encryptPasscodeStore = passcode => {
+    return CryptoJS.AES.encrypt(passcode, credential.passcodeKey);
+};
+
+const decryptPasscodeStore = encryptedPasscodeStore => {
+    return CryptoJS.AES.decrypt(encryptedPasscodeStore, credential.passcodeKey).toString(CryptoJS.enc.Utf8);
 };
 
 module.exports = {
@@ -42,5 +52,6 @@ module.exports = {
     credential,
     authenticateJWT,
     decryptPasscode,
-    createPasscode,
+    createEncryptedPasscode,
+    decryptPasscodeStore,
 };
