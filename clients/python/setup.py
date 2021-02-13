@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="micooc",
-    version="0.1.3",
+    version="0.1.4",
     author="ariman",
     author_email="biaofu@thoughtworks.com",
     description="Micoo client for python",
