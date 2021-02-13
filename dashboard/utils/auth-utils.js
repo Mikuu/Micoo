@@ -30,6 +30,19 @@ const authenticateJWT = (req, res, next) => {
     }
 };
 
+const authenticateAPIKey = (req, res, next) => {
+    const apiKeyInRequest = req.get("x-api-key");
+        
+    if (!apiKeyInRequest) {
+        res.status(StatusCodes.FORBIDDEN).send({ 
+            code: StatusCodes.FORBIDDEN, 
+            message: `missing API Key` 
+        }).end();
+    } else {
+        next();
+    }
+}
+
 const decryptPasscode = (encryptedPasscode, storedPasscode) => {
     return CryptoJS.AES.decrypt(encryptedPasscode, storedPasscode).toString(CryptoJS.enc.Utf8);
 };
@@ -70,4 +83,5 @@ module.exports = {
     decryptPasscodeStore,
     createEncryptedAPIKey,
     decryptAPIKey,
+    authenticateAPIKey,
 };

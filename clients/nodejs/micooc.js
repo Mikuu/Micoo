@@ -3,12 +3,12 @@ const path = require("path");
 const requestPromise = require("request-promise");
 const fetch = require("node-fetch");
 
-const uploadFile = async (uploadScreenshotsUrl, pid, filePath) => {
+const uploadFile = async (uploadScreenshotsUrl, apiKey, pid, filePath) => {
     const formData = {
         image: fs.createReadStream(filePath),
     };
     const url = uploadScreenshotsUrl + `/${pid}`;
-    await requestPromise.post({ url: url, formData: formData }, function optionalCallback(err, httpResponse, body) {
+    await requestPromise.post({ url: url, formData: formData, headers: {'x-api-key': apiKey}}, function optionalCallback(err, httpResponse, body) {
         if (err) {
             return console.error("upload failed:", err);
         }
@@ -43,14 +43,14 @@ const screenshotFilenameFilter = screenshotFilename => {
     return true;
 };
 
-const uploadTestScreenshots = async (uploadScreenshotsUrl, pid, screenshotsDirectory) => {
+const uploadTestScreenshots = async (uploadScreenshotsUrl, apiKey, pid, screenshotsDirectory) => {
     let counter = 0;
     const promises = fs.readdirSync(screenshotsDirectory).map(async screenshot => {
         const screenshotFile = path.join(screenshotsDirectory, screenshot);
 
         const fstats = fs.lstatSync(screenshotFile);
         if (fstats.isFile() && screenshotFilenameFilter(path.basename(screenshotFile))) {
-            await uploadFile(uploadScreenshotsUrl, pid, screenshotFile);
+            await uploadFile(uploadScreenshotsUrl, apiKey, pid, screenshotFile);
             counter += 1;
         }
     });
@@ -79,10 +79,10 @@ const triggerNewBuild = async (initializeBuildUrl, pid, buildVersion) => {
     });
 };
 
-const triggerNewBuildAdv = async (initializeBuildUrl, pid, buildVersion) => {
+const triggerNewBuildAdv = async (initializeBuildUrl, apiKey, pid, buildVersion) => {
     const url = `${initializeBuildUrl}?pid=${pid}&buildVersion=${buildVersion}`;
 
-    const response = await fetch(url, {method: 'post'});
+    const response = await fetch(url, {method: 'post', headers: {'x-api-key': apiKey}});
     if (response.ok) {
         const responseJson = await response.json();
         return {
@@ -95,33 +95,33 @@ const triggerNewBuildAdv = async (initializeBuildUrl, pid, buildVersion) => {
     }
 };
 
-const newBuild = async (host, pid, buildVersion, screenshotsDirectory) => {
+const newBuild = async (host, apiKey, pid, buildVersion, screenshotsDirectory) => {
     const initializeBuildUrl = host + "/slave/build/initialize";
     const uploadScreenshotsUrl = host + "/slave/images/project-tests";
 
-    const uploadedScreenshotsCount = await uploadTestScreenshots(uploadScreenshotsUrl, pid, screenshotsDirectory);
+    const uploadedScreenshotsCount = await uploadTestScreenshots(uploadScreenshotsUrl, apiKey, pid, screenshotsDirectory);
     if (uploadedScreenshotsCount) {
-        return await triggerNewBuildAdv(initializeBuildUrl, pid, buildVersion)
+        return await triggerNewBuildAdv(initializeBuildUrl, apiKey, pid, buildVersion)
     }
 };
 
-const fetching = async url => {
+const fetching = async (url, apiKey) => {
     try {
-        const response = await fetch(url);
+        const response = await fetch(url, { headers: {'x-api-key': apiKey }});
         return await response.json();
     } catch (error) {
         console.log(error.response.body);
     }
 };
 
-const buildStats = async (host, bid) => {
+const buildStats = async (host, apiKey, bid) => {
     const url = host + "/stats/build?bid=" + bid;
-    return await fetching(url);
+    return await fetching(url, apiKey);
 };
 
-const latestBuildStats = async (host, pid) => {
+const latestBuildStats = async (host, apiKey, pid) => {
     const url = host + "/stats/build/latest?pid=" + pid;
-    return await fetching(url);
+    return await fetching(url, apiKey);
 };
 
 module.exports = {
