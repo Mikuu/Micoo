@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
+const { StatusCodes } = require('http-status-codes');
 const projectService = require("../services/project-service");
 const buildService = require("../services/build-service");
 const compareService = require("../services/compare-service");
 const fileService = require("../services/file-service");
 const envConfig = require("../config/env.config");
 const screenshotService = require("../services/screenshots-service");
+const { authenticateAPIKey } = require("../utils/auth-utils");
 
 const response = message => {
     return {
@@ -21,7 +23,7 @@ const response = message => {
 };
 
 /* Initialize Build */
-router.post("/build/initialize", function(req, res, next) {
+router.post("/build/initialize", authenticateAPIKey, function(req, res, next) {
     (async () => {
         try {
             const project = await projectService.getProjectByPid(req.query.pid);
@@ -31,6 +33,14 @@ router.post("/build/initialize", function(req, res, next) {
                 await console.error(`FBI --> Error: ${errorMessage}`);
                 res.status(400).send({ code: 400, message: errorMessage });
                 return;
+            }
+
+            const apiKeyInRequest = req.get("x-api-key");
+            if (project.getAPIKey() !== apiKeyInRequest) {
+                return res.status(StatusCodes.UNAUTHORIZED).send({ 
+                    code: StatusCodes.UNAUTHORIZED, 
+                    message: `invalid API Key: ${apiKeyInRequest}` 
+                }).end();
             }
 
             const build = await buildService.initialize(req.query.pid, req.query.buildVersion);
@@ -51,7 +61,7 @@ router.post("/build/initialize", function(req, res, next) {
 /**
  * Upload project test screenshots, save all screenshots to the project's latest folder
  * */
-router.post("/images/project-tests/:pid", function(req, res, next) {
+router.post("/images/project-tests/:pid", authenticateAPIKey, function(req, res, next) {
     (async () => {
         if (!req.params || !req.params.pid) {
             return res.status(400).send(response("missing 'pid'").failed);
@@ -61,6 +71,14 @@ router.post("/images/project-tests/:pid", function(req, res, next) {
 
         if (!project || !project.projectName || !fileService.isProjectExist(project.projectName)) {
             return res.status(400).send(response(`project pid=${req.params.pid} doesn't exist`).failed);
+        }
+
+        const apiKeyInRequest = req.get("x-api-key");
+        if (project.getAPIKey() !== apiKeyInRequest) {
+            return res.status(StatusCodes.UNAUTHORIZED).send({ 
+                code: StatusCodes.UNAUTHORIZED, 
+                message: `invalid API Key: ${apiKeyInRequest}` 
+            }).end();
         }
 
         if (!req.files || Object.keys(req.files).length === 0) {

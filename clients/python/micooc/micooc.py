@@ -47,9 +47,13 @@ def screenshot_filter(screenshot_path):
     return True
 
 
-def upload_valid_screenshot(upload_screenshot_url, screenshot_path):
+def upload_valid_screenshot(upload_screenshot_url, api_key, screenshot_path):
     if screenshot_filter(screenshot_path):
-        r = requests.post(upload_screenshot_url, files={"image": open(screenshot_path, "rb")})
+        r = requests.post(
+            upload_screenshot_url,
+            headers={"x-api-key": api_key},
+            files={"image": open(screenshot_path, "rb")}
+        )
 
         if r.status_code == requests.codes.ok:
             response = r.json()
@@ -63,17 +67,21 @@ def upload_valid_screenshot(upload_screenshot_url, screenshot_path):
         return 0
 
 
-def upload_test_screenshots(upload_screenshot_url, screenshots_directory):
+def upload_test_screenshots(upload_screenshot_url, api_key, screenshots_directory):
     uploaded_screenshots_count = 0
     for screenshot_path in listdir(screenshots_directory):
-        uploaded_screenshots_count += upload_valid_screenshot(upload_screenshot_url,
+        uploaded_screenshots_count += upload_valid_screenshot(upload_screenshot_url, api_key,
                                                               join(screenshots_directory, screenshot_path))
 
     return uploaded_screenshots_count
 
 
-def trigger_new_build(initialize_new_build_url, pid, build_version):
-    r = requests.post(initialize_new_build_url, params={"pid": pid, "buildVersion": build_version})
+def trigger_new_build(initialize_new_build_url, api_key, pid, build_version):
+    r = requests.post(
+        initialize_new_build_url,
+        params={"pid": pid, "buildVersion": build_version},
+        headers={"x-api-key": api_key}
+    )
     response = r.json()
     if r.status_code == requests.codes.ok:
         return {
@@ -86,20 +94,20 @@ def trigger_new_build(initialize_new_build_url, pid, build_version):
         print(r.text)
 
 
-def new_build(host, pid, build_version, screenshots_directory):
+def new_build(host, api_key, pid, build_version, screenshots_directory):
     upload_screenshot_url = host + "/slave/images/project-tests/{}".format(pid)
     initialize_new_build_url = host + "/slave/build/initialize"
 
-    uploaded_screenshots_count = upload_test_screenshots(upload_screenshot_url, screenshots_directory)
+    uploaded_screenshots_count = upload_test_screenshots(upload_screenshot_url, api_key, screenshots_directory)
     if uploaded_screenshots_count:
-        return trigger_new_build(initialize_new_build_url, pid, build_version)
+        return trigger_new_build(initialize_new_build_url, api_key, pid, build_version)
     else:
         print("No screenshot uploaded, no to initialize new build.")
 
 
-def build_stats(host, bid):
+def build_stats(host, api_key, bid):
     url = host + "/stats/build"
-    r = requests.get(url, params={"bid": bid})
+    r = requests.get(url, params={"bid": bid}, headers={"x-api-key": api_key})
 
     if r.status_code == requests.codes.ok:
         response = r.json()
@@ -109,9 +117,9 @@ def build_stats(host, bid):
         print(r.text)
 
 
-def latest_build_stats(host, pid):
+def latest_build_stats(host, api_key, pid):
     url = host + "/stats/build/latest"
-    r = requests.get(url, params={"pid": pid})
+    r = requests.get(url, params={"pid": pid}, headers={"x-api-key": api_key})
 
     if r.status_code == requests.codes.ok:
         response = r.json()
@@ -127,19 +135,26 @@ def latest_build_stats(host, pid):
 
 
 if __name__ == "__main__":
-    service_host = "http://localhost:8123"
-    engine_host = service_host + "/engine"
-    pid = "PIDa8e3c0a4444a4f1a90a4dad8bd3467c2"
-    bid = "BIDfb1c90b110124e10a280d5ac5fc9cd20"
+    # For containerized service
+    # service_host = "http://localhost:8123"
+    # engine_host = service_host + "/engine"
+
+    # For localhost service
+    service_host = "http://localhost:3001"
+    engine_host = "http://localhost:3002"
+
+    pid = "PIDb69512a415aa45e8af738c8baae33c0f"
+    api_key = "AK717d2c30d38119eb12"
+    bid = "BID22364c485eaa4831a38a6826afa5f9f9"
 
     build_version = "5fafc0478af24af2da45fa19ddd06c17dd5d0d45"
     screenshot_directory = "/Users/ariman/Workspace/Expressing/Micoo/testing/latest"
 
-    response = new_build(engine_host, pid, build_version, screenshot_directory)
+    response = new_build(engine_host, api_key, pid, build_version, screenshot_directory)
     print(response)
 
-    response = build_stats(service_host, bid)
+    response = build_stats(service_host, api_key, bid)
     print(response)
 
-    response = latest_build_stats(service_host, pid)
+    response = latest_build_stats(service_host, api_key, pid)
     print(response)

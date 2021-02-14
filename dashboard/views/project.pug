@@ -6,12 +6,25 @@ block breadcrumb
 block projectAction
     .d-flex.flex-row.mr-4
         .border-right.mr-3.pr-3
+            button#showAPIKeyButton.btn(type='button' data-toggle='modal' data-target='#showAPIKeyModal')
+                i.fa.fa-key.fa-1x.action-fbi(aria-hidden='true')
             button#changeProjectImageButton.btn(type="button" data-toggle="modal" data-target="#changeProjectImageModal")
                 i.fa.fa-file-image.fa-1x.action-fbi(aria-hidden="true")
+
         button#cleanProjectButton.btn(type="button" data-toggle="modal" data-target="#cleanProjectModal")
             i.fa.fa-eraser.fa-1x.action-fbi(aria-hidden="true")
         button#deleteProjectButton.btn(type="button" data-toggle="modal" data-target="#deleteProjectModal")
             i.fas.fa-trash-alt.fa-1x.action-fbi(aria-hidden="true")
+
+        #showAPIKeyModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='showAPIKeyModalLabel' aria-hidden='true')
+            .modal-dialog.modal-dialog-centered(role='document')
+                .modal-content(style='background-color: #222427')
+                    .d-flex.justify-content-center.flex-row.pt-3.pb-3.pl-5.pr-4.mt-3
+                        p.align-items-center.font-weight-light.text-white.mr-3 Project API Key:
+                        p.align-items-center.font-weight-bold.text-white #{apiKey}
+                    .modal-footer
+                        button.btn.btn-outline-success(type='button' data-dismiss='modal') Close
+
         #changeProjectImageModal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="cleanProjectModalLabel" aria-hidden="true")
             .modal-dialog.modal-dialog-centered(role="document")
                 .modal-content(style="background-color: #222427")

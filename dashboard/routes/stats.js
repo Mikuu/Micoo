@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const projectService = require("../services/project-service");
 const buildService = require("../services/build-service");
+const { StatusCodes } = require("http-status-codes");
+const { authenticateAPIKey } = require("../utils/auth-utils");
 
 /**
  * @swagger
@@ -10,6 +12,12 @@ const buildService = require("../services/build-service");
  *     summary: Retrieve a specific build's status and result
  *     description: Retrieve a specific build's status and result, the bid could be found in the response from calling newBuild API
  *     parameters:
+ *       - in: header
+ *         name: x-api-key
+ *         required: true
+ *         description: Project API Key
+ *         schema:
+ *           type: string    
  *       - in: query
  *         name: bid
  *         required: true
@@ -33,8 +41,29 @@ const buildService = require("../services/build-service");
  *                   description: The build's current stats
  *                   example: passed
 */
-router.get("/build", function(req, res, next) {
+router.get("/build", authenticateAPIKey, function(req, res, next) {
     (async () => {
+
+        // It doesn't make much sense to query build before check API-Key, but based on current implementation,
+        // it must got the project's information to verify its API-Key. One possible solution is to move API-Key 
+        // from project level to service level.
+        const build = await buildService.getBuildByBid(req.query.bid);
+        if (!build) {
+            return res.status(StatusCodes.BAD_REQUEST).send({
+                code: StatusCodes.BAD_REQUEST, 
+                message: `buildId=${req.query.bid} doesn't exist` 
+            }).end();
+        }
+
+        const apiKeyInRequest = req.get("x-api-key");
+        const project = await projectService.getProjectByPid(build.pid);
+        if (project.getAPIKey() !== apiKeyInRequest) {
+            return res.status(StatusCodes.UNAUTHORIZED).send({ 
+                code: StatusCodes.UNAUTHORIZED, 
+                message: `invalid API Key: ${apiKeyInRequest}` 
+            }).end();
+        }
+
         const stats = await buildService.stats(req.query.bid);
         if (stats) {
             res.send(stats);
@@ -51,6 +80,12 @@ router.get("/build", function(req, res, next) {
  *     summary: Retrieve the latest build's status and result
  *     description: Retrieve the latest build's status and result of the given project by specific pid
  *     parameters:
+ *       - in: header
+ *         name: x-api-key
+ *         required: true
+ *         description: Project API Key
+ *         schema:
+ *           type: string
  *       - in: query
  *         name: pid
  *         required: true
@@ -82,15 +117,23 @@ router.get("/build", function(req, res, next) {
  *                   description: The build's current stats
  *                   example: passed
 */
-router.get("/build/latest", function(req, res, next) {
+router.get("/build/latest", authenticateAPIKey, function(req, res, next) {
     (async () => {
         const project = await projectService.getProjectByPid(req.query.pid);
 
         if (!project) {
-            const errorMessage = `projectId=${req.query.pid} not exist!`;
-            await console.error(`FBI --> Error: ${errorMessage}`);
-            res.status(400).send({ code: 400, message: errorMessage });
-            return;
+            return res.status(StatusCodes.BAD_REQUEST).send({
+                code: StatusCodes.BAD_REQUEST, 
+                message: `PID '${req.query.pid}' doesn't exist`
+            });
+        }
+
+        const apiKeyInRequest = req.get("x-api-key");
+        if (project.getAPIKey() !== apiKeyInRequest) {
+            return res.status(StatusCodes.UNAUTHORIZED).send({ 
+                code: StatusCodes.UNAUTHORIZED, 
+                message: `invalid API Key: ${apiKeyInRequest}` 
+            }).end();
         }
 
         const stats = await buildService.latestStats(req.query.pid);

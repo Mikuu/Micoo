@@ -25,9 +25,11 @@
   "dependencies": {
     "check-disk-space": "^2.1.0",
     "cookie-parser": "~1.4.4",
+    "crypto-js": "^4.0.0",
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "express-fileupload": "^1.1.9",
+    "http-status-codes": "^2.1.4",
     "mongoose": "^5.8.10",
     "mongoose-auto-increment": "^5.0.1",
     "morgan": "~1.9.1",

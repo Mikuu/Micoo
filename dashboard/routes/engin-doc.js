@@ -9,6 +9,12 @@
  *     summary: Initialize a test build
  *     description: Initialize a test build, screenshots should be uploaded before call this API to initialize the build
  *     parameters:
+ *       - in: header
+ *         name: x-api-key
+ *         required: true
+ *         description: Project API Key
+ *         schema:
+ *           type: string
  *       - in: query
  *         name: pid
  *         required: true
@@ -50,6 +56,12 @@
  *     summary: Upload screenshot to a project
  *     description: Upload screenshot to a project, one call uploading one screenshot
  *     parameters:
+ *       - in: header
+ *         name: x-api-key
+ *         required: true
+ *         description: Project API Key
+ *         schema:
+ *           type: string
  *       - in: path
  *         name: pid
  *         required: true

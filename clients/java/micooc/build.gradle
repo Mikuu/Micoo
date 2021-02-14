@@ -9,7 +9,8 @@ repositories {
 }
 
 group = 'com.github.mikuu'
-version = '0.1.0'
+version = '0.1.1'
+//version = '0.1.1-SNAPSHOT'
 
 dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.1'

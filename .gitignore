@@ -15,3 +15,5 @@
 /clients/python/micooc.egg-info/
 /testing/nodejs/package.json
 /testing/nodejs/node_modules/
+/venv/
+/testing/java/app/build/
