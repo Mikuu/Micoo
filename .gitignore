@@ -17,3 +17,7 @@
 /testing/nodejs/node_modules/
 /venv/
 /testing/java/app/build/
+/testing/cypress/node_modules/
+/testing/cypress/micoo-screenshots/
+/testing/cypress/cypress/screenshots/
+/testing/cypress/cypress/videos/

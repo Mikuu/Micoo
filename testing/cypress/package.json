@@ -1,0 +1,16 @@
+{
+  "name": "cypress-exp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^6.6.0",
+    "micooc": "^0.1.6",
+    "micoocypress": "^0.0.2"
+  }
+}

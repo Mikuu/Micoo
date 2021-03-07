@@ -1,0 +1,11 @@
+{
+  "name": "micoocypress",
+  "version": "0.0.2",
+  "description": "cypress plugin for trigger Micoo visual regression testing",
+  "main": "micoocypress.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "biaofu@thoughtworks.com",
+  "license": "MIT"
+}
