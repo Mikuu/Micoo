@@ -26,6 +26,7 @@ For more detailed information including installation and usage, please visit thi
 ### Micooc clients
 Micoo provides below client implementation, please check them for detailed installation and usage 
 - [NodeJS](https://github.com/Mikuu/Micoo/tree/master/clients/nodejs)
+- [Cypress Plugin](https://github.com/Mikuu/Micoo/tree/master/clients/micoocypress)
 - [Python](https://github.com/Mikuu/Micoo/tree/master/clients/python)
 - [Java](https://github.com/Mikuu/Micoo/tree/master/clients/java)
 
