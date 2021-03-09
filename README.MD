@@ -1,5 +1,6 @@
 Micoo
 --
+[![CircleCI](https://circleci.com/gh/Mikuu/Micoo.svg?style=svg)](https://circleci.com/gh/Mikuu/Micoo)
 
 ![micoo.gif](./docs/images/micoo.gif)
 
