@@ -15,7 +15,7 @@
 /**
  * @type {Cypress.PluginConfig}
  */
-const micoocypress = require("./micoocypress");
+const micoocypress = require("micoocypress");
 
 const micooption = {
   host: "http://localhost:8123/engine",
