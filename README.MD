@@ -1,8 +1,9 @@
 Micoo
 --
-[![CircleCI](https://circleci.com/gh/Mikuu/Micoo.svg?style=svg)](https://circleci.com/gh/Mikuu/Micoo)
 
 ![micoo.gif](./docs/images/micoo.gif)
+
+[![CircleCI](https://circleci.com/gh/Mikuu/Micoo.svg?style=svg)](https://circleci.com/gh/Mikuu/Micoo)
 
 Micoo is a pixel based screenshots comparison solution for visual regression test, some characters Micoo provides:
 
