@@ -1,7 +1,19 @@
 version: 2.1
-orbs:
-  node: circleci/node@3.0.0
+
+# Define the jobs we want to run for this project
+jobs:
+  test:
+    docker:
+      - image: circleci/node:15
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    steps:
+      - checkout
+      - run: echo "this is the test job"
+
+# Orchestrate our job run sequence
 workflows:
-  node-tests:
+  micoocypress_test:
     jobs:
-      - node/test
+      - test
