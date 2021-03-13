@@ -19,18 +19,18 @@ const micoocypress = require("micoocypress");
 
 const micooption = {
   host: "http://localhost:8123/engine",
-  apiKey: "AK98b56a53c5cbe67b9a",
-  pid: "PID852d6b23c9894c7a8f9b67fbb75a5faa",
-  buildVersion: process.env.MICOO_BUILD_VERSION ? process.env.MICOO_BUILD_VERSION : "misiing versioning",
+  apiKey: "AKb46a7904ad3e2de84c",
+  pid: "PIDb534f90b22f946df9511846e73700e66",
+  buildVersion: process.env.MICOO_BUILD_VERSION ? process.env.MICOO_BUILD_VERSION : "missing versioning",
 }
 
-//const cypressOption = {
-//  triggerVisualTesting: true
-//}
+const cypressOption = {
+  triggerVisualTesting: true
+}
 
 module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
 
-  micoocypress(on, micooption);
+  micoocypress(on, micooption, cypressOption);
 }
