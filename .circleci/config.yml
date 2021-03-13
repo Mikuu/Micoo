@@ -13,8 +13,8 @@ jobs:
       - run:
           working_directory: clients/micoocypress
           command: |
-            pwd
-            npm run test
+            pwd && ls
+            npm install && npm run test
 
 # Orchestrate our job run sequence
 workflows:
