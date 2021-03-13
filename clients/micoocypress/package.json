@@ -1,11 +1,15 @@
 {
   "name": "micoocypress",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "cypress plugin for trigger Micoo visual regression testing",
   "main": "micoocypress.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest micoocypress.test.js"
   },
   "author": "biaofu@thoughtworks.com",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^26.6.3",
+    "rewire": "^5.0.0"
+  }
 }

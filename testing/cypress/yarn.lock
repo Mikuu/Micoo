@@ -935,10 +935,10 @@
     "request" "^2.88.2"
     "request-promise" "^4.2.5"
 
-"micoocypress@^0.0.2":
-  "integrity" "sha512-Y1lUqCAwmxX21sMbkORLoZI8nvNu/UEn/NnmjDCN1AGti3cXlJ0Oh5EzladSHQK6jn14bxQmmmKw8ml3hZY+pg=="
-  "resolved" "https://registry.npmjs.org/micoocypress/-/micoocypress-0.0.2.tgz"
-  "version" "0.0.2"
+"micoocypress@^0.0.3":
+  "integrity" "sha512-z1cOcsC3j2HYKE5xde6NxPA9+//Wksa28FQ6ae+7GCUUCYSH5ayHetmZGTxx7u2OF1uZfUs8FNkvlM6KCQDEHA=="
+  "resolved" "https://registry.npmjs.org/micoocypress/-/micoocypress-0.0.3.tgz"
+  "version" "0.0.3"
 
 "mime-db@1.46.0":
   "integrity" "sha1-Ymd0in95lZTePLyM3pHe80lmHO4="
