@@ -1,6 +1,6 @@
 {
   "name": "micoocypress",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "cypress plugin for trigger Micoo visual regression testing",
   "main": "micoocypress.js",
   "scripts": {
