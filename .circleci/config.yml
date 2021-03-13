@@ -10,7 +10,11 @@ jobs:
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
       - checkout
-      - run: echo "this is the test job"
+      - run:
+          working_directory: clients/micoocypress
+          command: |
+            pwd
+            echo "this is the test job"
 
 # Orchestrate our job run sequence
 workflows:
