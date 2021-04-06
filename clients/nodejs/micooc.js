@@ -10,13 +10,19 @@ const uploadFile = async (uploadScreenshotsUrl, apiKey, pid, filePath) => {
     const url = uploadScreenshotsUrl + `/${pid}`;
     await requestPromise.post({ url: url, formData: formData, headers: {'x-api-key': apiKey}}, function optionalCallback(err, httpResponse, body) {
         if (err) {
-            return console.error("upload failed:", err);
+            return console.error("upload failed: \n", err);
         }
 
-        const bodyObject = JSON.parse(body);
-        if (bodyObject && bodyObject.receivedImages) {
-            console.log(`uploaded screenshot: ${bodyObject.receivedImages[0]}`);
+        try {
+            const bodyObject = JSON.parse(body);
+            if (bodyObject && bodyObject.receivedImages) {
+                console.log(`uploaded screenshot: ${bodyObject.receivedImages[0]}`);
+            }
+        } catch (error) {
+            console.error("upload failed: \n", body);
+            return console.error(error)
         }
+        
     });
 };
 
@@ -66,16 +72,23 @@ const triggerNewBuild = async (initializeBuildUrl, pid, buildVersion) => {
     const url = `${initializeBuildUrl}?pid=${pid}&buildVersion=${buildVersion}`;
     await requestPromise.post({ url: url }, function optionalCallback(err, httpResponse, body) {
         if (err) {
-            return console.error("trigger new build failed:", err);
+            return console.error("trigger new build failed: \n", err);
         }
 
-        const bodyObject = JSON.parse(body);
-        if (bodyObject) {
-            console.log(
-                "New build initialized: " +
-                    `pid=${bodyObject.pid}, bid=${bodyObject.bid}, buildIndex=${bodyObject.buildIndex}`
-            );
+        try {
+            const bodyObject = JSON.parse(body);
+            if (bodyObject) {
+                console.log(
+                    "New build initialized: " +
+                        `pid=${bodyObject.pid}, bid=${bodyObject.bid}, buildIndex=${bodyObject.buildIndex}`
+                );
+            }
+
+        } catch (error) {
+            console.error("trigger new build failed: \n", body);
+            return console.error(error)
         }
+        
     });
 };
 
