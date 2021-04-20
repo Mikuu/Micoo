@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+    body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Combining multiple images into a single one</h1>
+<img
+        class="image"
+        src="https://i.picsum.photos/id/845/250/250.jpg?hmac=2l7QArh4UKul2qF-JvTjaBu3-
+WF2KpKBgpBALmFoxWY"
+/>
+<img
+        class="image"
+        src="https://i.picsum.photos/id/925/250/250.jpg?hmac=twWJdaKT46cPk1aNvB7aKdiLZoQ
+zvzu5VW85OEUO4ys"
+/>
+<canvas class="result"></canvas>
+<br />
+<button class="Btn">CLICK HERE</button>
+<h3>Click on the above button to combine the two images above together</h3>
+<script>
+    let imgEle1 = document.querySelectorAll(".image")[0];
+    let imgEle2 = document.querySelectorAll(".image")[1];
+    let resEle = document.querySelector(".result");
+    var context = resEle.getContext("2d");
+    let BtnEle = document.querySelector(".Btn");
+    BtnEle.addEventListener("click", () => {
+        resEle.width = imgEle1.width;
+        resEle.height = imgEle1.height;
+        context.globalAlpha = 1.0;
+        context.drawImage(imgEle1, 0, 0);
+        context.globalAlpha = 0.5;
+        context.drawImage(imgEle2, 0, 0);
+    });
+</script>
+</body>
+</html>

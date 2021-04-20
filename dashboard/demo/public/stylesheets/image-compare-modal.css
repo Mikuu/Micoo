@@ -1,0 +1,20 @@
+.image-compare-modal-dialog {
+  width: 100%;
+  max-width: unset;
+  margin: 0;
+}
+.image-compare-modal-header {
+    padding: 0.5rem 1rem;
+}
+.image-compare-modal-content {
+    border: none;
+}
+.image-compare-modal-body {
+    padding: 0;
+}
+.image-compare-button {
+    font-size: larger
+}
+.image-compare-button:disabled {
+    cursor: not-allowed;
+}

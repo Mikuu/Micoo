@@ -10,6 +10,10 @@ block breadcrumb
 block pageAction
     .d-flex.justify-content-end.align-items-center(style="height: 35px;")
 
+        if caseResult === "failed"
+            button#openImageCompareModalButton.btn.image-compare-button(type='button' data-toggle='modal' data-target='#imageCompareModal')
+                i.fa.fa-images.fa-1x.action-fbi(aria-hidden='true')
+
         if diffPercentage
             .pr-3
                 .font-weight-light.text-danger DP #{Number(diffPercentage * 100).toFixed(4)}%
@@ -59,6 +63,19 @@ block pageAction
                 form.mb-0(action="/case/fail/" + cid method="post")
                     button#pass-case-button.btn.btn-sm.btn-outline-danger(type="submit") Failed
 
+    #imageCompareModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='imageCompareModalLabel' aria-hidden='true')
+      .modal-dialog.image-compare-modal-dialog(role='document')
+        .modal-content.image-compare-modal-content
+          .modal-header.image-compare-modal-header
+            h5.modal-title Image compare
+            button.close(type='button' data-dismiss='modal' aria-label='Close')
+              span(aria-hidden='true') &times;
+          .modal-body.image-compare-modal-body
+            #image-compare
+              img#image-compare-baseline(src=baselineUrl alt='')
+              img#image-compare-latest(src=latestUrl alt='')
+          .modal-footer
+
 block main
     case view
         when 1
@@ -100,9 +117,35 @@ block main
                             figcaption.figure-caption.text-center.font-weight-light.pb-2 Latest
                             img#latest.img-fluid(src=latestUrl alt="latest-image")
 
+    #baselineModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='baselineModalTitle' aria-hidden='true')
+          .modal-dialog.modal-dialog-enlarge(role='document')
+            .modal-content
+              .modal-header
+                button.close(type='button' data-dismiss='modal' aria-label='Close')
+                  span(aria-hidden='true') &times;
+              .modal-body
+                img(src=baselineUrl style='max-width: 100%;')
+
+    #latestModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='latestModalTitle' aria-hidden='true')
+      .modal-dialog.modal-dialog-enlarge(role='document')
+        .modal-content
+          .modal-header
+            button.close(type='button' data-dismiss='modal' aria-label='Close')
+              span(aria-hidden='true') &times;
+          .modal-body
+            img(src=latestUrl style='max-width: 100%;')
+
     //- script(src="/public/javascript/jquery-3.4.1.slim.min.js" crossorigin="anonymous")
     //- script.
     //-     window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"><\\/script>')
     //- script(src="/public/javascript/bootstrap.bundle.min.js" crossorigin="anonymous")
     //- script(src="/public/javascript/ionicons.js")
     //- //script(src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js")
+    script(src='/public/javascript/image-compare-viewer.min.js' crossorigin="anonymous")
+    script(src='/public/javascript/image-compare.js' crossorigin="anonymous")
+    script.
+      createImageCompareModal();
+    script(src='/public/javascript/wheelzoom.js' crossorigin="anonymous")
+    script(src='/public/javascript/image-display.js' crossorigin="anonymous")
+    script.
+      applyImageDisplay();

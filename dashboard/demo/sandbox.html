@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="public/stylesheets/image-compare-viewer.min.css">
+    <link rel="stylesheet" href="public/stylesheets/image-compare-modal.css">
+    <link rel="stylesheet" href="public/stylesheets/image-enlarge-modal.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <style>
+    body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+    </style>
+    <script src="public/javascript/wheelzoom.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <img id="baseline" src="public/image/bing.png" alt="" style="width:100%"/>
+        </div>
+        <div class="col">
+            <img id="latest" src="public/image/bd.png" alt="" style="width:100%"/>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="baselineModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-enlarge" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <img src="public/image/bing.png" style="max-width: 100%;"/>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="latestModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-enlarge" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <img src="public/image/bd.png" style="max-width: 100%;"/>
+        </div>
+      </div>
+    </div>
+</div>
+
+<script src="public/javascript/image-display.js"></script>
+
+</body>
+</html>
