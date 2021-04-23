@@ -2,13 +2,13 @@ import { newBuild, buildStats, latestBuildStats } from "../../clients/nodejs/mic
 
 async function testNewBuild() {
     // host for containerized service.
-     const host = "http://localhost:8123/engine";
+//     const host = "http://localhost:8123/engine";
 
      // host for engine service lunched from local source code.
-//    const host = "http://localhost:3002";
+    const host = "http://localhost:3002";
 
-    const apiKey = "AKad9c4691bf189184f4";
-    const pid = "PIDd3cead6526c942b8b44a85c2100e86b3";
+    const apiKey = "AK58c76d263fd6dadb5c";
+    const pid = "PID03b8d7edc8b244ed8299582f991e1bb5";
     const buildVersion = "5fafc0478af24af2da45fa19ddd06c17dd5d0d45";
     const screenshotDirectory = "../latest";
 

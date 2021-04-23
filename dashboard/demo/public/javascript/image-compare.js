@@ -72,20 +72,21 @@ const createImageCompareModal = () => {
 
   setMaxSize(imageCompareBaselineElement, imageCompareLatestElement);
 
-  // imageCompareBaselineElement.onload = () => {
-  //   console.log(`onloaded: ${imageCompareBaselineElement.width}, ${imageCompareBaselineElement.height}`);
-  // }
-
   const restyle = () => {
-    imageCompareBaselineElement.style.width = `${window.innerWidth}px`;
-    imageCompareBaselineElement.style.height = `${compareImageMaxHeight >= window.innerHeight ? compareImageMaxHeight/2 : window.innerHeight}px`;
+    const ratio = compareImageMaxWidth / window.innerWidth;
+
+    const imageCompareElement = document.getElementById("image-compare");
+    imageCompareElement.style.height = `${ratio >= 1 ? compareImageMaxHeight / ratio : compareImageMaxHeight}px`;
+
+    imageCompareBaselineElement.style.width = `${compareImageMaxWidth >= window.innerWidth ? window.innerWidth : compareImageMaxWidth}px`;
+    imageCompareBaselineElement.style.height = "100%";
     imageCompareBaselineElement.style.backgroundSize = 'contain';
     imageCompareBaselineElement.style.backgroundImage = `url('${imageCompareBaselineElement.src}')`;
     imageCompareBaselineElement.style.backgroundRepeat = 'no-repeat';
     imageCompareBaselineElement.src = "public/image/transparent.png";
 
-    imageCompareLatestElement.style.width = `${window.innerWidth}px`;
-    imageCompareLatestElement.style.height = `${compareImageMaxHeight >= window.innerHeight ? compareImageMaxHeight/2 : window.innerHeight}px`;
+    imageCompareLatestElement.style.width = `${compareImageMaxWidth >= window.innerWidth ? window.innerWidth : compareImageMaxWidth}px`;
+    imageCompareLatestElement.style.height = "100%";
     imageCompareLatestElement.style.backgroundSize = 'contain';
     imageCompareLatestElement.style.backgroundImage = `url('${imageCompareLatestElement.src}')`;
     imageCompareLatestElement.style.backgroundRepeat = 'no-repeat';
@@ -102,35 +103,4 @@ const createImageCompareModal = () => {
     }
   }, 100);
 
-  // console.log(imageCompareBaselineElement.naturalWidth, imageCompareBaselineElement.naturalHeight);
-  // console.log(imageCompareLatestElement.naturalWidth, imageCompareLatestElement.naturalHeight);
-
-  // const maxImageWidth = Math.max(imageCompareBaselineElement.width, imageCompareLatestElement.width);
-  // const maxImageHeight = Math.max(imageCompareBaselineElement.height, imageCompareLatestElement.height);
-
-  // console.log(maxImageWidth, window.innerWidth, maxImageHeight, window.innerHeight);
-
-  // imageCompareBaselineElement.style.width = `${maxImageWidth >= window.innerWidth ? window.innerWidth : maxImageWidth}px`;
-  // imageCompareBaselineElement.style.width = `${window.innerWidth}px`;
-  // imageCompareBaselineElement.style.width = "100%";
-  // imageCompareBaselineElement.style.height = `${maxImageHeight >= window.innerHeight ? maxImageHeight/2 : window.innerHeight}px`;
-//  imageCompareBaselineElement.style.backgroundSize = maxImageWidth >= window.innerWidth ? 'contain' : 'initial';
-  // imageCompareBaselineElement.style.backgroundSize = 'contain';
-  // imageCompareBaselineElement.style.backgroundImage = `url('${imageCompareBaselineElement.src}')`;
-  // imageCompareBaselineElement.style.backgroundRepeat = 'no-repeat';
-  // imageCompareBaselineElement.src = "public/image/transparent.png";
-  // imageCompareBaselineElement.removeAttribute("src");
-
-  // imageCompareLatestElement.style.width = `${maxImageWidth >= window.innerWidth ? window.innerWidth : maxImageWidth}px`;
-  // imageCompareLatestElement.style.width = `${window.innerWidth}px`;
-  // imageCompareLatestElement.style.width = "100%";
-  // imageCompareLatestElement.style.height = `${maxImageHeight >= window.innerHeight ? maxImageHeight/2 : window.innerHeight}px`;
-//  imageCompareLatestElement.style.backgroundSize = maxImageWidth >= window.innerWidth ? 'contain' : 'initial';
-  // imageCompareLatestElement.style.backgroundSize = 'contain';
-  // imageCompareLatestElement.style.backgroundImage = `url('${imageCompareLatestElement.src}')`;
-  // imageCompareLatestElement.style.backgroundRepeat = 'no-repeat';
-  // imageCompareLatestElement.src = "public/image/transparent.png";
-  // imageCompareLatestElement.removeAttribute("src");
-
-  // imageCompareLatestElement.parentElement.style.backgroundColor = "white";
 }

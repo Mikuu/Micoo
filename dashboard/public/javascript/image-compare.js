@@ -73,28 +73,34 @@ const createImageCompareModal = () => {
   setMaxSize(imageCompareBaselineElement, imageCompareLatestElement);
 
   const restyle = () => {
-    imageCompareBaselineElement.style.width = `${window.innerWidth}px`;
-    imageCompareBaselineElement.style.height = `${compareImageMaxHeight >= window.innerHeight ? compareImageMaxHeight/2 : window.innerHeight}px`;
+    const ratio = compareImageMaxWidth / window.innerWidth;
+
+    const imageCompareElement = document.getElementById("image-compare");
+    imageCompareElement.style.height = `${ratio >= 1 ? compareImageMaxHeight / ratio : compareImageMaxHeight}px`;
+
+    imageCompareBaselineElement.style.width = `${compareImageMaxWidth >= window.innerWidth ? window.innerWidth : compareImageMaxWidth}px`;
+    imageCompareBaselineElement.style.height = "100%";
     imageCompareBaselineElement.style.backgroundSize = 'contain';
     imageCompareBaselineElement.style.backgroundImage = `url('${imageCompareBaselineElement.src}')`;
     imageCompareBaselineElement.style.backgroundRepeat = 'no-repeat';
-    imageCompareBaselineElement.src = "/public/image/transparent.webp";
+    imageCompareBaselineElement.src = "public/image/transparent.png";
 
-    imageCompareLatestElement.style.width = `${window.innerWidth}px`;
-    imageCompareLatestElement.style.height = `${compareImageMaxHeight >= window.innerHeight ? compareImageMaxHeight/2 : window.innerHeight}px`;
+    imageCompareLatestElement.style.width = `${compareImageMaxWidth >= window.innerWidth ? window.innerWidth : compareImageMaxWidth}px`;
+    imageCompareLatestElement.style.height = "100%";
     imageCompareLatestElement.style.backgroundSize = 'contain';
     imageCompareLatestElement.style.backgroundImage = `url('${imageCompareLatestElement.src}')`;
     imageCompareLatestElement.style.backgroundRepeat = 'no-repeat';
-    imageCompareLatestElement.src = "/public/image/transparent.webp";
+    imageCompareLatestElement.src = "public/image/transparent.png";
 
     imageCompareLatestElement.parentElement.style.backgroundColor = "white";
   }
 
-  const checkExist = setInterval(() => {    
+  const checkExist = setInterval(() => {
     if (compareImageMaxWidth * compareImageMaxHeight) {
       restyle();
       enableOpenImageCompareModalButton();
       clearInterval(checkExist);
     }
   }, 100);
+
 }

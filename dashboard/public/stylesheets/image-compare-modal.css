@@ -1,13 +1,13 @@
 .image-compare-modal-dialog {
-  width: 100%;
-  max-width: unset;
-  margin: 0;
+  max-width: fit-content;
+  margin: auto;
 }
 .image-compare-modal-header {
     padding: 0.5rem 1rem;
 }
 .image-compare-modal-content {
     border: none;
+    width: max-content;
 }
 .image-compare-modal-body {
     padding: 0;
