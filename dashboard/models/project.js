@@ -16,6 +16,8 @@ const ProjectSchema = new Schema({
     projectDisplayName: { type: String, default: "", trim: true, maxlength: 50 },
     projectImageUrl: { type: String, default: "", trim: true, maxlength: 500 },
     sharedProjectRootPath: { type: String, default: "", trim: true, maxlength: 500 },
+    projectColorThreshold: { type: Number, default: 0.1, min: 0, max: 1 },
+    projectDetectAntialiasing: { type: Boolean, default: true },
     createdAt: { type: Date, default: Date.now },
 });
 
@@ -47,6 +49,16 @@ ProjectSchema.methods = {
 
     updateProjectImageUrl: function(projectImageUrl) {
         this.projectImageUrl = projectImageUrl;
+        return this.save();
+    },
+
+    updateProjectColorThreshold: function(projectColorThreshold) {
+        this.projectColorThreshold = projectColorThreshold;
+        return this.save();
+    },
+
+    updateProjectDetectAntialiasing: function(projectDetectAntialiasing) {
+        this.projectDetectAntialiasing = projectDetectAntialiasing;
         return this.save();
     },
 

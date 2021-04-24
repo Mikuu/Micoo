@@ -3,7 +3,7 @@ const libpng = require("node-libpng");
 
 const fileUtils = require("../utils/file-utils");
 
-const comparePng = (baselineFile, latestFile) => {
+const comparePng = (baselineFile, latestFile, projectColorThreshold, projectDetectAntialiasing) => {
     const baselineSource = libpng.readPngFileSync(baselineFile);
     const latestSource = libpng.readPngFileSync(latestFile);
 
@@ -13,8 +13,16 @@ const comparePng = (baselineFile, latestFile) => {
      * package, which only supported to Node v10, not support latest v13. So, currently, Unresolvable.
      *
      * Need to switch to another compare lib.
+     * 
+     * [issue] fixed with v0.1.11
      * */
-    const { image, pixels } = nativeImageDiff.diffImages(baselineSource, latestSource);
+
+    const { image, pixels } = nativeImageDiff.diffImages({
+        image1: baselineSource, 
+        image2: latestSource,
+        colorThreshold: projectColorThreshold,
+        detectAntialiasing: projectDetectAntialiasing
+    });
 
     const diffPercentage = pixels / (image.width * image.height);
     const diffFilename = fileUtils.toDiffFilename(latestFile);
@@ -36,8 +44,8 @@ const comparePng = (baselineFile, latestFile) => {
 //     return wepFile;
 // };
 
-const compare = (baselineFile, latestFile) => {
-    const diffPercentage = comparePng(baselineFile, latestFile);
+const compare = (baselineFile, latestFile, projectColorThreshold, projectDetectAntialiasing) => {
+    const diffPercentage = comparePng(baselineFile, latestFile, projectColorThreshold, projectDetectAntialiasing);
 
     console.log(`compared "${baselineFile}" with "${latestFile}", diffPercentage: ${diffPercentage}`);
 };

@@ -61,7 +61,10 @@ const setMaxSize = (baselineImageElement, latestImageElement) => {
 }
 
 const enableOpenImageCompareModalButton = () => {
-  document.getElementById("openImageCompareModalButton").disabled = false;
+  const openImageCompareModalButtonElement = document.getElementById("openImageCompareModalButton");
+  if (openImageCompareModalButtonElement) {
+    openImageCompareModalButtonElement.disabled = false;
+  }
 }
 
 const createImageCompareModal = () => {

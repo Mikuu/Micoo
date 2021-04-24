@@ -10,8 +10,8 @@ block breadcrumb
 block pageAction
     .d-flex.justify-content-end.align-items-center(style="height: 35px;")
 
-        if caseResult === "failed"
-            button#openImageCompareModalButton.btn.image-compare-button(type='button' data-toggle='modal' data-target='#imageCompareModal')
+        if baselineUrl && latestUrl
+            button#openImageCompareModalButton.btn.image-compare-button(type='button' data-toggle='modal' data-target='#imageCompareModal' disabled)
                 i.fa.fa-images.fa-1x.action-fbi(aria-hidden='true')
 
         if diffPercentage

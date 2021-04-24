@@ -6,8 +6,8 @@ block breadcrumb
 block projectAction
     .d-flex.flex-row.mr-4
         .border-right.mr-3.pr-3
-            button#showAPIKeyButton.btn(type='button' data-toggle='modal' data-target='#showAPIKeyModal')
-                i.fa.fa-key.fa-1x.action-fbi(aria-hidden='true')
+            button#projectConfigButton.btn(type='button' data-toggle='modal' data-target='#projectConfigModal')
+                i.fa.fa-cog.fa-1x.action-fbi(aria-hidden='true')
             button#changeProjectImageButton.btn(type="button" data-toggle="modal" data-target="#changeProjectImageModal")
                 i.fa.fa-file-image.fa-1x.action-fbi(aria-hidden="true")
 
@@ -16,14 +16,34 @@ block projectAction
         button#deleteProjectButton.btn(type="button" data-toggle="modal" data-target="#deleteProjectModal")
             i.fas.fa-trash-alt.fa-1x.action-fbi(aria-hidden="true")
 
-        #showAPIKeyModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='showAPIKeyModalLabel' aria-hidden='true')
-            .modal-dialog.modal-dialog-centered(role='document')
-                .modal-content(style='background-color: #222427')
-                    .d-flex.justify-content-center.flex-row.pt-3.pb-3.pl-5.pr-4.mt-3
-                        p.align-items-center.font-weight-light.text-white.mr-3 Project API Key:
-                        p.align-items-center.font-weight-bold.text-white #{apiKey}
+        #projectConfigModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='projectConfigModalLabel' aria-hidden='true')
+              form(action='/admin/project/config/'+pid method='post')
+                .modal-dialog.modal-dialog-centered(role='document')
+                  .modal-content(style='background-color: #222427')
+                    ul.list-group.config-list.m-2
+                      li.list-group-item.config-item.d-flex.justify-content-between.flex-row
+                        .font-weight-light.text-white PID
+                        .font-weight-light.text-white #{pid}
+                      li.list-group-item.config-item.d-flex.justify-content-between.flex-row
+                        .font-weight-light.text-white API KEY
+                        .font-weight-light.text-white #{apiKey}
+                      li.list-group-item.config-item.d-flex.justify-content-between.flex-row.form-check
+                        .font-weight-light.text-white Detect Antialiasing
+                        if projectDetectAntialiasing
+                          input#projectDetectAntialiasing.form-check-input(type='checkbox' name='projectDetectAntialiasing' style='position: unset' checked)
+                        else
+                          input#projectDetectAntialiasing.form-check-input(type='checkbox' name='projectDetectAntialiasing' style='position: unset')
+                      li.list-group-item.config-item.d-flex.justify-content-between.flex-row.form-group
+                        .font-weight-light.text-white(for='projectColorThreshold') Color Threshold
+                        select#projectColorThreshold.form-control(name='projectColorThreshold' style='max-width: max-content')
+                          each val in [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+                            if val === projectColorThreshold
+                              option(selected)= val
+                            else
+                              option= val
                     .modal-footer
-                        button.btn.btn-outline-success(type='button' data-dismiss='modal') Close
+                      button.btn.btn-outline-info(type='button' data-dismiss='modal') Cancel
+                      button.btn.btn-outline-success(type='submit') Update
 
         #changeProjectImageModal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="cleanProjectModalLabel" aria-hidden="true")
             .modal-dialog.modal-dialog-centered(role="document")

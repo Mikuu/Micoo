@@ -39,6 +39,16 @@ const updateProjectImageUrl = async (pid, projectImageUrl) => {
     await project.updateProjectImageUrl(projectImageUrl);
 };
 
+const updateProjectColorThreshold = async (pid, projectColorThreshold) => {
+    const project = await getProjectByPid(pid);
+    await project.updateProjectColorThreshold(projectColorThreshold);
+};
+
+const updateProjectDetectAntialiasing = async (pid, projectDetectAntialiasing) => {
+    const project = await getProjectByPid(pid);
+    await project.updateProjectDetectAntialiasing(projectDetectAntialiasing);
+};
+
 module.exports = {
     createProject,
     getAllProjects,
@@ -47,4 +57,6 @@ module.exports = {
     deleteProject,
     isProjectNameExist,
     updateProjectImageUrl,
+    updateProjectColorThreshold,
+    updateProjectDetectAntialiasing
 };

@@ -168,4 +168,39 @@ router.post("/project/image/:pid", authenticateJWT, function(req, res, next) {
     })();
 });
 
+/**
+ * Upload project config
+ * */
+router.post("/project/config/:pid", authenticateJWT, function(req, res, next) {
+    (async () => {
+        try {
+            const project = await projectService.getProjectByPid(req.params.pid);
+
+            if (!project) {
+                return res.render("error-miku-c", { errorMessage: `pid ${req.params.pid} not exist` });
+            }
+
+            const projectColorThreshold = Number(req.body.projectColorThreshold);
+
+            if (projectColorThreshold >= 0 && projectColorThreshold <= 1) {
+                await projectService.updateProjectColorThreshold(project.pid, projectColorThreshold);
+            } else {
+                console.error(`projectColorThreshold ${req.body.projectColorThreshold} from PID ${req.params.pid} is not acceptable`);
+            }
+
+            if (req.body.projectDetectAntialiasing === "on") {
+                await projectService.updateProjectDetectAntialiasing(project.pid, true);
+            } else {
+                await projectService.updateProjectDetectAntialiasing(project.pid, false);
+            }
+
+            res.redirect(`/project/${project.pid}/page/1`);
+
+        } catch (error) {
+            console.error(error);
+            next(error);
+        }
+    })();
+});
+
 module.exports = router;

@@ -163,3 +163,9 @@ footer p {
 .action-fbi:hover {
     color: darkblue;
 }
+.config-list {
+    background-color: #282A2D
+}
+.config-item {
+    background-color: unset
+}

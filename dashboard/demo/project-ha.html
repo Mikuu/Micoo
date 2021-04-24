@@ -37,6 +37,13 @@
         .action-fbi:hover {
             color: darkblue;
         }
+
+        .config-list {
+            background-color: #282A2D
+        }
+        .config-item {
+            background-color: unset
+        }
     </style>
     <link href="/stylesheets/expressing-dashboard.css" rel="stylesheet"><!-- customer style-->
     <link href="/stylesheets/project.css" rel="stylesheet">
@@ -89,6 +96,11 @@
             <div class="d-flex flex-row mr-4">
                 <div class="border-right mr-3 pr-3">
 
+                    <button class="btn" id="projectConfigButton" type="button" data-toggle="modal"
+                            data-target="#projectConfigModal">
+                        <i class="fa fa-cog fa-1x action-fbi" aria-hidden="true"></i>
+                    </button>
+
                     <button class="btn" id="showAPIKeyButton" type="button" data-toggle="modal"
                             data-target="#showAPIKeyModal">
                         <i class="fa fa-key fa-1x action-fbi" aria-hidden="true"></i>
@@ -106,6 +118,58 @@
                         data-target="#deleteProjectModal"><i class="fas fa-trash-alt fa-1x action-fbi"
                                                              aria-hidden="true"></i></button>
 
+
+                <div class="modal fade" id="projectConfigModal" tabindex="-1" role="dialog"
+                     aria-labelledby="projectConfigModalLabel" aria-hidden="true">
+
+                    <form action="/admin/project/clean/PID317e9c6935ca41cf962a0afa2d8bc9ca" method="post">
+
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content" style="background-color: #222427">
+                                <ul class="list-group config-list m-2">
+
+                                    <li class="list-group-item config-item d-flex justify-content-between flex-row">
+                                        <div class="font-weight-light text-white">PID</div>
+                                        <div class="font-weight-light text-white">PID257d04807ae04f9dbbab217eb274c54f</div>
+                                    </li>
+
+                                    <li class="list-group-item config-item d-flex justify-content-between flex-row">
+                                        <div class="font-weight-light text-white">API KEY</div>
+                                        <div class="font-weight-light text-white">602535375973e94788adcda3</div>
+                                    </li>
+
+                                    <li class="list-group-item config-item d-flex justify-content-between flex-row form-check">
+                                        <div class="font-weight-light text-white">Detect Antialiasing</div>
+                                        <input type="checkbox" class="form-check-input" style="position: unset" id="projectDetectAntialiasing">
+
+                                    </li>
+
+                                    <li class="list-group-item config-item d-flex justify-content-between flex-row form-group">
+                                        <div class="font-weight-light text-white" for="projectColorThreshold">Color Threshold</div>
+                                        <select class="form-control" style="max-width: max-content" id="projectColorThreshold">
+                                            <option>0</option>
+                                            <option>0.1</option>
+                                            <option>0.2</option>
+                                            <option>0.3</option>
+                                            <option>0.4</option>
+                                            <option>0.5</option>
+                                            <option>0.6</option>
+                                            <option>0.7</option>
+                                            <option>0.8</option>
+                                            <option>0.9</option>
+                                            <option>1</option>
+                                        </select>
+                                    </li>
+                                </ul>
+
+                                <div class="modal-footer">
+                                    <button class="btn btn-outline-info" type="button" data-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-outline-danger" type="submit">Update</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
 
                 <div class="modal fade" id="showAPIKeyModal" tabindex="-1" role="dialog"
                      aria-labelledby="showAPIKeyModalLabel" aria-hidden="true">

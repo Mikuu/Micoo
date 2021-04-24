@@ -21,7 +21,7 @@ router.get("/:pid", authenticateJWT, function(req, res, next) {
             res.render("project", {
                 projectName: project.projectName,
                 builds: builds,
-                timeFormatter: commonUtils.formatTime,
+                timeFormatter: commonUtils.formatTime
             });
         } catch (error) {
             console.error(error);
@@ -84,6 +84,8 @@ router.get("/:pid/page/:page", authenticateJWT, function(req, res, next) {
                 navigatorUrls: navigatorUrls,
                 timeFormatter: commonUtils.formatTime,
                 apiKey: project.getAPIKey(),
+                projectColorThreshold: project.projectColorThreshold,
+                projectDetectAntialiasing: project.projectDetectAntialiasing
             });
         } catch (error) {
             console.error(error);

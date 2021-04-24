@@ -3,14 +3,14 @@ const compareUtils = require("../utils/compare-utils");
 const caseService = require("../services/case-service");
 const buildService = require("../services/build-service");
 
-const doCompare = projectName => {
+const doCompare = (projectName, projectColorThreshold, projectDetectAntialiasing) => {
     let latestScreenshot, baselineScreenshot;
     for (latestScreenshot of screenshotsService.localTestCaseScreenshots(projectName)) {
         baselineScreenshot = screenshotsService.withBaselineScreenshots(projectName, latestScreenshot);
         if (baselineScreenshot) {
             console.log(`FBI --> Info: to compare, baseline: "${baselineScreenshot}" -> latest: "${latestScreenshot}"`);
 
-            compareUtils.compare(baselineScreenshot, latestScreenshot);
+            compareUtils.compare(baselineScreenshot, latestScreenshot, projectColorThreshold, projectDetectAntialiasing);
         } else {
             console.log(`FBI --> Info: no baseline for latest: "${latestScreenshot}"`);
         }
@@ -79,7 +79,7 @@ const comprehensiveCompare = async (project, build) => {
     console.log(`${loggerHeader} moving in test ......................................................... completed\n`);
 
     console.log(`${loggerHeader} comparing ..........................................................................`);
-    await doCompare(projectName);
+    await doCompare(projectName, project.projectColorThreshold, project.projectDetectAntialiasing);
     console.log(`${loggerHeader} comparing .............................................................. completed\n`);
 
     console.log(`${loggerHeader} generating build artifacts .........................................................`);
