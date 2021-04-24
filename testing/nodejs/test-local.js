@@ -7,8 +7,8 @@ async function testNewBuild() {
      // host for engine service lunched from local source code.
     const host = "http://localhost:3002";
 
-    const apiKey = "AK58c76d263fd6dadb5c";
-    const pid = "PID03b8d7edc8b244ed8299582f991e1bb5";
+    const apiKey = "AKdd8ad0f6b946f2d8f2";
+    const pid = "PIDcdef8642da2d494f9a77305070f960a6";
     const buildVersion = "5fafc0478af24af2da45fa19ddd06c17dd5d0d45";
     const screenshotDirectory = "../latest";
 

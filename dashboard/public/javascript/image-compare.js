@@ -83,14 +83,14 @@ const createImageCompareModal = () => {
     imageCompareBaselineElement.style.backgroundSize = 'contain';
     imageCompareBaselineElement.style.backgroundImage = `url('${imageCompareBaselineElement.src}')`;
     imageCompareBaselineElement.style.backgroundRepeat = 'no-repeat';
-    imageCompareBaselineElement.src = "public/image/transparent.png";
+    imageCompareBaselineElement.src = "/public/image/transparent.webp";
 
     imageCompareLatestElement.style.width = `${compareImageMaxWidth >= window.innerWidth ? window.innerWidth : compareImageMaxWidth}px`;
     imageCompareLatestElement.style.height = "100%";
     imageCompareLatestElement.style.backgroundSize = 'contain';
     imageCompareLatestElement.style.backgroundImage = `url('${imageCompareLatestElement.src}')`;
     imageCompareLatestElement.style.backgroundRepeat = 'no-repeat';
-    imageCompareLatestElement.src = "public/image/transparent.png";
+    imageCompareLatestElement.src = "/public/image/transparent.webp";
 
     imageCompareLatestElement.parentElement.style.backgroundColor = "white";
   }
