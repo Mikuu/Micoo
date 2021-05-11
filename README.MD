@@ -5,6 +5,9 @@ Micoo
 
 [![CircleCI](https://circleci.com/gh/Mikuu/Micoo.svg?style=svg)](https://circleci.com/gh/Mikuu/Micoo)
 
+> The latest Docker Desktop version with docker engine version higher than v20.10.2 may have some compatibility issues 
+> with NodeJS used in Micoo, please use Docker Desktop v3.0.4 for current.
+
 Micoo is a pixel based screenshots comparison solution for visual regression test, some characters Micoo provides:
 
 * a web application, for inspecting test results, making visual mismatch decision and maintain baseline build,
