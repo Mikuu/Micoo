@@ -16,7 +16,7 @@ services:
       - micoo-engine
 
   micoo-mongodb:
-    image: mongo:latest
+    image: mongo:4
     container_name: micoo-mongodb
     environment:
       - MONGO_INITDB_ROOT_USERNAME=mgadmin

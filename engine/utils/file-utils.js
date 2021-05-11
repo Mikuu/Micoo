@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { execSync, spawnSync } = require("child_process");
 
 const moveFiles = (sourceDirectory, destDirectory, direction) => {
     fs.readdirSync(sourceDirectory).map(eachFile => {
@@ -16,7 +17,27 @@ const moveFiles = (sourceDirectory, destDirectory, direction) => {
         const fullPathSourceFile = path.join(sourceDirectory, eachFile);
         const fullPathDestinationFile = path.join(destDirectory, destinationFile);
 
-        fs.copyFileSync(fullPathSourceFile, fullPathDestinationFile);
+        /***
+         * 
+         * For Docker engine version which are higher than 20.10.2, there are compatibility issues with NodeJS 
+         * fs.copyFileSync, that copy files sometimes would hung and never return, CPU usage 100% to block engine
+         * service, and client will receive 504 gateway timeout from nginx service.
+         * /
+        // fs.copyFileSync(fullPathSourceFile, fullPathDestinationFile);
+
+        /**
+         * So, switch to use OS native copy command, it will be good if Docker can fix the compatibility issue
+         * and then switch back to fs.copyFileSync.
+         */
+        const output = execSync(`cp "${fullPathSourceFile}" "${fullPathDestinationFile}"`);
+        if (output.toString()) {
+            console.warn(`copy file failed: ${output.toString()}`);
+        }
+
+        // const copy = spawnSync("cp", [fullPathSourceFile, fullPathDestinationFile]);
+        // if (copy.stderr.toString()) {
+        //     console.log(`copy file failed: ${copy.stderr.toString()}`);
+        // }
 
         console.log(`copied file: ${fullPathSourceFile} -> ${fullPathDestinationFile}`);
     });

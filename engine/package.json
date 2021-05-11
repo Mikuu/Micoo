@@ -1,6 +1,6 @@
 {
   "name": "micoo-engine",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "private": true,
   "scripts": {
     "start": "PORT=3002 node ./bin/www"
