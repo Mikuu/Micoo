@@ -117,23 +117,23 @@ router.post("/images/project-tests/:projectName", function(req, res, next) {
 /**
  * Zip all folders under the exchange's root path, then it can be downloaded from the FS.
  * */
-router.post("/package", function(req, res, next) {
-    if (req.query.type === "async") {
-        fileService.zipAllAsync();
-        return res.send(response("started zipping ...").succeed);
-    } else {
-        fileService.zipAll();
-        return res.send(response("succeed").succeed);
-    }
-});
+// router.post("/package", function(req, res, next) {
+//     if (req.query.type === "async") {
+//         fileService.zipAllAsync();
+//         return res.send(response("started zipping ...").succeed);
+//     } else {
+//         fileService.zipAll();
+//         return res.send(response("succeed").succeed);
+//     }
+// });
 
 /**
  * Delete the zipAll file to save storage.
  * */
-router.delete("/package", function(req, res, next) {
-    fileService.deleteZipAll();
-    return res.send(response("succeed").succeed);
-});
+// router.delete("/package", function(req, res, next) {
+//     fileService.deleteZipAll();
+//     return res.send(response("succeed").succeed);
+// });
 
 /**
  * Get disk space, only for Fargate.
