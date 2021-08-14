@@ -25,7 +25,7 @@ const errorImage = "/public/image/miku-error.webp";
 const defaultProjectBgImage = "/public/image/miku-bg.webp";
 
 // implementation cloned from micoo-File-Service
-const allZip = path.join(exchangeRootDir, "all.zip");
+// const allZip = path.join(exchangeRootDir, "all.zip");
 
 const projectRootPath = projectName => {
     return exchangeRootDir + `/file-server/projects/${projectName}`;
@@ -62,7 +62,7 @@ module.exports = {
     screenshotsPathToUrl,
 
     // exports cloned from micoo-File-Service
-    allZip,
+    // allZip,
     exchangeRootDir,
 
     projectRootPath,

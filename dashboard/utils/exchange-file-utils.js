@@ -1,7 +1,11 @@
 const fs = require("fs");
 const path = require("path");
 const rimraf = require("rimraf");
-const zipper = require("zip-local");
+/**
+ * zip-local depends on jszip which has security issue and not maintained anymore,
+ * recreate zip related functions if necessary.
+ * */
+// const zipper = require("zip-local");
 
 const moveFiles = (sourceDirectory, destDirectory, direction) => {
     fs.readdirSync(sourceDirectory).map(eachFile => {
@@ -137,29 +141,29 @@ const deleteDirectory = directoryPath => {
     console.log(`delete directory -> ${directoryPath}`);
 };
 
-const zipAll = (rootDirectory, zipFileName) => {
-    zipper.sync
-        .zip(rootDirectory)
-        .compress()
-        .save(zipFileName);
-};
+// const zipAll = (rootDirectory, zipFileName) => {
+//     zipper.sync
+//         .zip(rootDirectory)
+//         .compress()
+//         .save(zipFileName);
+// };
 
-const zipAllAsync = (rootDirectory, zipFileName) => {
-    zipper.zip(rootDirectory, function(error, zipped) {
-        if (!error) {
-            zipped.compress();
-            zipped.save(zipFileName, function(error) {
-                if (error) {
-                    console.error(`FBI --> Error: zip-all failed, `);
-                    console.error(error);
-                }
-            });
-        } else {
-            console.error(`FBI --> Error: zip-all failed, `);
-            console.error(error);
-        }
-    });
-};
+// const zipAllAsync = (rootDirectory, zipFileName) => {
+//     zipper.zip(rootDirectory, function(error, zipped) {
+//         if (!error) {
+//             zipped.compress();
+//             zipped.save(zipFileName, function(error) {
+//                 if (error) {
+//                     console.error(`FBI --> Error: zip-all failed, `);
+//                     console.error(error);
+//                 }
+//             });
+//         } else {
+//             console.error(`FBI --> Error: zip-all failed, `);
+//             console.error(error);
+//         }
+//     });
+// };
 
 const deleteFile = filePath => {
     if (fs.existsSync(filePath)) {
@@ -185,7 +189,7 @@ module.exports = {
     isProjectExist,
     emptyDirectory,
     deleteDirectory,
-    zipAll,
-    zipAllAsync,
+    // zipAll,
+    // zipAllAsync,
     deleteFile,
 };

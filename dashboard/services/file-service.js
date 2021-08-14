@@ -39,17 +39,17 @@ const deleteProjectDirectory = projectName => {
     fileUtils.deleteDirectory(envConfig.projectRootPath(projectName));
 };
 
-const zipAll = () => {
-    fileUtils.zipAll(envConfig.exchangeRootDir, envConfig.allZip);
-};
+// const zipAll = () => {
+//     fileUtils.zipAll(envConfig.exchangeRootDir, envConfig.allZip);
+// };
 
-const zipAllAsync = () => {
-    fileUtils.zipAllAsync(envConfig.exchangeRootDir, envConfig.allZip);
-};
+// const zipAllAsync = () => {
+//     fileUtils.zipAllAsync(envConfig.exchangeRootDir, envConfig.allZip);
+// };
 
-const deleteZipAll = () => {
-    fileUtils.deleteFile(envConfig.allZip);
-};
+// const deleteZipAll = () => {
+//     fileUtils.deleteFile(envConfig.allZip);
+// };
 
 const getDiskSpace = async () => {
     const diskSpace = await checkDiskSpace(envConfig.exchangeRootDir);
@@ -71,9 +71,9 @@ module.exports = {
     isProjectExist,
     clearProjectArtifacts,
     deleteProjectDirectory,
-    zipAll,
-    zipAllAsync,
-    deleteZipAll,
+    // zipAll,
+    // zipAllAsync,
+    // deleteZipAll,
 
     getDiskSpace,
     deleteProjectImage,

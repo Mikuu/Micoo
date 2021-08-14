@@ -16,8 +16,7 @@
     "morgan": "~1.9.1",
     "node-fetch": "^2.6.1",
     "request": "^2.88.2",
-    "rimraf": "^3.0.2",
-    "zip-local": "^0.3.4"
+    "rimraf": "^3.0.2"
   },
   "devDependencies": {}
 }
