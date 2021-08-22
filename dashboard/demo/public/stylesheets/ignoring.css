@@ -6,12 +6,18 @@
 #draw {
     position:absolute;
     z-index:2;
-    pointer-events:none;
 }
 #draw #boxes {
     fill:blue;
     stroke:white;
     stroke-width:1;
+    fill-opacity:0.5;
+    stroke-opacity:0.9;
+}
+#draw #boxes >rect.toRemove {
+    fill:blue;
+    stroke: #65ff03;
+    stroke-width:3;
     fill-opacity:0.5;
     stroke-opacity:0.9;
 }

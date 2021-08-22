@@ -7,6 +7,8 @@ const $draw = $('#draw');
 const $marquee = $('#marquee');
 const $boxes = $('#boxes');
 
+const controlBaseElement = $draw; // it's $screenshot by default
+
 // Temp variables
 let startX = 0;
 let startY = 0;
@@ -28,7 +30,7 @@ function startDrag(ev) {
         return;
     }
     window.addEventListener('pointerup', stopDrag);
-    $screenshot.addEventListener('pointermove', moveDrag);
+    controlBaseElement.addEventListener('pointermove', moveDrag);
     $marquee.classList.remove('hide');
     startX = ev.layerX;
     startY = ev.layerY;
@@ -45,11 +47,9 @@ function revertMarqueeRect() {
 function stopDrag(ev) {
     $marquee.classList.add('hide');
     window.removeEventListener('pointerup', stopDrag);
-    $screenshot.removeEventListener('pointermove', moveDrag);
-    if (
-        ev.target === $screenshot
-        && marqueeRect.width
-        && marqueeRect.height) {
+    controlBaseElement.removeEventListener('pointermove', moveDrag);
+    // if (ev.target === controlBaseElement && marqueeRect.width && marqueeRect.height) {
+    if (marqueeRect.width && marqueeRect.height) {
         rectangles.push(Object.assign({}, marqueeRect));
         redraw();
     }
@@ -85,9 +85,11 @@ function hitTest(x, y) {
 function redraw() {
     boxes.innerHTML = '';
     rectangles.forEach((data) => {
-        boxes.appendChild(drawRect(
+        const rect = drawRect(
             document.createElementNS("http://www.w3.org/2000/svg", 'rect'), data
-        ));
+        );
+        rect.addEventListener('pointerdown', onClickRectangle);
+        boxes.appendChild(rect);
     });
 }
 
@@ -100,19 +102,61 @@ function drawRect(rect, data) {
     return rect;
 }
 
-const onClickRectangle = () => {
-    console.log(`rectangle clicking`);
+const onClickRectangle = (event) => {
+    if (event.target.classList.contains("toRemove")) {
+        event.target.classList.remove("toRemove");
+    } else {
+        event.target.classList.add("toRemove");
+    }
 };
 
 const enableIgnore = () => {
     $marquee.classList.add('hide');
-    $screenshot.addEventListener('pointerdown', startDrag);
+    controlBaseElement.addEventListener('pointerdown', startDrag);
 };
 
 const onClickInfo = () => {
     console.log(rectangles);
 };
 
+const rectId = (rect) => [
+    rect.getAttribute('x'),
+    rect.getAttribute('y'),
+    rect.getAttribute('width'),
+    rect.getAttribute('height')
+].join('-');
+
+const sameRectangle = (rectangle1, rectangle2) => {
+    return rectangle1.x == rectangle2.x
+        && rectangle1.y == rectangle2.y
+        && rectangle1.width == rectangle2.width
+        && rectangle1.height == rectangle2.height
+}
+
+const rectToRectangle = (rect) => {
+    return {
+        x: rect.getAttribute('x'),
+        y: rect.getAttribute('y'),
+        width: rect.getAttribute('width'),
+        height: rect.getAttribute('height')
+    }
+}
+
+const removeFromRectangles = (rect) => {
+    const rectangle = rectToRectangle(rect);
+    for (let i=0; i<rectangles.length; i++) {
+        if (sameRectangle(rectangles[i], rectangle)) {
+            rectangles.splice(i, 1);
+        }
+    }
+};
+
 const onClickRemove = () => {
-    console.log(`clicking remove`);
+    const boxesElement = document.getElementById("boxes");
+    for (const rect of document.querySelectorAll("#boxes > rect")) {
+        if (rect.classList.contains("toRemove")) {
+            boxesElement.removeChild(rect);
+            removeFromRectangles(rect);
+        }
+    }
 };
