@@ -32,3 +32,15 @@
 #draw #marquee.hide {
     display:none;
 }
+
+.ignoring-modal-dialog {
+    max-width: 100% !important;
+    width: auto !important;
+    display: table;
+}
+
+.ignoring-modal-title-action {
+    width: 48px;
+    padding: 3px 6px !important;
+    margin-left: 8px;
+}

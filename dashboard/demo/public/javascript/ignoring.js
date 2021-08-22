@@ -1,7 +1,6 @@
 const $ = document.querySelector.bind(document);
 const rectangles = [];
 
-// DOM elements
 const $screenshot = $('#screenshot');
 const $draw = $('#draw');
 const $marquee = $('#marquee');
@@ -9,7 +8,6 @@ const $boxes = $('#boxes');
 
 const controlBaseElement = $draw; // it's $screenshot by default
 
-// Temp variables
 let startX = 0;
 let startY = 0;
 const marqueeRect = {
@@ -48,7 +46,6 @@ function stopDrag(ev) {
     $marquee.classList.add('hide');
     window.removeEventListener('pointerup', stopDrag);
     controlBaseElement.removeEventListener('pointermove', moveDrag);
-    // if (ev.target === controlBaseElement && marqueeRect.width && marqueeRect.height) {
     if (marqueeRect.width && marqueeRect.height) {
         rectangles.push(Object.assign({}, marqueeRect));
         redraw();
