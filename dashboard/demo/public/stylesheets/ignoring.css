@@ -44,3 +44,11 @@
     padding: 3px 6px !important;
     margin-left: 8px;
 }
+
+#updateIgnoring.disabled {
+    pointer-events: none;
+}
+
+#removeRectangle.disabled {
+    pointer-events: none;
+}
