@@ -39,16 +39,14 @@
 
             </div>
 
-            <div class="modal-body" style="height: 800px">
-                <div>
-                    <div id="ignoring-area" style="width: 750px">
-                        <img width="750" height="750" src="public/image/bg_rotate.jpeg" id="screenshot" draggable="false">
-                        <svg width="750" height="750" viewBox="0 0 750 750" id="draw" xmlns="http://www.w3.org/2000/svg">
+            <div class="modal-body p-0">
+                    <div id="ignoring-area">
+                        <img width="100%" height="100%" src="public/image/bg_rotate.jpeg" id="screenshot" draggable="false">
+                        <svg width="100%" height="100%" id="draw" xmlns="http://www.w3.org/2000/svg">
                             <rect id="marquee" x="450" y="420" width="150" height="150" />
                             <g id="boxes"></g>
                         </svg>
                     </div>
-                </div>
             </div>
 
         </div>
@@ -57,9 +55,10 @@
 
 <script src="public/javascript/ignoring.js"></script>
 <script>
-    enableIgnore();
     const updateIgnoringButton = document.getElementById("updateIgnoring");
     const removeRectangleButton = document.getElementById("removeRectangle");
+    const openIgnoringButton = document.getElementById("openIgnoring");
+    openIgnoringButton.onclick = enableIgnoring;
     updateIgnoringButton.onclick = onClickInfo;
     removeRectangleButton.onclick = onClickRemove;
 </script>

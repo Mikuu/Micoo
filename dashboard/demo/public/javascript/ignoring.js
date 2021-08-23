@@ -99,6 +99,34 @@ function drawRect(rect, data) {
     return rect;
 }
 
+function resizeIgnoringArea() {
+    const imageElement = document.getElementById("screenshot");
+    const ignoringAreaElement = document.getElementById("ignoring-area");
+    const drawElement = document.getElementById('draw');
+
+    const updateIgnoringAreaSize = (width, height) => {
+        const ratio = width / window.innerWidth;
+
+        const usingWidth = Math.min(width, window.innerWidth);
+        const usingHeight = ratio >= 1 ? height / ratio : height;
+
+        ignoringAreaElement.style.width = `${usingWidth}px`;
+        ignoringAreaElement.style.height = `${usingHeight}px`;
+        drawElement.setAttributeNS(null, 'viewBox', `0 0 ${usingWidth}, ${usingHeight}`);
+    };
+
+    const imageLoaderElement = new Image();
+    imageLoaderElement.src = imageElement.src;
+
+    const checkExist = setInterval(function() {
+        if (imageLoaderElement.width * imageLoaderElement.height) {
+            // console.log(`screenshotWidth: ${imageLoaderElement.width}, screenshotHeight: ${imageLoaderElement.height}`);
+            updateIgnoringAreaSize(imageLoaderElement.width, imageLoaderElement.height);
+            clearInterval(checkExist);
+        }
+    }, 100);
+}
+
 const onClickRectangle = (event) => {
     if (event.target.classList.contains("toRemove")) {
         event.target.classList.remove("toRemove");
@@ -107,9 +135,10 @@ const onClickRectangle = (event) => {
     }
 };
 
-const enableIgnore = () => {
+const enableIgnoring = () => {
     $marquee.classList.add('hide');
     controlBaseElement.addEventListener('pointerdown', startDrag);
+    resizeIgnoringArea();
 };
 
 const onClickInfo = () => {
