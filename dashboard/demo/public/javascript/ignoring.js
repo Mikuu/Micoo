@@ -1,5 +1,6 @@
 const $ = document.querySelector.bind(document);
 const rectangles = [];
+let blockIgnoringExistRectangles = [];
 
 const $screenshot = $('#screenshot');
 const $draw = $('#draw');
@@ -51,6 +52,8 @@ function stopDrag(ev) {
         redraw();
     }
     revertMarqueeRect();
+    enableOrDisableRemoveRectButton();
+    enableOrDisablePersistRectanglesButton();
 }
 
 function moveDrag(ev) {
@@ -133,12 +136,56 @@ const onClickRectangle = (event) => {
     } else {
         event.target.classList.add("toRemove");
     }
+    enableOrDisableRemoveRectButton();
 };
 
-const enableIgnoring = () => {
+const enableOrDisableRemoveRectButton = () => {
+    const rectElements = document.querySelectorAll("#boxes rect");
+    const removeRectangleButton = document.getElementById("removeRectangle");
+    for (const rectElement of rectElements) {
+        if (rectElement.classList.contains("toRemove")) {
+            removeRectangleButton.classList.remove("disabled");
+            return;
+        }
+    }
+    removeRectangleButton.classList.add("disabled");
+};
+
+const enableOrDisablePersistRectanglesButton = () => {
+    const persistRectanglesButton = document.getElementById("updateIgnoring");
+    if (blockIgnoringExistRectangles.length !== rectangles.length) {
+        persistRectanglesButton.classList.remove("disabled");
+        return;
+    }
+
+    for (const persistRectangle of blockIgnoringExistRectangles) {
+        if (!rectangles.find((newRectangle) => isSameRectangle(persistRectangle, newRectangle))) {
+            persistRectanglesButton.classList.remove("disabled");
+            return;
+        }
+    }
+
+    persistRectanglesButton.classList.add("disabled");
+};
+
+const openIgnoring = (existRectangles=[]) => {
+    const initializeRect = () => {
+        for (const rectangle of existRectangles) {
+            if (rectangle.width && rectangle.height) {
+                rectangles.push(Object.assign({}, rectangle));
+                redraw();
+            }
+        }
+    }
+
+    blockIgnoringExistRectangles = [...existRectangles];
+
     $marquee.classList.add('hide');
     controlBaseElement.addEventListener('pointerdown', startDrag);
     resizeIgnoringArea();
+    enableOrDisableRemoveRectButton();
+    enableOrDisablePersistRectanglesButton();
+    initializeRect();
 };
 
 const onClickInfo = () => {
@@ -152,32 +199,32 @@ const rectId = (rect) => [
     rect.getAttribute('height')
 ].join('-');
 
-const sameRectangle = (rectangle1, rectangle2) => {
+const isSameRectangle = (rectangle1, rectangle2) => {
     return rectangle1.x == rectangle2.x
         && rectangle1.y == rectangle2.y
         && rectangle1.width == rectangle2.width
         && rectangle1.height == rectangle2.height
 }
 
-const rectToRectangle = (rect) => {
-    return {
-        x: rect.getAttribute('x'),
-        y: rect.getAttribute('y'),
-        width: rect.getAttribute('width'),
-        height: rect.getAttribute('height')
-    }
-}
-
-const removeFromRectangles = (rect) => {
-    const rectangle = rectToRectangle(rect);
-    for (let i=0; i<rectangles.length; i++) {
-        if (sameRectangle(rectangles[i], rectangle)) {
-            rectangles.splice(i, 1);
+const onClickRemove = () => {
+    const rectToRectangle = (rect) => {
+        return {
+            x: rect.getAttribute('x'),
+            y: rect.getAttribute('y'),
+            width: rect.getAttribute('width'),
+            height: rect.getAttribute('height')
         }
     }
-};
 
-const onClickRemove = () => {
+    const removeFromRectangles = (rect) => {
+        const rectangle = rectToRectangle(rect);
+        for (let i=0; i<rectangles.length; i++) {
+            if (isSameRectangle(rectangles[i], rectangle)) {
+                rectangles.splice(i, 1);
+            }
+        }
+    };
+
     const boxesElement = document.getElementById("boxes");
     for (const rect of document.querySelectorAll("#boxes > rect")) {
         if (rect.classList.contains("toRemove")) {
@@ -185,4 +232,6 @@ const onClickRemove = () => {
             removeFromRectangles(rect);
         }
     }
+
+    enableOrDisablePersistRectanglesButton();
 };

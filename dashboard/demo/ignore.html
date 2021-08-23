@@ -58,7 +58,12 @@
     const updateIgnoringButton = document.getElementById("updateIgnoring");
     const removeRectangleButton = document.getElementById("removeRectangle");
     const openIgnoringButton = document.getElementById("openIgnoring");
-    openIgnoringButton.onclick = enableIgnoring;
+
+    const testingRectangles = [
+        {x: 193, y: 87, width: 96, height: 90},
+        {x: 201, y: 37, width: 106, height: 33}
+    ]
+    openIgnoringButton.onclick = () => { openIgnoring(testingRectangles) };
     updateIgnoringButton.onclick = onClickInfo;
     removeRectangleButton.onclick = onClickRemove;
 </script>
