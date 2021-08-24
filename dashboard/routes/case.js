@@ -2,6 +2,7 @@ let express = require("express");
 const buildService = require("../services/build-service");
 const projectService = require("../services/project-service");
 const caseService = require("../services/case-service");
+const ignoringService = require("../services/ignoring-service");
 const { authenticateJWT } = require("../utils/auth-utils");
 
 let router = express.Router();
@@ -84,6 +85,30 @@ router.post("/fail/:cid", authenticateJWT, function(req, res, next) {
             res.redirect(`/case/${req.params.cid}`);
             await checkAndUpdateBuildResult(req.params.cid);
             console.log(`set case failed, cid=${req.params.cid}`);
+        } catch (error) {
+            console.error(error);
+            next(error);
+        }
+    })();
+});
+
+router.post("/:cid/ignoring", authenticateJWT, function(req, res, next) {
+    (async () => {
+        try {
+
+            const testCase = await caseService.getCaseByCid(req.params.cid);
+            await ignoringService.createOrUpdateIgnoring(
+                testCase.pid,
+                testCase.bid,
+                testCase.cid,
+                req.body.rectangles
+            );
+
+            console.log(`update testcase ignoring, cid=${req.params.cid}, rectangles=${req.body.rectangles}`);
+            return res.status(200).send({
+                cid: testCase.cid,
+                updatedRectangles: req.body.rectangles
+            });
         } catch (error) {
             console.error(error);
             next(error);
