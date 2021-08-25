@@ -92,22 +92,21 @@ router.post("/fail/:cid", authenticateJWT, function(req, res, next) {
     })();
 });
 
-router.post("/:cid/ignoring", authenticateJWT, function(req, res, next) {
+router.post("/ignoring", authenticateJWT, function(req, res, next) {
     (async () => {
         try {
 
-            const testCase = await caseService.getCaseByCid(req.params.cid);
-            await ignoringService.createOrUpdateIgnoring(
-                testCase.pid,
-                testCase.bid,
-                testCase.cid,
-                req.body.rectangles
-            );
+            const ignoring = await ignoringService.createOrUpdateIgnoring(req.body.pid, req.body.caseName, req.body.rectangles);
+            console.log(`update testcase ignoring, pid=${req.body.pid}, caseName=${req.body.caseName}, rectangles=${JSON.stringify(req.body.rectangles)}`);
 
-            console.log(`update testcase ignoring, cid=${req.params.cid}, rectangles=${req.body.rectangles}`);
+            const result = ignoring ? ignoring : req.body;
+
             return res.status(200).send({
-                cid: testCase.cid,
-                updatedRectangles: req.body.rectangles
+                pid: result.pid,
+                caseName: result.caseName,
+                updatedRectangles: result.rectangles.map(rectangle => {
+                    return { x: rectangle.x, y: rectangle.y, width: rectangle.width, height: rectangle.height }
+                })
             });
         } catch (error) {
             console.error(error);
