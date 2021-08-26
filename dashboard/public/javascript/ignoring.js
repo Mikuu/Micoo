@@ -193,6 +193,18 @@ const enableIgnoring = () => {
         const pid = updateIgnoringButton.getAttribute("data-pid");
         const caseName = updateIgnoringButton.getAttribute("data-caseName");
         console.log(pid, caseName, rectangles);
+
+        const response = await fetch("ignoring", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                pid: pid,
+                caseName: caseName,
+                rectangles: rectangles
+            })
+        });
+
+        response.json().then(data => console.log(data));
     };
 
     const rectId = (rect) => [
@@ -243,10 +255,13 @@ const enableIgnoring = () => {
     const removeRectangleButton = document.getElementById("removeRectangle");
     const openIgnoringButton = document.getElementById("openIgnoring");
 
-    const testingRectangles = [
-        {x: 193, y: 87, width: 96, height: 90},
-        {x: 201, y: 37, width: 106, height: 33}
-    ]
+    // const testingRectangles = [
+    //     // {x: 193, y: 87, width: 96, height: 90},
+    //     // {x: 201, y: 37, width: 106, height: 33}
+    // ]
+
+    const testingRectangles = JSON.parse($boxes.getAttribute("data-rectangles"));
+
     openIgnoringButton.onclick = () => { openIgnoring(testingRectangles) };
     updateIgnoringButton.onclick = onClickInfo;
     removeRectangleButton.onclick = onClickRemove;

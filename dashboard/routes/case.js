@@ -13,6 +13,7 @@ router.get("/:cid", authenticateJWT, function(req, res, next) {
             const { prevCase, testCase, nextCase } = await caseService.getCaseWithNeighborsByCid(req.params.cid);
             const build = await buildService.getBuildByBid(testCase.bid);
             const project = await projectService.getProjectByPid(testCase.pid);
+            const ignoring = await ignoringService.getPlainIgnoring(project.pid, testCase.caseName);
 
             const view = testCase.linkBaseline ? (testCase.diffPercentage ? 3 : 2) : 1;
 
@@ -32,6 +33,8 @@ router.get("/:cid", authenticateJWT, function(req, res, next) {
                 diffPercentage: testCase.diffPercentage,
                 view: view,
                 hostUrl: `http://${req.get("host")}`,
+                rectangles: ignoring.rectangles,
+                rectanglesString: ignoring.rectangles ? JSON.stringify(ignoring.rectangles) : "",
             });
         } catch (error) {
             console.error(error);
@@ -100,14 +103,7 @@ router.post("/ignoring", authenticateJWT, function(req, res, next) {
             console.log(`update testcase ignoring, pid=${req.body.pid}, caseName=${req.body.caseName}, rectangles=${JSON.stringify(req.body.rectangles)}`);
 
             const result = ignoring ? ignoring : req.body;
-
-            return res.status(200).send({
-                pid: result.pid,
-                caseName: result.caseName,
-                updatedRectangles: result.rectangles.map(rectangle => {
-                    return { x: rectangle.x, y: rectangle.y, width: rectangle.width, height: rectangle.height }
-                })
-            });
+            return res.status(200).send(result);
         } catch (error) {
             console.error(error);
             next(error);
