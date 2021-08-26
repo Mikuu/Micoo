@@ -33,8 +33,8 @@ router.get("/:cid", authenticateJWT, function(req, res, next) {
                 diffPercentage: testCase.diffPercentage,
                 view: view,
                 hostUrl: `http://${req.get("host")}`,
-                rectangles: ignoring.rectangles,
-                rectanglesString: ignoring.rectangles ? JSON.stringify(ignoring.rectangles) : "",
+                rectangles: ignoring ? ignoring.rectangles : [],
+                rectanglesString: ignoring && ignoring.rectangles ? JSON.stringify(ignoring.rectangles) : "",
             });
         } catch (error) {
             console.error(error);

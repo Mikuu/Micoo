@@ -1,14 +1,14 @@
 const enableIgnoring = () => {
-    const $ = document.querySelector.bind(document);
-    const rectangles = [];
+    const DOR = document.querySelector.bind(document);
+    let rectangles = [];
     let blockIgnoringExistRectangles = [];
 
-    const $screenshot = $('#screenshot');
-    const $draw = $('#draw');
-    const $marquee = $('#marquee');
-    const $boxes = $('#boxes');
+    const DORscreenshot = DOR('#screenshot');
+    const DORdraw = DOR('#draw');
+    const DORmarquee = DOR('#marquee');
+    const DORboxes = DOR('#boxes');
 
-    const controlBaseElement = $draw; // it's $screenshot by default
+    const controlBaseElement = DORdraw; // it's DORscreenshot by default
 
     let startX = 0;
     let startY = 0;
@@ -31,10 +31,10 @@ const enableIgnoring = () => {
         }
         window.addEventListener('pointerup', stopDrag);
         controlBaseElement.addEventListener('pointermove', moveDrag);
-        $marquee.classList.remove('hide');
+        DORmarquee.classList.remove('hide');
         startX = ev.layerX;
         startY = ev.layerY;
-        drawRect($marquee, startX, startY, 0, 0);
+        drawRect(DORmarquee, startX, startY, 0, 0);
     }
 
     function revertMarqueeRect() {
@@ -45,7 +45,7 @@ const enableIgnoring = () => {
     }
 
     function stopDrag(ev) {
-        $marquee.classList.add('hide');
+        DORmarquee.classList.add('hide');
         window.removeEventListener('pointerup', stopDrag);
         controlBaseElement.removeEventListener('pointermove', moveDrag);
         if (marqueeRect.width && marqueeRect.height) {
@@ -71,7 +71,7 @@ const enableIgnoring = () => {
             y -= height;
         }
         Object.assign(marqueeRect, { x, y, width, height });
-        drawRect($marquee, marqueeRect);
+        drawRect(DORmarquee, marqueeRect);
     }
 
     function hitTest(x, y) {
@@ -169,31 +169,21 @@ const enableIgnoring = () => {
         persistRectanglesButton.classList.add("disabled");
     };
 
-    const openIgnoring = (existRectangles=[]) => {
-        const initializeRect = () => {
-            for (const rectangle of existRectangles) {
-                if (rectangle.width && rectangle.height) {
-                    rectangles.push(Object.assign({}, rectangle));
-                    redraw();
-                }
-            }
-        }
+    const openIgnoring = () => {
+        rectangles = [...blockIgnoringExistRectangles];
 
-        blockIgnoringExistRectangles = [...existRectangles];
-
-        $marquee.classList.add('hide');
+        DORmarquee.classList.add('hide');
         controlBaseElement.addEventListener('pointerdown', startDrag);
         resizeIgnoringArea();
         enableOrDisableRemoveRectButton();
         enableOrDisablePersistRectanglesButton();
-        initializeRect();
     };
 
-    const onClickInfo = async () => {
+    const update = async () => {
         const pid = updateIgnoringButton.getAttribute("data-pid");
         const caseName = updateIgnoringButton.getAttribute("data-caseName");
-        console.log(pid, caseName, rectangles);
 
+        document.getElementById("ignoringSaveSpinner").classList.remove("disabled");
         const response = await fetch("ignoring", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -204,7 +194,9 @@ const enableIgnoring = () => {
             })
         });
 
-        response.json().then(data => console.log(data));
+        response.json().then(data => {
+            document.getElementById("ignoringSaveSpinner").classList.add("disabled");
+        });
     };
 
     const rectId = (rect) => [
@@ -251,18 +243,33 @@ const enableIgnoring = () => {
         enableOrDisablePersistRectanglesButton();
     };
 
+    const handleExistsRects = () => {
+        const rects = Array.from(document.querySelectorAll("#boxes > rect"));
+        rects.forEach((rect) => {
+            rect.addEventListener('pointerdown', onClickRectangle);
+            blockIgnoringExistRectangles.push({
+                x: rect.getAttribute("x"),
+                y: rect.getAttribute("y"),
+                width: rect.getAttribute("width"),
+                height: rect.getAttribute("height")
+            });
+        });
+    };
+
+    const bundleCloseModalActions = () => {
+        $('#ignoringModal').on('hidden.bs.modal', function (event) {
+            location.reload();
+        })
+    };
+
     const updateIgnoringButton = document.getElementById("updateIgnoring");
     const removeRectangleButton = document.getElementById("removeRectangle");
     const openIgnoringButton = document.getElementById("openIgnoring");
 
-    // const testingRectangles = [
-    //     // {x: 193, y: 87, width: 96, height: 90},
-    //     // {x: 201, y: 37, width: 106, height: 33}
-    // ]
-
-    const testingRectangles = JSON.parse($boxes.getAttribute("data-rectangles"));
-
-    openIgnoringButton.onclick = () => { openIgnoring(testingRectangles) };
-    updateIgnoringButton.onclick = onClickInfo;
+    openIgnoringButton.onclick = openIgnoring;
+    updateIgnoringButton.onclick = update;
     removeRectangleButton.onclick = onClickRemove;
+
+    handleExistsRects();
+    bundleCloseModalActions();
 };

@@ -52,3 +52,7 @@
 #removeRectangle.disabled {
     pointer-events: none;
 }
+
+#ignoringSaveSpinner.disabled {
+    display: none;
+}

@@ -87,18 +87,22 @@ block pageAction
                 p#exampleModalLabel.modal-title Edit Ignoring
                 .d-flex.align-items-center
                   .pr-4.border-right
-                    button#updateIgnoring.btn.btn-outline-success.ignoring-modal-title-action(type='button' data-pid=pid data-caseName=caseName)
-                      i.bi.bi-pencil
+                    #ignoringSaveSpinner.spinner-border.spinner-border-sm.text-info.disabled(role='status')
+                          span.sr-only Loading...
                     button#removeRectangle.btn.btn-outline-danger.ignoring-modal-title-action(type='button')
                       i.bi.bi-eraser
-                  button.close(type='button' data-dismiss='modal' aria-label='Close')
+                    button#updateIgnoring.btn.btn-outline-success.ignoring-modal-title-action(type='button' data-pid=pid data-caseName=caseName)
+                      i.bi.bi-save
+                  button#closeIgnoringModal.close(type='button' data-dismiss='modal' aria-label='Close')
                     span(aria-hidden='true') &times;
               .modal-body.p-0
                 #ignoring-area
                   img#screenshot(width='100%' height='100%' src=baselineUrl draggable='false')
                   svg#draw(width='100%' height='100%' xmlns='http://www.w3.org/2000/svg')
                     rect#marquee(x='450' y='420' width='150' height='150')
-                    g#boxes(data-rectangles=rectanglesString)
+                    g#boxes
+                      each rectangle in rectangles
+                        rect(x=rectangle.x y=rectangle.y width=rectangle.width height=rectangle.height)
 
 block main
     case view
@@ -159,19 +163,14 @@ block main
           .modal-body
             img(src=latestUrl style='max-width: 100%;')
 
-    //- script(src="/public/javascript/jquery-3.4.1.slim.min.js" crossorigin="anonymous")
-    //- script.
-    //-     window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"><\\/script>')
-    //- script(src="/public/javascript/bootstrap.bundle.min.js" crossorigin="anonymous")
-    //- script(src="/public/javascript/ionicons.js")
-    //- //script(src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js")
+    script(src="/public/javascript/jquery-3.5.1.slim.min.js" crossorigin="anonymous")
+    script(src="/public/javascript/bootstrap.bundle.min.js" crossorigin="anonymous")
     script(src='/public/javascript/image-compare-viewer.min.js' crossorigin="anonymous")
     script(src='/public/javascript/image-compare.js' crossorigin="anonymous")
     script(src='/public/javascript/ignoring.js' crossorigin="anonymous")
-    script.
-      createImageCompareModal();
-      enableIgnoring();
     script(src='/public/javascript/wheelzoom.js' crossorigin="anonymous")
     script(src='/public/javascript/image-display.js' crossorigin="anonymous")
     script.
       applyImageDisplay();
+      createImageCompareModal();
+      enableIgnoring();

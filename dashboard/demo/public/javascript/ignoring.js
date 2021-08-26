@@ -1,14 +1,15 @@
 const enableIgnoring = () => {
-    const $ = document.querySelector.bind(document);
+    // const dolor = document.querySelector.bind(document);
+    const dolor = document.querySelector.bind(document);
     const rectangles = [];
     let blockIgnoringExistRectangles = [];
 
-    const $screenshot = $('#screenshot');
-    const $draw = $('#draw');
-    const $marquee = $('#marquee');
-    const $boxes = $('#boxes');
+    const dolorscreenshot = dolor('#screenshot');
+    const dolordraw = dolor('#draw');
+    const dolormarquee = dolor('#marquee');
+    const dolorboxes = dolor('#boxes');
 
-    const controlBaseElement = $draw; // it's $screenshot by default
+    const controlBaseElement = dolordraw; // it's dolorscreenshot by default
 
     let startX = 0;
     let startY = 0;
@@ -31,10 +32,10 @@ const enableIgnoring = () => {
         }
         window.addEventListener('pointerup', stopDrag);
         controlBaseElement.addEventListener('pointermove', moveDrag);
-        $marquee.classList.remove('hide');
+        dolormarquee.classList.remove('hide');
         startX = ev.layerX;
         startY = ev.layerY;
-        drawRect($marquee, startX, startY, 0, 0);
+        drawRect(dolormarquee, startX, startY, 0, 0);
     }
 
     function revertMarqueeRect() {
@@ -45,7 +46,7 @@ const enableIgnoring = () => {
     }
 
     function stopDrag(ev) {
-        $marquee.classList.add('hide');
+        dolormarquee.classList.add('hide');
         window.removeEventListener('pointerup', stopDrag);
         controlBaseElement.removeEventListener('pointermove', moveDrag);
         if (marqueeRect.width && marqueeRect.height) {
@@ -71,7 +72,7 @@ const enableIgnoring = () => {
             y -= height;
         }
         Object.assign(marqueeRect, { x, y, width, height });
-        drawRect($marquee, marqueeRect);
+        drawRect(dolormarquee, marqueeRect);
     }
 
     function hitTest(x, y) {
@@ -181,7 +182,7 @@ const enableIgnoring = () => {
 
         blockIgnoringExistRectangles = [...existRectangles];
 
-        $marquee.classList.add('hide');
+        dolormarquee.classList.add('hide');
         controlBaseElement.addEventListener('pointerdown', startDrag);
         resizeIgnoringArea();
         enableOrDisableRemoveRectButton();
@@ -193,6 +194,9 @@ const enableIgnoring = () => {
         const pid = updateIgnoringButton.getAttribute("data-pid");
         const caseName = updateIgnoringButton.getAttribute("data-caseName");
         console.log(pid, caseName, rectangles);
+
+        const saveSpinner = document.getElementById("ignoringSaveSpinner");
+        saveSpinner.classList.remove("disabled");
     };
 
     const rectId = (rect) => [
@@ -239,6 +243,13 @@ const enableIgnoring = () => {
         enableOrDisablePersistRectanglesButton();
     };
 
+    const bundleCloseModalActions = () => {
+        $('#ignoringModal').on('hidden.bs.modal', function (event) {
+            console.log("working?");
+            location.reload();
+        });
+    };
+
     const updateIgnoringButton = document.getElementById("updateIgnoring");
     const removeRectangleButton = document.getElementById("removeRectangle");
     const openIgnoringButton = document.getElementById("openIgnoring");
@@ -250,4 +261,6 @@ const enableIgnoring = () => {
     openIgnoringButton.onclick = () => { openIgnoring(testingRectangles) };
     updateIgnoringButton.onclick = onClickInfo;
     removeRectangleButton.onclick = onClickRemove;
+
+    bundleCloseModalActions();
 };
