@@ -20,6 +20,7 @@ const BuildSchema = new Schema({
     caseCount: { type: Number, default: 0 },
     isBaseline: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now },
+    withIgnoringRectangles:  { type: Boolean, default: false },
 });
 
 /**
@@ -52,6 +53,11 @@ BuildSchema.methods = {
         this.caseCount = caseCount;
         return this.save();
     },
+
+    updateWithIgnoringRectangles: function (withIgnoringRectangles) {
+        this.withIgnoringRectangles = withIgnoringRectangles;
+        return this.save();
+    }
 };
 
 module.exports = {

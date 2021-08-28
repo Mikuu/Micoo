@@ -45,7 +45,19 @@ const determineBuildResult = async bid => {
     let buildResult = "passed";
     const allCases = await caseService.getAllCasesInBuild(bid);
     const caseCount = allCases.length;
-    const allCasesResults = allCases.map(eachCase => eachCase.caseResult);
+    const allCasesResults = allCases.map(eachCase =>
+        eachCase.caseResult !== "failed" ?
+            eachCase.caseResult :
+            eachCase.comprehensiveCaseResult === "passed" ?
+                (async () => {
+                    await buildService.setWithIgnoringRectangles(
+                        eachCase.pid,
+                        eachCase.bid,
+                        true,
+                    );
+                    return "passed";
+                })() : "failed"
+    );
 
     if (allCasesResults.includes("undetermined")) {
         buildResult = "undetermined";
@@ -98,7 +110,12 @@ const checkAndHandleIgnoring = async (project, build, createdCases) => {
         // console.log(`isRectangleAllIgnored: `+isRectanglesAllIgnored);
 
         await caseService.setIgnoringRectangles(project.pid, build.bid, compareCase.caseName, ignoring.rectangles);
-        await caseService.setComprehensiveCaseResult(project.pid, build.bid, compareCase.caseName, isRectanglesAllIgnored);
+        await caseService.setComprehensiveCaseResult(
+            project.pid,
+            build.bid,
+            compareCase.caseName,
+            isRectanglesAllIgnored ? "passed" : "failed"
+        );
     }
 };
 

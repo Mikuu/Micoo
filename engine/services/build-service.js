@@ -43,9 +43,17 @@ const latestStats = async pid => {
     }
 };
 
+const setWithIgnoringRectangles = async (pid, bid, withIgnoringRectangles) => {
+    const build = await Build.findOne( { pid: pid, bid: bid });
+    if (build) {
+        await build.updateWithIgnoringRectangles(withIgnoringRectangles);
+    }
+}
+
 module.exports = {
     initialize,
     finalize,
     stats,
     latestStats,
+    setWithIgnoringRectangles,
 };
