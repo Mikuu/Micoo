@@ -45,23 +45,39 @@ const determineBuildResult = async bid => {
     let buildResult = "passed";
     const allCases = await caseService.getAllCasesInBuild(bid);
     const caseCount = allCases.length;
-    const allCasesResults = allCases.map(eachCase =>
-        eachCase.caseResult !== "failed" ?
-            eachCase.caseResult :
-            eachCase.comprehensiveCaseResult === "passed" ?
-                (async () => {
-                    await buildService.setWithIgnoringRectangles(
-                        eachCase.pid,
-                        eachCase.bid,
-                        true,
-                    );
-                    return "passed";
-                })() : "failed"
-    );
 
-    if (allCasesResults.includes("undetermined")) {
+    let pid;
+    let [ passedCount, failedCount, undeterminedCount, passedByIgnoringRectanglesCount ] = [ 0, 0, 0, 0 ];
+    for (const testCase of allCases) {
+        pid = testCase.pid;
+
+        switch (testCase.caseResult) {
+            case "undetermined":
+                undeterminedCount += 1;
+                break;
+            case "failed":
+                failedCount += 1;
+                break;
+            case "passed":
+                passedCount += 1;
+                break;
+        }
+
+        if (testCase.comprehensiveCaseResult === "passed") {
+            passedByIgnoringRectanglesCount += 1;
+        }
+    }
+
+    await buildService.updateTestCaseCount(pid, bid, {
+        passed: passedCount,
+        failed: failedCount,
+        undeterminedCount: undeterminedCount,
+        passedByIgnoringRectangles: passedByIgnoringRectanglesCount
+    });
+
+    if (undeterminedCount) {
         buildResult = "undetermined";
-    } else if (allCasesResults.includes("failed")) {
+    } else if (failedCount > passedByIgnoringRectanglesCount) {
         buildResult = "failed";
     }
 
