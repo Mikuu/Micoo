@@ -51,6 +51,27 @@ const deleteByPid = async pid => {
     return await Case.deleteMany({ pid: pid });
 };
 
+const getPlainTestCaseIgnoringRectangles = async cid => {
+    const testCase = await Case.findOne({ cid: cid });
+    if (testCase && testCase.ignoringRectangles) {
+        return testCase.ignoringRectangles.map(rectangle => {
+            return {
+                x: rectangle.x,
+                y: rectangle.y,
+                width: rectangle.width,
+                height: rectangle.height
+            }
+        });
+    }
+};
+
+const cleanComprehensiveCaseResult = async cid => {
+    const testCase = await Case.findOne({ cid: cid });
+    if (testCase) {
+        await testCase.cleanComprehensiveCaseResult();
+    }
+};
+
 module.exports = {
     getBuildCases,
     getAllCasesByCid,
@@ -59,4 +80,6 @@ module.exports = {
     passCase,
     failCase,
     deleteByPid,
+    getPlainTestCaseIgnoringRectangles,
+    cleanComprehensiveCaseResult,
 };

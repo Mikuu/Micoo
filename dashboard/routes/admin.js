@@ -8,6 +8,7 @@ const projectService = require("../services/project-service");
 const buildService = require("../services/build-service");
 const caseService = require("../services/case-service");
 const fileService = require("../services/file-service");
+const ignoringService = require("../services/ignoring-service");
 const validatorUtils = require("../utils/validator-utils");
 const { authenticateJWT } = require("../utils/auth-utils");
 
@@ -78,6 +79,7 @@ router.post("/project/clean/:pid", authenticateJWT, function(req, res, next) {
 
             await caseService.deleteByPid(project.pid);
             await buildService.deleteByPid(project.pid);
+            await ignoringService.cleanProjectIgnoring(project.pid);
 
             fileService.clearProjectArtifacts(project.projectName);
 
@@ -99,6 +101,7 @@ router.post("/project/delete/:pid", authenticateJWT, function(req, res, next) {
             await caseService.deleteByPid(project.pid);
             await buildService.deleteByPid(project.pid);
             await projectService.deleteProject(project.pid);
+            await ignoringService.cleanProjectIgnoring(project.pid);
 
             fileService.deleteProjectDirectory(project.projectName);
             fileService.deleteProjectImage(project.projectName);
@@ -169,7 +172,7 @@ router.post("/project/image/:pid", authenticateJWT, function(req, res, next) {
 });
 
 /**
- * Upload project config
+ * Update project config
  * */
 router.post("/project/config/:pid", authenticateJWT, function(req, res, next) {
     (async () => {

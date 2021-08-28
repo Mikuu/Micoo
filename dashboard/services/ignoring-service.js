@@ -57,8 +57,13 @@ const deleteIgnoring = async (pid, caseName) => {
     return await Ignoring.deleteMany({ pid: pid, caseName: caseName });
 };
 
+const cleanProjectIgnoring = async (pid) => {
+    return await Ignoring.deleteMany({ pid: pid });
+};
+
 module.exports = {
     createOrUpdateIgnoring,
     getPlainIgnoring,
     deleteIgnoring,
+    cleanProjectIgnoring,
 };

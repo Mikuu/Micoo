@@ -27,9 +27,14 @@ block pageAction
                  .d-flex.align-items-center.justify-content-center.icon-result-passed
                      ion-icon(name="checkmark-outline")
         else if caseResult === "failed"
-            .pr-3(style="width: 48px;")
-                .d-flex.align-items-center.justify-content-center.icon-result-failed
-                    ion-icon(name="close-outline")
+            if comprehensiveCaseResult === "passed"
+                .pr-3(style="width: 48px;")
+                     .d-flex.align-items-center.justify-content-center.icon-result-passed.border.border-warning.rounded
+                         ion-icon(name="checkmark-outline")
+            else
+                .pr-3(style="width: 48px;")
+                    .d-flex.align-items-center.justify-content-center.icon-result-failed
+                        ion-icon(name="close-outline")
 
 
 

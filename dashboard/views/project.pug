@@ -154,7 +154,10 @@ block main
                          td #{build.caseCount}
                          case build.buildResult
                              when "passed"
-                                 td.text-success #{build.buildResult}
+                                 if build.casePassedByIgnoringRectanglesCount
+                                    td.text-info #{build.buildResult}
+                                 else
+                                    td.text-success #{build.buildResult}
                              when "failed"
                                  td.text-danger #{build.buildResult}
                              default

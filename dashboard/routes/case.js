@@ -14,6 +14,7 @@ router.get("/:cid", authenticateJWT, function(req, res, next) {
             const build = await buildService.getBuildByBid(testCase.bid);
             const project = await projectService.getProjectByPid(testCase.pid);
             const ignoring = await ignoringService.getPlainIgnoring(project.pid, testCase.caseName);
+            const testCaseIgnoringRectangles = await caseService.getPlainTestCaseIgnoringRectangles(testCase.cid);
 
             const view = testCase.linkBaseline ? (testCase.diffPercentage ? 3 : 2) : 1;
 
@@ -35,6 +36,8 @@ router.get("/:cid", authenticateJWT, function(req, res, next) {
                 hostUrl: `http://${req.get("host")}`,
                 rectangles: ignoring ? ignoring.rectangles : [],
                 rectanglesString: ignoring && ignoring.rectangles ? JSON.stringify(ignoring.rectangles) : "",
+                comprehensiveCaseResult: testCase.comprehensiveCaseResult,
+                testCaseIgnoringRectangles: testCaseIgnoringRectangles,
             });
         } catch (error) {
             console.error(error);
@@ -43,37 +46,63 @@ router.get("/:cid", authenticateJWT, function(req, res, next) {
     })();
 });
 
-const checkAllCasesResult = async allCases => {
-    let eachCase;
-    let failedCounter = 0;
-    let undeterminedCounter = 0;
+const checkAndUpdateBuildResult = async cid => {
+    const allCases = await caseService.getAllCasesByCid(cid);
 
-    for (eachCase of allCases) {
-        if (eachCase.caseResult === "undetermined") {
-            undeterminedCounter += 1;
-        } else if (eachCase.caseResult === "failed") {
-            failedCounter += 1;
+    let [ passedCount, failedCount, undeterminedCount, passedByIgnoringRectanglesCount ] = [ 0, 0, 0, 0 ];
+    for (const testCase of allCases) {
+        switch (testCase.caseResult) {
+            case "undetermined":
+                undeterminedCount += 1;
+                break;
+            case "failed":
+                failedCount += 1;
+                break;
+            case "passed":
+                passedCount += 1;
+                break;
+        }
+
+        if (testCase.comprehensiveCaseResult === "passed") {
+            passedByIgnoringRectanglesCount += 1;
         }
     }
 
-    return undeterminedCounter > 0 ? "undetermined" : failedCounter > 0 ? "failed" : "passed";
+    await buildService.updateTestCaseCount(allCases[0].pid, allCases[0].bid, {
+        passed: passedCount,
+        failed: failedCount,
+        undeterminedCount: undeterminedCount,
+        passedByIgnoringRectangles: passedByIgnoringRectanglesCount
+    });
+
+    const buildResult = undeterminedCount ? "undetermined"
+        : failedCount > passedByIgnoringRectanglesCount ? "failed" : "passed";
+
+    await buildService.updateBuildResult(allCases[0].bid, buildResult);
 };
 
-const checkAndUpdateBuildResult = async cid => {
-    const allCases = await caseService.getAllCasesByCid(cid);
-    if (allCases.length) {
-        const buildResult = await checkAllCasesResult(allCases);
-        await buildService.updateBuildResult(allCases[0].bid, buildResult);
-    }
+const cleanTestCaseComprehensiveCaseResult = async (cid) => {
+    /**
+     * testCase.comprehensiveCaseResult is generated at Engine side, and should only be used in Dashboard page to detect
+     * and display case & build result before human clicking Passed or Failed button, once human passed or failed the
+     * test case, the comprehensiveCaseResult, which represents an consideration of ignoringRectangles, should be removed
+     * since that's only used for auto detecting at Engine side, the human who clicking the buttons should take
+     * ignoringRectangles and any other information into consideration and take the responsibility for the decision.
+     * */
+    await caseService.cleanComprehensiveCaseResult(cid);
 };
 
 router.post("/pass/:cid", authenticateJWT, function(req, res, next) {
     (async () => {
         try {
             await caseService.passCase(req.params.cid);
-            res.redirect(`/case/${req.params.cid}`);
+
+            await cleanTestCaseComprehensiveCaseResult(req.params.cid);
             await checkAndUpdateBuildResult(req.params.cid);
+
+            res.redirect(`/case/${req.params.cid}`);
             console.log(`set case passed, cid=${req.params.cid}`);
+
         } catch (error) {
             console.error(error);
             next(error);
@@ -85,9 +114,13 @@ router.post("/fail/:cid", authenticateJWT, function(req, res, next) {
     (async () => {
         try {
             await caseService.failCase(req.params.cid);
-            res.redirect(`/case/${req.params.cid}`);
+
+            await cleanTestCaseComprehensiveCaseResult(req.params.cid);
             await checkAndUpdateBuildResult(req.params.cid);
+
+            res.redirect(`/case/${req.params.cid}`);
             console.log(`set case failed, cid=${req.params.cid}`);
+
         } catch (error) {
             console.error(error);
             next(error);
