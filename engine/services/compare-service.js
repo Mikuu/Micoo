@@ -66,10 +66,23 @@ const checkAndHandleIgnoring = async (project, build, createdCases) => {
 
     for (const compareCase of Object.values(createdCases)) {
         if (compareCase.diffPercentage === 0) {
+            // console.log(
+            //     `COMPARE-SERVICE: testCase pid=${project.pid}, bid=${build.bid}, caseName=${compareCase.caseName} ` +
+            //     `is same to baseline, not to ignoring`
+            // );
             continue;
         }
 
         const ignoring = await ignoringService.getPlainIgnoring(project.pid, compareCase.caseName);
+
+        if (!ignoring) {
+            // console.log(
+            //     `COMPARE-SERVICE: testCase pid=${project.pid}, bid=${build.bid}, caseName=${compareCase.caseName} ` +
+            //     `has no ignoringRectangles, not to ignoring`
+            // );
+            continue;
+        }
+
         const clusterOptions = {
             shouldCluster: project.projectIgnoringCluster,
             clustersSize: project.projectIgnoringClusterSize
