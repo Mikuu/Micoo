@@ -49,6 +49,16 @@ const updateProjectDetectAntialiasing = async (pid, projectDetectAntialiasing) =
     await project.updateProjectDetectAntialiasing(projectDetectAntialiasing);
 };
 
+const updateEnableProjectIgnoringCluster = async (pid, enableIgnoringCluster) => {
+    const project = await getProjectByPid(pid);
+    await project.updateProjectIgnoringCluster(enableIgnoringCluster);
+};
+
+const updateProjectIgnoringClusterSize = async (pid, projectIgnoringClusterSize) => {
+    const project = await getProjectByPid(pid);
+    await project.updateProjectIgnoringClusterSize(projectIgnoringClusterSize);
+};
+
 module.exports = {
     createProject,
     getAllProjects,
@@ -58,5 +68,7 @@ module.exports = {
     isProjectNameExist,
     updateProjectImageUrl,
     updateProjectColorThreshold,
-    updateProjectDetectAntialiasing
+    updateProjectDetectAntialiasing,
+    updateEnableProjectIgnoringCluster,
+    updateProjectIgnoringClusterSize
 };
