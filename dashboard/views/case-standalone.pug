@@ -100,9 +100,7 @@ block pageAction
                   img#screenshot(width='100%' height='100%' src=baselineUrl || latestUrl draggable='false')
                   svg#draw(width='100%' height='100%' xmlns='http://www.w3.org/2000/svg')
                     rect#marquee(x='450' y='420' width='150' height='150')
-                    g#boxes
-                      each rectangle in rectangles
-                        rect(x=rectangle.x y=rectangle.y width=rectangle.width height=rectangle.height)
+                    g#boxes(data-rectangles=rectanglesString)
 
 block main
     case view

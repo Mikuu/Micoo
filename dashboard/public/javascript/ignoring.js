@@ -1,15 +1,15 @@
 const enableIgnoring = () => {
     const DOR = document.querySelector.bind(document);
-    let ratio = null;
+    let ignoringRatio = null;
     let rectangles = [];
     let blockIgnoringExistRectangles = [];
 
-    const DORscreenshot = DOR('#screenshot');
-    const DORdraw = DOR('#draw');
-    const DORmarquee = DOR('#marquee');
-    const DORboxes = DOR('#boxes');
+    const DORScreenshot = DOR('#screenshot');
+    const DORDraw = DOR('#draw');
+    const DORMarquee = DOR('#marquee');
+    const DORBoxes = DOR('#boxes');
 
-    const controlBaseElement = DORdraw; // it's DORscreenshot by default
+    const controlBaseElement = DORDraw; // it's DORScreenshot by default
 
     let startX = 0;
     let startY = 0;
@@ -32,10 +32,10 @@ const enableIgnoring = () => {
         }
         window.addEventListener('pointerup', stopDrag);
         controlBaseElement.addEventListener('pointermove', moveDrag);
-        DORmarquee.classList.remove('hide');
+        DORMarquee.classList.remove('hide');
         startX = ev.layerX;
         startY = ev.layerY;
-        drawRect(DORmarquee, startX, startY, 0, 0);
+        drawRect(DORMarquee, startX, startY, 0, 0);
     }
 
     function revertMarqueeRect() {
@@ -46,7 +46,7 @@ const enableIgnoring = () => {
     }
 
     function stopDrag(ev) {
-        DORmarquee.classList.add('hide');
+        DORMarquee.classList.add('hide');
         window.removeEventListener('pointerup', stopDrag);
         controlBaseElement.removeEventListener('pointermove', moveDrag);
         if (marqueeRect.width && marqueeRect.height) {
@@ -72,7 +72,7 @@ const enableIgnoring = () => {
             y -= height;
         }
         Object.assign(marqueeRect, { x, y, width, height });
-        drawRect(DORmarquee, marqueeRect);
+        drawRect(DORMarquee, marqueeRect);
     }
 
     function hitTest(x, y) {
@@ -104,16 +104,35 @@ const enableIgnoring = () => {
         return rect;
     }
 
-    function resizeIgnoringArea() {
+    function resizeIgnoringAreaAndDrawExistRectangles() {
         const imageElement = document.getElementById("screenshot");
         const ignoringAreaElement = document.getElementById("ignoring-area");
         const drawElement = document.getElementById('draw');
 
+        const drawExistsRectangles = () => {
+            const rectanglesString = document.getElementById("boxes").getAttribute("data-rectangles");
+            document.getElementById("boxes").removeAttribute("data-rectangles");
+
+            const existRectangles = rectanglesString ? JSON.parse(rectanglesString) : [];
+            rectangles = ignoringRatio <= 1 ? existRectangles : existRectangles.map(rectangle => {
+                return {
+                    x: rectangle.x / ignoringRatio,
+                    y: rectangle.y / ignoringRatio,
+                    width: rectangle.width / ignoringRatio,
+                    height: rectangle.height / ignoringRatio
+                }
+            });
+
+            blockIgnoringExistRectangles = [...rectangles]
+            redraw();
+        };
+
         const updateIgnoringAreaSize = (width, height) => {
-            ratio = width / window.innerWidth;
+            ignoringRatio = width / window.innerWidth;
+            // console.log(`initialize ignoringRatio: ${ignoringRatio}`);
 
             const usingWidth = Math.min(width, window.innerWidth);
-            const usingHeight = ratio >= 1 ? height / ratio : height;
+            const usingHeight = ignoringRatio >= 1 ? height / ignoringRatio : height;
 
             ignoringAreaElement.style.width = `${usingWidth}px`;
             ignoringAreaElement.style.height = `${usingHeight}px`;
@@ -125,8 +144,9 @@ const enableIgnoring = () => {
 
         const checkExist = setInterval(function() {
             if (imageLoaderElement.width * imageLoaderElement.height) {
-                console.log(`screenshotWidth: ${imageLoaderElement.width}, screenshotHeight: ${imageLoaderElement.height}`);
+                // console.log(`screenshotWidth: ${imageLoaderElement.width}, screenshotHeight: ${imageLoaderElement.height}`);
                 updateIgnoringAreaSize(imageLoaderElement.width, imageLoaderElement.height);
+                drawExistsRectangles();
                 clearInterval(checkExist);
             }
         }, 100);
@@ -171,11 +191,8 @@ const enableIgnoring = () => {
     };
 
     const openIgnoring = () => {
-        rectangles = [...blockIgnoringExistRectangles];
-
-        DORmarquee.classList.add('hide');
+        DORMarquee.classList.add('hide');
         controlBaseElement.addEventListener('pointerdown', startDrag);
-        resizeIgnoringArea();
         enableOrDisableRemoveRectButton();
         enableOrDisablePersistRectanglesButton();
     };
@@ -191,15 +208,15 @@ const enableIgnoring = () => {
             body: JSON.stringify({
                 pid: pid,
                 caseName: caseName,
-                rectangles: rectangles,
-                // rectangles: ratio <= 1 ? rectangles : rectangles.map(rectangle => {
-                //     return {
-                //         x: rectangle.x * ratio,
-                //         y: rectangle.y * ratio,
-                //         width: rectangle.width * ratio,
-                //         height: rectangle.height * ratio
-                //     }
-                // })
+                // rectangles: rectangles,
+                rectangles: ignoringRatio <= 1 ? rectangles : rectangles.map(rectangle => {
+                    return {
+                        x: rectangle.x * ignoringRatio,
+                        y: rectangle.y * ignoringRatio,
+                        width: rectangle.width * ignoringRatio,
+                        height: rectangle.height * ignoringRatio
+                    }
+                })
             })
         });
 
@@ -207,13 +224,6 @@ const enableIgnoring = () => {
             document.getElementById("ignoringSaveSpinner").classList.add("disabled");
         });
     };
-
-    const rectId = (rect) => [
-        rect.getAttribute('x'),
-        rect.getAttribute('y'),
-        rect.getAttribute('width'),
-        rect.getAttribute('height')
-    ].join('-');
 
     const isSameRectangle = (rectangle1, rectangle2) => {
         return rectangle1.x == rectangle2.x
@@ -252,19 +262,6 @@ const enableIgnoring = () => {
         enableOrDisablePersistRectanglesButton();
     };
 
-    const handleExistsRects = () => {
-        const rects = Array.from(document.querySelectorAll("#boxes > rect"));
-        rects.forEach((rect) => {
-            rect.addEventListener('pointerdown', onClickRectangle);
-            blockIgnoringExistRectangles.push({
-                x: rect.getAttribute("x"),
-                y: rect.getAttribute("y"),
-                width: rect.getAttribute("width"),
-                height: rect.getAttribute("height")
-            });
-        });
-    };
-
     const bundleCloseModalActions = () => {
         $('#ignoringModal').on('hidden.bs.modal', function (event) {
             location.reload();
@@ -279,7 +276,6 @@ const enableIgnoring = () => {
     updateIgnoringButton.onclick = update;
     removeRectangleButton.onclick = onClickRemove;
 
-    // resizeIgnoringArea();
-    handleExistsRects();
+    resizeIgnoringAreaAndDrawExistRectangles();
     bundleCloseModalActions();
 };
