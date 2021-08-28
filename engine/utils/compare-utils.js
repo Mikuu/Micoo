@@ -1,5 +1,6 @@
 const nativeImageDiff = require("native-image-diff");
 const libpng = require("node-libpng");
+const looksSame = require("looks-same");
 
 const fileUtils = require("../utils/file-utils");
 
@@ -50,6 +51,44 @@ const compare = (baselineFile, latestFile, projectColorThreshold, projectDetectA
     console.log(`compared "${baselineFile}" with "${latestFile}", diffPercentage: ${diffPercentage}`);
 };
 
+// change looksSame diffCluster to ignoringRectangles.
+const clusterToRectangle = (cluster) => {
+    const { left, top, right, bottom } = cluster;
+    return { x: left, y: top, w: right - left, h: bottom - top }
+};
+
+const looksSameAsync = (image1, image2, options) => {
+    return new Promise(resolve => {
+        looksSame(image1, image2, options, (error, result) => {
+            resolve(result);
+        });
+    });
+};
+
+const isRectangleIgnored = (ignoringRectangle, diffRectangle) => {
+    return diffRectangle.x >= ignoringRectangle.x
+        && diffRectangle.y >= ignoringRectangle.y
+        && diffRectangle.width <= ignoringRectangle.width
+        && diffRectangle.height <= ignoringRectangle.height;
+};
+
+const isRectanglesAllIgnored = (ignoringRectangles, diffRectangles) => {
+    for (const diffRectangle of diffRectangles) {
+        const isIgnored = ignoringRectangles.reduce((result, ignoringRectangle) => {
+            return result || isRectangleIgnored(ignoringRectangle, diffRectangle)
+        }, false);
+
+        if (!isIgnored) {
+            return false;
+        }
+    }
+
+    return true;
+};
+
 module.exports = {
     compare,
+    looksSameAsync,
+    clusterToRectangle,
+    isRectanglesAllIgnored,
 };

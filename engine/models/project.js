@@ -18,6 +18,8 @@ const ProjectSchema = new Schema({
     sharedProjectRootPath: { type: String, default: "", trim: true, maxlength: 500 },
     projectColorThreshold: { type: Number, default: 0, min: 0, max: 1 },
     projectDetectAntialiasing: { type: Boolean, default: true },
+    projectIgnoringCluster: { type: Boolean, default: true },
+    projectIgnoringClusterSize: { type: Number, default: 50, min: 1, max: 5000 },
     createdAt: { type: Date, default: Date.now },
 });
 

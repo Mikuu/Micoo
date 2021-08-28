@@ -1,5 +1,6 @@
 const enableIgnoring = () => {
     const DOR = document.querySelector.bind(document);
+    let ratio = null;
     let rectangles = [];
     let blockIgnoringExistRectangles = [];
 
@@ -109,7 +110,7 @@ const enableIgnoring = () => {
         const drawElement = document.getElementById('draw');
 
         const updateIgnoringAreaSize = (width, height) => {
-            const ratio = width / window.innerWidth;
+            ratio = width / window.innerWidth;
 
             const usingWidth = Math.min(width, window.innerWidth);
             const usingHeight = ratio >= 1 ? height / ratio : height;
@@ -124,7 +125,7 @@ const enableIgnoring = () => {
 
         const checkExist = setInterval(function() {
             if (imageLoaderElement.width * imageLoaderElement.height) {
-                // console.log(`screenshotWidth: ${imageLoaderElement.width}, screenshotHeight: ${imageLoaderElement.height}`);
+                console.log(`screenshotWidth: ${imageLoaderElement.width}, screenshotHeight: ${imageLoaderElement.height}`);
                 updateIgnoringAreaSize(imageLoaderElement.width, imageLoaderElement.height);
                 clearInterval(checkExist);
             }
@@ -190,7 +191,15 @@ const enableIgnoring = () => {
             body: JSON.stringify({
                 pid: pid,
                 caseName: caseName,
-                rectangles: rectangles
+                rectangles: rectangles,
+                // rectangles: ratio <= 1 ? rectangles : rectangles.map(rectangle => {
+                //     return {
+                //         x: rectangle.x * ratio,
+                //         y: rectangle.y * ratio,
+                //         width: rectangle.width * ratio,
+                //         height: rectangle.height * ratio
+                //     }
+                // })
             })
         });
 
@@ -270,6 +279,7 @@ const enableIgnoring = () => {
     updateIgnoringButton.onclick = update;
     removeRectangleButton.onclick = onClickRemove;
 
+    // resizeIgnoringArea();
     handleExistsRects();
     bundleCloseModalActions();
 };

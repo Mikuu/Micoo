@@ -8,6 +8,13 @@ const Schema = mongoose.Schema;
 /**
  * Build Schema
  */
+const RectangleSchema = new Schema({
+    x: { type: Number, default: null, min: [1, 'Must be greater than 0, got {VALUE}'] },
+    y: { type: Number, default: null, min: [1, 'Must be greater than 0, got {VALUE}'] },
+    width: { type: Number, default: null, min: [1, 'Must be greater than 0, got {VALUE}'] },
+    height: { type: Number, default: null, min: [1, 'Must be greater than 0, got {VALUE}'] }
+});
+
 const CaseSchema = new Schema(
     {
         pid: { type: String, default: "", trim: true, maxlength: 50 },
@@ -21,6 +28,9 @@ const CaseSchema = new Schema(
         linkBaseline: { type: String, default: "", trim: true, maxlength: 200 },
         linkLatest: { type: String, default: "", trim: true, maxlength: 200 },
         linkDiff: { type: String, default: "", trim: true, maxlength: 200 },
+        ignoringRectangles: [RectangleSchema],
+        // passed, failed, null
+        comprehensiveCaseResult: { type: String, default: null, trim: true, maxlength: 15 },
     },
     { timestamps: true }
 );
@@ -57,6 +67,16 @@ CaseSchema.methods = {
 
         return this.save();
     },
+
+    updateComprehensiveCaseResult: function (comprehensiveCaseResult) {
+        this.comprehensiveCaseResult = comprehensiveCaseResult;
+        return this.save();
+    },
+
+    updateIgnoringRectangles: function (rectangles) {
+        this.ignoringRectangles = [...rectangles];
+        return this.save();
+    }
 };
 
 module.exports = {
