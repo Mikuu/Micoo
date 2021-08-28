@@ -62,7 +62,7 @@ const updateBuild = async bid => {
 };
 
 const checkAndHandleIgnoring = async (project, build, createdCases) => {
-    console.dir((createdCases));
+    // console.dir((createdCases));
 
     for (const compareCase of Object.values(createdCases)) {
         if (compareCase.diffPercentage === 0) {
@@ -76,14 +76,16 @@ const checkAndHandleIgnoring = async (project, build, createdCases) => {
         }
         const { diffClusters } = await compareUtils.looksSameAsync(compareCase.baselinePath, compareCase.latestPath, clusterOptions);
         const diffRectangles = diffClusters.map(cluster => compareUtils.clusterToRectangle(cluster));
-        const rectanglesAllIgnored = compareUtils.isRectanglesAllIgnored(ignoring.rectangles, diffRectangles);
+        const isRectanglesAllIgnored = compareUtils.isRectanglesAllIgnored(ignoring.rectangles, diffRectangles);
 
-        console.log("allowed ignoring:");
-        console.log(ignoring.rectangles);
-        console.log("detected rectangles");
-        console.dir(diffRectangles);
-        console.log(`rectangleAllIgnored: `+rectanglesAllIgnored);
+        // console.log("allowed ignoring:");
+        // console.log(ignoring.rectangles);
+        // console.log("detected rectangles");
+        // console.dir(diffRectangles);
+        // console.log(`isRectangleAllIgnored: `+isRectanglesAllIgnored);
 
+        await caseService.setIgnoringRectangles(project.pid, build.bid, compareCase.caseName, ignoring.rectangles);
+        await caseService.setComprehensiveCaseResult(project.pid, build.bid, compareCase.caseName, isRectanglesAllIgnored);
     }
 };
 

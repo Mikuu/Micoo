@@ -54,7 +54,7 @@ const compare = (baselineFile, latestFile, projectColorThreshold, projectDetectA
 // change looksSame diffCluster to ignoringRectangles.
 const clusterToRectangle = (cluster) => {
     const { left, top, right, bottom } = cluster;
-    return { x: left, y: top, w: right - left, h: bottom - top }
+    return { x: left, y: top, width: right - left, height: bottom - top }
 };
 
 const looksSameAsync = (image1, image2, options) => {

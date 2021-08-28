@@ -25,8 +25,32 @@ const getAllCases = async () => {
     return await Case.find({});
 };
 
+const setComprehensiveCaseResult = async (pid, bid, caseName, comprehensiveCaseResult) => {
+    const testCase = await Case.findOne({ pid: pid, bid: bid, caseName: caseName });
+    if (testCase) {
+        await testCase.updateComprehensiveCaseResult(comprehensiveCaseResult);
+    } else {
+        console.log(
+            `CASE-SERVICE: set comprehensiveCaseResult failed, no test case found by pid=${pid} bid=${bid} caseName=${caseName}`
+        );
+    }
+};
+
+const setIgnoringRectangles = async (pid, bid, caseName, rectangles) => {
+    const testCase = await Case.findOne({ pid: pid, bid: bid, caseName: caseName });
+    if (testCase) {
+        await testCase.updateIgnoringRectangles(rectangles);
+    } else {
+        console.log(
+            `CASE-SERVICE: set ignoringRectangles failed, no test case found by pid=${pid} bid=${bid} caseName=${caseName}`
+        );
+    }
+};
+
 module.exports = {
     createCase,
     getAllCasesInBuild,
     getAllCases,
+    setIgnoringRectangles,
+    setComprehensiveCaseResult,
 };
