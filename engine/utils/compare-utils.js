@@ -65,11 +65,24 @@ const looksSameAsync = (image1, image2, options) => {
     });
 };
 
+const rectangleToCoordinate = (rectangle) => {
+    return {
+        tl: { x: rectangle.x, y: rectangle.y },
+        tr: { x: rectangle.x + rectangle.width, y: rectangle.y },
+        br: { x: rectangle.x + rectangle.width, y: rectangle.y + rectangle.height },
+        bl: { x: rectangle.x, y: rectangle.y + rectangle.height },
+    }
+};
+
+
 const isRectangleIgnored = (ignoringRectangle, diffRectangle) => {
-    return diffRectangle.x >= ignoringRectangle.x
-        && diffRectangle.y >= ignoringRectangle.y
-        && diffRectangle.width <= ignoringRectangle.width
-        && diffRectangle.height <= ignoringRectangle.height;
+    const ic = rectangleToCoordinate(ignoringRectangle);
+    const dc = rectangleToCoordinate(diffRectangle);
+
+    return (dc.tl.x >= ic.tl.x && dc.tl.y >= ic.tl.y)
+        && (dc.tr.x <= ic.tr.x && dc.tr.y >= ic.tr.y)
+        && (dc.br.x <= ic.br.x && dc.br.y <= ic.br.y)
+        && (dc.bl.x >= ic.bl.x && dc.bl.y <= ic.bl.y);
 };
 
 const isRectanglesAllIgnored = (ignoringRectangles, diffRectangles) => {
