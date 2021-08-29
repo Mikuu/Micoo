@@ -12,6 +12,8 @@ block pageAction
 
         if baselineUrl || latestUrl
             button#openIgnoring.btn(type='button' data-toggle='modal' data-target='#ignoringModal')
+                if rectangles.length
+                    span.text-warning.pr-1 *
                 i.bi.bi-aspect-ratio.action-fbi(style="font-size: x-large")
 
         if baselineUrl && latestUrl

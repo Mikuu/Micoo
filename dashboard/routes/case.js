@@ -14,7 +14,6 @@ router.get("/:cid", authenticateJWT, function(req, res, next) {
             const build = await buildService.getBuildByBid(testCase.bid);
             const project = await projectService.getProjectByPid(testCase.pid);
             const ignoring = await ignoringService.getPlainIgnoring(project.pid, testCase.caseName);
-            const testCaseIgnoringRectangles = await caseService.getPlainTestCaseIgnoringRectangles(testCase.cid);
 
             const view = testCase.linkBaseline ? (testCase.diffPercentage ? 3 : 2) : 1;
 
@@ -37,7 +36,6 @@ router.get("/:cid", authenticateJWT, function(req, res, next) {
                 rectangles: ignoring ? ignoring.rectangles : [],
                 rectanglesString: ignoring && ignoring.rectangles ? JSON.stringify(ignoring.rectangles) : "",
                 comprehensiveCaseResult: testCase.comprehensiveCaseResult,
-                testCaseIgnoringRectangles: testCaseIgnoringRectangles,
             });
         } catch (error) {
             console.error(error);
