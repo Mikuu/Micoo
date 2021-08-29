@@ -104,6 +104,13 @@ const enableIgnoring = () => {
         return rect;
     }
 
+    const isSameRectangle = (rectangle1, rectangle2) => {
+        return rectangle1.x == rectangle2.x
+            && rectangle1.y == rectangle2.y
+            && rectangle1.width == rectangle2.width
+            && rectangle1.height == rectangle2.height
+    }
+
     function resizeIgnoringAreaAndDrawExistRectangles() {
         const imageElement = document.getElementById("screenshot");
         const ignoringAreaElement = document.getElementById("ignoring-area");
@@ -173,21 +180,27 @@ const enableIgnoring = () => {
         removeRectangleButton.classList.add("disabled");
     };
 
-    const enableOrDisablePersistRectanglesButton = () => {
-        const persistRectanglesButton = document.getElementById("updateIgnoring");
+    const isRectanglesChanged = () => {
         if (blockIgnoringExistRectangles.length !== rectangles.length) {
-            persistRectanglesButton.classList.remove("disabled");
-            return;
+            return true;
         }
 
         for (const persistRectangle of blockIgnoringExistRectangles) {
             if (!rectangles.find((newRectangle) => isSameRectangle(persistRectangle, newRectangle))) {
-                persistRectanglesButton.classList.remove("disabled");
-                return;
+                return true;
             }
         }
 
-        persistRectanglesButton.classList.add("disabled");
+        return false;
+    };
+
+    const enableOrDisablePersistRectanglesButton = () => {
+        const persistRectanglesButton = document.getElementById("updateIgnoring");
+        if (isRectanglesChanged()) {
+            persistRectanglesButton.classList.remove("disabled");
+        } else {
+            persistRectanglesButton.classList.add("disabled");
+        }
     };
 
     const openIgnoring = () => {
@@ -222,15 +235,9 @@ const enableIgnoring = () => {
 
         response.json().then(data => {
             document.getElementById("ignoringSaveSpinner").classList.add("disabled");
+            blockIgnoringExistRectangles = [...rectangles];
         });
     };
-
-    const isSameRectangle = (rectangle1, rectangle2) => {
-        return rectangle1.x == rectangle2.x
-            && rectangle1.y == rectangle2.y
-            && rectangle1.width == rectangle2.width
-            && rectangle1.height == rectangle2.height
-    }
 
     const onClickRemove = () => {
         const rectToRectangle = (rect) => {
@@ -260,6 +267,10 @@ const enableIgnoring = () => {
         }
 
         enableOrDisablePersistRectanglesButton();
+
+        if (isRectanglesChanged()) {
+            update();
+        }
     };
 
     const bundleCloseModalActions = () => {
