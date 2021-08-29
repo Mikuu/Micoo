@@ -56,3 +56,17 @@
 #ignoringSaveSpinner.disabled {
     display: none;
 }
+
+#diffOverlay-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#diffOverlay-boxes {
+    fill: #00ff04;
+    stroke:white;
+    stroke-width:1;
+    fill-opacity:0.2;
+    stroke-opacity:0.9;
+}

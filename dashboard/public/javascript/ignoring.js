@@ -136,7 +136,7 @@ const enableIgnoring = () => {
 
         const updateIgnoringAreaSize = (width, height) => {
             ignoringRatio = width / window.innerWidth;
-            // console.log(`initialize ignoringRatio: ${ignoringRatio}`);
+            // console.log(`initialize ignoringRatio: ${ignoringRatio} from width: ${width}, window.innerWidth: ${window.innerWidth}`);
 
             const usingWidth = Math.min(width, window.innerWidth);
             const usingHeight = ignoringRatio >= 1 ? height / ignoringRatio : height;
@@ -289,4 +289,88 @@ const enableIgnoring = () => {
 
     resizeIgnoringAreaAndDrawExistRectangles();
     bundleCloseModalActions();
+};
+
+const appendRectanglesOnDiffOverlay = () => {
+    let appendRectanglesOnDiffOverlay = true;
+
+    const diffOverlayElement = document.getElementById("diffOverlay");
+
+    const createSVGElement = (width, height) => {
+        const svgElement = document.createElementNS("http://www.w3.org/2000/svg","svg");
+
+        svgElement.setAttribute("id", "diffOverlay-svg");
+        svgElement.setAttributeNS(null,"width", "100%");
+        svgElement.setAttributeNS(null,"height", "100%");
+        svgElement.setAttributeNS("http://www.w3.org/2000/xmlns/","xmlns", "http://www.w3.org/2000/svg");
+        svgElement.setAttribute("viewBox", `0 0 ${width} ${height}`);
+
+        return svgElement;
+    };
+
+    const createGBoxElement = () => {
+        const gBoxElement = document.createElementNS("http://www.w3.org/2000/svg","g");
+        gBoxElement.setAttribute("id", "diffOverlay-boxes");
+        return gBoxElement;
+    };
+
+    const createRectElement = (rectangle) => {
+        const rectElement = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        rectElement.setAttributeNS(null,"x", rectangle.x);
+        rectElement.setAttributeNS(null,"y", rectangle.y);
+        rectElement.setAttributeNS(null,"width", rectangle.width);
+        rectElement.setAttributeNS(null,"height", rectangle.height);
+        return rectElement;
+    };
+
+    const retrieveExistRectangles = () => {
+        /**
+         * this element is in ignoring modal, would be removed once enableIgnoring() is called,
+         * so appendRectanglesOnDiffOverlay() must be called before that
+         */
+        const rectanglesString = document.getElementById("boxes").getAttribute("data-rectangles");
+        const existRectangles = rectanglesString ? JSON.parse(rectanglesString) : [];
+        return existRectangles;
+    };
+
+    const oriRectangleToRectangleOnDiffOverlay = (oriRectangle, ratio) => {
+        return {
+            x: oriRectangle.x / ratio,
+            y: oriRectangle.y / ratio,
+            width: oriRectangle.width / ratio,
+            height: oriRectangle.height / ratio
+        };
+    };
+
+    const painting = () => {
+        const imageElement = document.querySelector("#diffOverlay > img");
+        const imageLoaderElement = new Image();
+        imageLoaderElement.src = imageElement.src;
+
+        const processing = () => {
+            const diffImageRatio = imageLoaderElement.width / diffOverlayElement.offsetWidth;
+            const existsRectangles = retrieveExistRectangles();
+            const svgElement = createSVGElement(diffOverlayElement.offsetWidth, diffOverlayElement.offsetHeight);
+            const gBoxElement = createGBoxElement();
+
+            for (const rectangle of existsRectangles) {
+                const rectElement = createRectElement(oriRectangleToRectangleOnDiffOverlay(rectangle, diffImageRatio));
+                gBoxElement.appendChild(rectElement);
+            }
+
+            svgElement.appendChild(gBoxElement);
+            diffOverlayElement.appendChild(svgElement);
+        };
+
+        const checkExist = setInterval(function() {
+            if (imageLoaderElement.width * imageLoaderElement.height * diffOverlayElement.offsetWidth * diffOverlayElement.offsetHeight) {
+                console.log(`diffImageWidth: ${imageLoaderElement.width}, diffImageHeight: ${imageLoaderElement.height}, `
+                    + `overlayWidth: ${diffOverlayElement.offsetWidth}, overlayHeight: ${diffOverlayElement.offsetHeight}`);
+                processing();
+                clearInterval(checkExist);
+            }
+        }, 100);
+    };
+
+    painting();
 };
