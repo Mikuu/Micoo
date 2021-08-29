@@ -1,0 +1,72 @@
+#screenshot {
+    position:absolute;
+    z-index:1;
+
+}
+#draw {
+    position:absolute;
+    z-index:2;
+}
+#draw #boxes {
+    fill:blue;
+    stroke:white;
+    stroke-width:1;
+    fill-opacity:0.5;
+    stroke-opacity:0.9;
+}
+#draw #boxes >rect.toRemove {
+    fill:blue;
+    stroke: #65ff03;
+    stroke-width:3;
+    fill-opacity:0.5;
+    stroke-opacity:0.9;
+}
+#draw #marquee {
+    fill:white;
+    stroke:red;
+    stroke-width:1;
+    stroke-dasharray:5,5;
+    stroke-opacity:0.9;
+    fill-opacity:0.2;
+}
+#draw #marquee.hide {
+    display:none;
+}
+
+.ignoring-modal-dialog {
+    max-width: 100% !important;
+    width: auto !important;
+    display: table;
+}
+
+.ignoring-modal-title-action {
+    width: 48px;
+    padding: 3px 6px !important;
+    margin-left: 8px;
+}
+
+#updateIgnoring.disabled {
+    pointer-events: none;
+}
+
+#removeRectangle.disabled {
+    pointer-events: none;
+}
+
+#ignoringSaveSpinner.disabled {
+    display: none;
+}
+
+#diffOverlay-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#diffOverlay-boxes {
+    fill: #00ff04;
+    stroke:white;
+    stroke-width:1;
+    fill-opacity:0.2;
+    stroke-opacity:0.9;
+}

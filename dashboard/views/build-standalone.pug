@@ -58,7 +58,10 @@ block main
                             when "passed"
                                 .text-success #{testCase.caseResult}
                             when "failed"
-                                .text-danger #{testCase.caseResult}
+                                if testCase.comprehensiveCaseResult === "passed"
+                                    .text-info #{testCase.comprehensiveCaseResult}
+                                else
+                                    .text-danger #{testCase.caseResult}
                             default
                                 .text-info #{testCase.caseResult}
 

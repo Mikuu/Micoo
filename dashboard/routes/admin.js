@@ -8,6 +8,7 @@ const projectService = require("../services/project-service");
 const buildService = require("../services/build-service");
 const caseService = require("../services/case-service");
 const fileService = require("../services/file-service");
+const ignoringService = require("../services/ignoring-service");
 const validatorUtils = require("../utils/validator-utils");
 const { authenticateJWT } = require("../utils/auth-utils");
 
@@ -78,6 +79,7 @@ router.post("/project/clean/:pid", authenticateJWT, function(req, res, next) {
 
             await caseService.deleteByPid(project.pid);
             await buildService.deleteByPid(project.pid);
+            await ignoringService.cleanProjectIgnoring(project.pid);
 
             fileService.clearProjectArtifacts(project.projectName);
 
@@ -99,6 +101,7 @@ router.post("/project/delete/:pid", authenticateJWT, function(req, res, next) {
             await caseService.deleteByPid(project.pid);
             await buildService.deleteByPid(project.pid);
             await projectService.deleteProject(project.pid);
+            await ignoringService.cleanProjectIgnoring(project.pid);
 
             fileService.deleteProjectDirectory(project.projectName);
             fileService.deleteProjectImage(project.projectName);
@@ -169,7 +172,7 @@ router.post("/project/image/:pid", authenticateJWT, function(req, res, next) {
 });
 
 /**
- * Upload project config
+ * Update project config
  * */
 router.post("/project/config/:pid", authenticateJWT, function(req, res, next) {
     (async () => {
@@ -192,6 +195,19 @@ router.post("/project/config/:pid", authenticateJWT, function(req, res, next) {
                 await projectService.updateProjectDetectAntialiasing(project.pid, true);
             } else {
                 await projectService.updateProjectDetectAntialiasing(project.pid, false);
+            }
+
+            if (req.body.projectIgnoringCluster === "on") {
+                await projectService.updateEnableProjectIgnoringCluster(project.pid, true);
+            } else {
+                await projectService.updateEnableProjectIgnoringCluster(project.pid, false);
+            }
+
+            const projectIgnoringClusterSize = Number(req.body.projectIgnoringClusterSize);
+            if (projectIgnoringClusterSize >= 1 && projectIgnoringClusterSize <= 5000) {
+                await projectService.updateProjectIgnoringClusterSize(project.pid, projectIgnoringClusterSize);
+            } else {
+                console.error(`projectClusterSize ${req.body.projectIgnoringClusterSize} from PID ${req.params.pid} is not acceptable`);
             }
 
             res.redirect(`/project/${project.pid}/page/1`);

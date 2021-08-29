@@ -85,7 +85,9 @@ router.get("/:pid/page/:page", authenticateJWT, function(req, res, next) {
                 timeFormatter: commonUtils.formatTime,
                 apiKey: project.getAPIKey(),
                 projectColorThreshold: project.projectColorThreshold,
-                projectDetectAntialiasing: project.projectDetectAntialiasing
+                projectDetectAntialiasing: project.projectDetectAntialiasing,
+                projectIgnoringCluster: project.projectIgnoringCluster,
+                projectIgnoringClusterSize: project.projectIgnoringClusterSize,
             });
         } catch (error) {
             console.error(error);

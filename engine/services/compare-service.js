@@ -2,6 +2,7 @@ const screenshotsService = require("../services/screenshots-service");
 const compareUtils = require("../utils/compare-utils");
 const caseService = require("../services/case-service");
 const buildService = require("../services/build-service");
+const ignoringService = require("../services/ignoring-service");
 
 const doCompare = (projectName, projectColorThreshold, projectDetectAntialiasing) => {
     let latestScreenshot, baselineScreenshot;
@@ -36,17 +37,47 @@ const generateCaseInDatabase = async (pid, projectName, bid, buildIndex) => {
             { threshold: 0 }
         );
     }
+
+    return allCases;
 };
 
 const determineBuildResult = async bid => {
     let buildResult = "passed";
     const allCases = await caseService.getAllCasesInBuild(bid);
     const caseCount = allCases.length;
-    const allCasesResults = allCases.map(eachCase => eachCase.caseResult);
 
-    if (allCasesResults.includes("undetermined")) {
+    let pid;
+    let [ passedCount, failedCount, undeterminedCount, passedByIgnoringRectanglesCount ] = [ 0, 0, 0, 0 ];
+    for (const testCase of allCases) {
+        pid = testCase.pid;
+
+        switch (testCase.caseResult) {
+            case "undetermined":
+                undeterminedCount += 1;
+                break;
+            case "failed":
+                failedCount += 1;
+                break;
+            case "passed":
+                passedCount += 1;
+                break;
+        }
+
+        if (testCase.comprehensiveCaseResult === "passed") {
+            passedByIgnoringRectanglesCount += 1;
+        }
+    }
+
+    await buildService.updateTestCaseCount(pid, bid, {
+        passed: passedCount,
+        failed: failedCount,
+        undeterminedCount: undeterminedCount,
+        passedByIgnoringRectangles: passedByIgnoringRectanglesCount
+    });
+
+    if (undeterminedCount) {
         buildResult = "undetermined";
-    } else if (allCasesResults.includes("failed")) {
+    } else if (failedCount > passedByIgnoringRectanglesCount) {
         buildResult = "failed";
     }
 
@@ -58,6 +89,52 @@ const updateBuild = async bid => {
     await buildService.finalize(bid, buildResult, caseCount);
 };
 
+const checkAndHandleIgnoring = async (project, build, createdCases) => {
+    // console.dir((createdCases));
+
+    for (const compareCase of Object.values(createdCases)) {
+        if (compareCase.diffPercentage === 0) {
+            // console.log(
+            //     `COMPARE-SERVICE: testCase pid=${project.pid}, bid=${build.bid}, caseName=${compareCase.caseName} ` +
+            //     `is same to baseline, not to ignoring`
+            // );
+            continue;
+        }
+
+        const ignoring = await ignoringService.getPlainIgnoring(project.pid, compareCase.caseName);
+
+        if (!ignoring) {
+            // console.log(
+            //     `COMPARE-SERVICE: testCase pid=${project.pid}, bid=${build.bid}, caseName=${compareCase.caseName} ` +
+            //     `has no ignoringRectangles, not to ignoring`
+            // );
+            continue;
+        }
+
+        const clusterOptions = {
+            shouldCluster: project.projectIgnoringCluster,
+            clustersSize: project.projectIgnoringClusterSize
+        }
+        const { diffClusters } = await compareUtils.looksSameAsync(compareCase.baselinePath, compareCase.latestPath, clusterOptions);
+        const diffRectangles = diffClusters.map(cluster => compareUtils.clusterToRectangle(cluster));
+        const isRectanglesAllIgnored = compareUtils.isRectanglesAllIgnored(ignoring.rectangles, diffRectangles);
+
+        // console.log("allowed ignoring:");
+        // console.log(ignoring.rectangles);
+        // console.log("detected rectangles");
+        // console.dir(diffRectangles);
+        // console.log(`isRectangleAllIgnored: `+isRectanglesAllIgnored);
+
+        await caseService.setIgnoringRectangles(project.pid, build.bid, compareCase.caseName, ignoring.rectangles);
+        await caseService.setComprehensiveCaseResult(
+            project.pid,
+            build.bid,
+            compareCase.caseName,
+            isRectanglesAllIgnored ? "passed" : "failed"
+        );
+    }
+};
+
 const comprehensiveCompare = async (project, build) => {
     const loggerHeader = `projectId=${project.pid} | build=${build.bid} | `;
 
@@ -67,8 +144,6 @@ const comprehensiveCompare = async (project, build) => {
     console.log(`${loggerHeader} create project compare root directory ..............................................`);
     screenshotsService.createScreenshotsRootDirectory(projectName);
     console.log(`${loggerHeader} create project compare root directory .................................... completed`);
-
-    console.log(`${loggerHeader} moving in baseline .................................................................`);
 
     console.log(`${loggerHeader} moving in baseline .................................................................`);
     await screenshotsService.moveInBaseline(projectName);
@@ -87,8 +162,12 @@ const comprehensiveCompare = async (project, build) => {
     console.log(`${loggerHeader} generating build artifacts ............................................. completed\n`);
 
     console.log(`${loggerHeader} generating case in DB ..............................................................`);
-    await generateCaseInDatabase(project.pid, projectName, build.bid, build.buildIndex);
+    const createdCases = await generateCaseInDatabase(project.pid, projectName, build.bid, build.buildIndex);
     console.log(`${loggerHeader} generating case in DB .................................................. completed\n`);
+
+    console.log(`${loggerHeader} check and handle ignoring ..........................................................`);
+    await checkAndHandleIgnoring(project, build, createdCases);
+    console.log(`${loggerHeader} check and handle ignoring .............................................. completed\n`);
 
     console.log(`${loggerHeader} updating build .....................................................................`);
     await updateBuild(build.bid);

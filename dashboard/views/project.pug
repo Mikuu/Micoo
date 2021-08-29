@@ -27,17 +27,31 @@ block projectAction
                       li.list-group-item.config-item.d-flex.justify-content-between.flex-row
                         .font-weight-light.text-white API KEY
                         .font-weight-light.text-white #{apiKey}
-                      li.list-group-item.config-item.d-flex.justify-content-between.flex-row.form-check
+                      li.list-group-item.config-item.d-flex.justify-content-between.flex-row
                         .font-weight-light.text-white Detect Antialiasing
                         if projectDetectAntialiasing
                           input#projectDetectAntialiasing.form-check-input(type='checkbox' name='projectDetectAntialiasing' style='position: unset' checked)
                         else
                           input#projectDetectAntialiasing.form-check-input(type='checkbox' name='projectDetectAntialiasing' style='position: unset')
-                      li.list-group-item.config-item.d-flex.justify-content-between.flex-row.form-group
-                        .font-weight-light.text-white(for='projectColorThreshold') Color Threshold
+                      li.list-group-item.config-item.d-flex.justify-content-between.flex-row
+                        .font-weight-light.text-white.d-flex.align-items-center(for='projectColorThreshold') Color Threshold
                         select#projectColorThreshold.form-control(name='projectColorThreshold' style='max-width: max-content')
                           each val in [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
                             if val === projectColorThreshold
+                              option(selected)= val
+                            else
+                              option= val
+                      li.list-group-item.config-item.d-flex.justify-content-between.flex-row
+                        .font-weight-light.text-white Ignoring Cluster
+                        if projectIgnoringCluster
+                          input#projectIgnoringCluster.form-check-input(type='checkbox' name='projectIgnoringCluster' style='position: unset' checked)
+                        else
+                          input#projectIgnoringCluster.form-check-input(type='checkbox' name='projectIgnoringCluster' style='position: unset')
+                      li.list-group-item.config-item.d-flex.justify-content-between.flex-row
+                        .font-weight-light.text-white.d-flex.align-items-center(for='projectIgnoringClusterSize') Ignoring Cluster Size
+                        select#projectIgnoringClusterSize.form-control(name='projectIgnoringClusterSize' style='max-width: max-content')
+                          each val in [10, 30, 50, 100, 150, 200, 300, 500]
+                            if val === projectIgnoringClusterSize
                               option(selected)= val
                             else
                               option= val
@@ -154,7 +168,10 @@ block main
                          td #{build.caseCount}
                          case build.buildResult
                              when "passed"
-                                 td.text-success #{build.buildResult}
+                                 if build.casePassedByIgnoringRectanglesCount
+                                    td.text-info #{build.buildResult}
+                                 else
+                                    td.text-success #{build.buildResult}
                              when "failed"
                                  td.text-danger #{build.buildResult}
                              default

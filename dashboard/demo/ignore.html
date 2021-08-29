@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ignoring</title>
+    <link rel="stylesheet" href="public/stylesheets/ignoring.css">
+    <link rel="stylesheet" href="public/stylesheets/bootstrap.min.css" crossorigin="anonymous">
+    <script src="public/javascript/jquery-3.4.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="public/javascript/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="public/stylesheets/bootstrap-icons.css">
+</head>
+<body>
+
+<div class="p-5">
+    <button id="openIgnoring" type="button" class="btn" data-toggle="modal" data-target="#ignoringModal">
+        <i class="bi bi-aspect-ratio"></i>
+    </button>
+</div>
+
+<div class="modal fade" id="ignoringModal" tabindex="-1" aria-labelledby="ignoringModalLabel" aria-hidden="true">
+    <div class="modal-dialog ignoring-modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header d-flex align-items-center">
+                <p class="modal-title" id="exampleModalLabel">Edit Ignoring</p>
+                <div class="d-flex align-items-center">
+                    <div class="pr-4 border-right">
+                        <div id="ignoringSaveSpinner" class="spinner-border spinner-border-sm text-info disabled" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <button id="updateIgnoring" type="button" class="btn btn-outline-success ignoring-modal-title-action" data-pid="pidValue" data-caseName="caseNameValue">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button id="removeRectangle" type="button" class="btn btn-outline-danger ignoring-modal-title-action">
+                            <i class="bi bi-eraser"></i>
+                        </button>
+                    </div>
+
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="modal-body p-0">
+                    <div id="ignoring-area">
+                        <img width="100%" height="100%" src="public/image/bg_rotate.jpeg" id="screenshot" draggable="false">
+                        <svg width="100%" height="100%" id="draw" xmlns="http://www.w3.org/2000/svg">
+                            <rect id="marquee" x="450" y="420" width="150" height="150" />
+                            <g id="boxes"></g>
+                        </svg>
+                    </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="public/javascript/ignoring.js"></script>
+<script>
+    enableIgnoring();
+</script>
+</body>
+</html>

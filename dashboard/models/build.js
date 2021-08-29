@@ -20,6 +20,10 @@ const BuildSchema = new Schema({
     isBaseline: { type: Boolean, default: false },
     caseCount: { type: Number, default: 0 },
     createdAt: { type: Date, default: Date.now },
+    caseFailedCount: { type: Number, default: 0 },
+    casePassedCount: { type: Number, default: 0 },
+    caseUndeterminedCount: { type: Number, default: 0 },
+    casePassedByIgnoringRectanglesCount: { type: Number, default: 0 },
 });
 
 /**
@@ -53,6 +57,14 @@ BuildSchema.methods = {
         this.buildResult = buildResult;
         return this.save();
     },
+
+    setCaseCount: function (caseCount) {
+        this.casePassedCount = caseCount.passed;
+        this.caseFailedCount = caseCount.failed;
+        this.caseUndeterminedCount = caseCount.undetermined;
+        this.casePassedByIgnoringRectanglesCount = caseCount.passedByIgnoringRectangles;
+        return this.save();
+    }
 };
 
 module.exports = {

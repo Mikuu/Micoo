@@ -18,6 +18,8 @@ const ProjectSchema = new Schema({
     sharedProjectRootPath: { type: String, default: "", trim: true, maxlength: 500 },
     projectColorThreshold: { type: Number, default: 0.1, min: 0, max: 1 },
     projectDetectAntialiasing: { type: Boolean, default: true },
+    projectIgnoringCluster: { type: Boolean, default: true },
+    projectIgnoringClusterSize: { type: Number, default: 50, min: 1, max: 5000 },
     createdAt: { type: Date, default: Date.now },
 });
 
@@ -64,6 +66,16 @@ ProjectSchema.methods = {
 
     getAPIKey: function() {
         return decryptAPIKey(this.apiKey);
+    },
+
+    updateProjectIgnoringCluster: function (enableIgnoringCluster) {
+        this.projectIgnoringCluster = enableIgnoringCluster;
+        return this.save();
+    },
+
+    updateProjectIgnoringClusterSize: function (projectIgnoringClusterSize) {
+        this.projectIgnoringClusterSize = projectIgnoringClusterSize;
+        return this.save();
     }
 };
 

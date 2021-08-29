@@ -10,8 +10,14 @@ block breadcrumb
 block pageAction
     .d-flex.justify-content-end.align-items-center(style="height: 35px;")
 
+        if baselineUrl || latestUrl
+            button#openIgnoring.btn(type='button' data-toggle='modal' data-target='#ignoringModal')
+                if rectangles.length
+                    span.text-warning.pr-1 *
+                i.bi.bi-aspect-ratio.action-fbi(style="font-size: x-large")
+
         if baselineUrl && latestUrl
-            button#openImageCompareModalButton.btn.image-compare-button(type='button' data-toggle='modal' data-target='#imageCompareModal' disabled)
+            button#openImageCompareModalButton.btn.image-compare-button.pr-3(type='button' data-toggle='modal' data-target='#imageCompareModal' disabled)
                 i.fa.fa-images.fa-1x.action-fbi(aria-hidden='true')
 
         if diffPercentage
@@ -23,9 +29,14 @@ block pageAction
                  .d-flex.align-items-center.justify-content-center.icon-result-passed
                      ion-icon(name="checkmark-outline")
         else if caseResult === "failed"
-            .pr-3(style="width: 48px;")
-                .d-flex.align-items-center.justify-content-center.icon-result-failed
-                    ion-icon(name="close-outline")
+            if comprehensiveCaseResult === "passed"
+                .pr-3(style="width: 48px;")
+                     .d-flex.align-items-center.justify-content-center.icon-result-passed.border.border-warning.rounded
+                         ion-icon(name="checkmark-outline")
+            else
+                .pr-3(style="width: 48px;")
+                    .d-flex.align-items-center.justify-content-center.icon-result-failed
+                        ion-icon(name="close-outline")
 
 
 
@@ -76,6 +87,28 @@ block pageAction
               img#image-compare-latest(src=latestUrl alt='')
           .modal-footer
 
+    #ignoringModal.modal.fade(tabindex='-1' aria-labelledby='ignoringModalLabel' aria-hidden='true')
+          .modal-dialog.ignoring-modal-dialog
+            .modal-content
+              .modal-header.d-flex.align-items-center
+                p#exampleModalLabel.modal-title Edit Ignoring
+                .d-flex.align-items-center
+                  .pr-4.border-right
+                    #ignoringSaveSpinner.spinner-border.spinner-border-sm.text-info.disabled(role='status')
+                          span.sr-only Loading...
+                    button#removeRectangle.btn.btn-outline-danger.ignoring-modal-title-action(type='button')
+                      i.bi.bi-eraser
+                    button#updateIgnoring.btn.btn-outline-success.ignoring-modal-title-action(type='button' data-pid=pid data-caseName=caseName)
+                      i.bi.bi-save
+                  button#closeIgnoringModal.close(type='button' data-dismiss='modal' aria-label='Close')
+                    span(aria-hidden='true') &times;
+              .modal-body.p-0
+                #ignoring-area
+                  img#screenshot(width='100%' height='100%' src=baselineUrl || latestUrl draggable='false')
+                  svg#draw(width='100%' height='100%' xmlns='http://www.w3.org/2000/svg')
+                    rect#marquee(x='450' y='420' width='150' height='150')
+                    g#boxes(data-rectangles=rectanglesString)
+
 block main
     case view
         when 1
@@ -110,7 +143,7 @@ block main
                                 div
                                     img.img-fluid(src=latestUrl alt="overlay-latest")
                                 .overlay
-                                .overlay
+                                #diffOverlay.overlay
                                     img.img-fluid(src=diffUrl alt="overlay-diff")
                     .col-4.d-flex.justify-content-center
                         figure.figure
@@ -135,17 +168,15 @@ block main
           .modal-body
             img(src=latestUrl style='max-width: 100%;')
 
-    //- script(src="/public/javascript/jquery-3.4.1.slim.min.js" crossorigin="anonymous")
-    //- script.
-    //-     window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"><\\/script>')
-    //- script(src="/public/javascript/bootstrap.bundle.min.js" crossorigin="anonymous")
-    //- script(src="/public/javascript/ionicons.js")
-    //- //script(src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js")
+    script(src="/public/javascript/jquery-3.5.1.slim.min.js" crossorigin="anonymous")
+    script(src="/public/javascript/bootstrap.bundle.min.js" crossorigin="anonymous")
     script(src='/public/javascript/image-compare-viewer.min.js' crossorigin="anonymous")
     script(src='/public/javascript/image-compare.js' crossorigin="anonymous")
-    script.
-      createImageCompareModal();
+    script(src='/public/javascript/ignoring.js' crossorigin="anonymous")
     script(src='/public/javascript/wheelzoom.js' crossorigin="anonymous")
     script(src='/public/javascript/image-display.js' crossorigin="anonymous")
     script.
       applyImageDisplay();
+      createImageCompareModal();
+      appendRectanglesOnDiffOverlay();
+      enableIgnoring();

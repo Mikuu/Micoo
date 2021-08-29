@@ -124,6 +124,13 @@ const latestStats = async pid => {
     }
 };
 
+const updateTestCaseCount = async (pid, bid, caseCount) => {
+    const build = await Build.findOne( { pid: pid, bid: bid });
+    if (build) {
+        await build.setCaseCount(caseCount);
+    }
+};
+
 module.exports = {
     updateBuildResult,
     getBuildByBid,
@@ -135,4 +142,5 @@ module.exports = {
     deleteByPid,
     stats,
     latestStats,
+    updateTestCaseCount,
 };

@@ -21,3 +21,5 @@
 /testing/cypress/micoo-screenshots/
 /testing/cypress/cypress/screenshots/
 /testing/cypress/cypress/videos/
+/bug
+/code

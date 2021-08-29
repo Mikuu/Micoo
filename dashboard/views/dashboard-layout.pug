@@ -6,11 +6,14 @@ html(lang="en")
         meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
         // Bootstrap CSS
         link(rel="stylesheet" href="/public/stylesheets/bootstrap.min.css" crossorigin="anonymous")
+        link(rel="stylesheet" href="/public/stylesheets/bootstrap-icons.css" crossorigin="anonymous")
         // Icon
         link(rel="stylesheet" href="/public/stylesheets/fontawesome.all.min.css" crossorigin="anonymous")
         // Image Compare
         link(rel='stylesheet' href='/public/stylesheets/image-compare-modal.css' crossorigin="anonymous")
         link(rel='stylesheet' href='/public/stylesheets/image-compare-viewer.min.css' crossorigin="anonymous")
+        // Image Ignoring
+        link(rel='stylesheet' href='/public/stylesheets/ignoring.css' crossorigin="anonymous")
         // Image Modal Enlarge
         link(rel='stylesheet' href='/public/stylesheets/image-enlarge-modal.css' crossorigin="anonymous")
         title Micoo
@@ -40,7 +43,7 @@ html(lang="en")
                     .col-sm-8.col-md-7.py-4
                         h4.text-white About
                         p.text-muted
-                            | Micoo is a screenshot pixel compare service, which provides simple but convenient usages in regression visual testing. Micoo is composed of:
+                            | Micoo is a screenshot pixel compare service, which provides simple but convenient usages in visual regression testing. Micoo is composed of:
                             a(href="https://github.com/Prior99/native-image-diff#readme")  Native-image-diff
                             | ,
                             a(href="https://expressjs.com/")  ExpressJS
@@ -48,8 +51,9 @@ html(lang="en")
                             a(href="https://getbootstrap.com/")  Bootstrap
                             | ,
                             a(href="https://pugjs.org/")  Pug
-                            | , and
-                            a(href="https://www.mongodb.com/")  MongoDB.
+                            | ,
+                            a(href="https://www.mongodb.com/")  MongoDB
+                            | and many other works.
                     .col-sm-4.offset-md-1.py-4
                         h4.text-white Project
                         ul.list-unstyled
@@ -77,9 +81,9 @@ html(lang="en")
     //script(src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js")
     script(src="/public/javascript/bs-custom-file-input.min.js")
     // jQuery first, then Popper.js, then Bootstrap JS
-    script(src="/public/javascript/jquery-3.4.1.slim.min.js" crossorigin="anonymous")
+    script(src="/public/javascript/jquery-3.5.1.slim.min.js" crossorigin="anonymous")
     script.
-        window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"><\\/script>')
+        window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"><\\/script>')
     script(src="/public/javascript/popper.min.js" crossorigin="anonymous")
     script(src="/public/javascript/bootstrap.min.js" crossorigin="anonymous")
     script(src="/public/javascript/bootstrap.bundle.min.js" crossorigin="anonymous")
