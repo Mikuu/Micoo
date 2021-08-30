@@ -296,6 +296,10 @@ const appendRectanglesOnDiffOverlay = () => {
 
     const diffOverlayElement = document.getElementById("diffOverlay");
 
+    if (!diffOverlayElement) {
+        return;
+    }
+
     const createSVGElement = (width, height) => {
         const svgElement = document.createElementNS("http://www.w3.org/2000/svg","svg");
 
