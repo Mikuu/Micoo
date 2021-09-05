@@ -181,23 +181,18 @@ block main
                                  .d-flex.align-items-center.justify-content-center.icon-baseline
                                      ion-icon(name="ribbon-outline")
 
-    //- script(src="/public/javascript/jquery-3.4.1.slim.min.js" crossorigin="anonymous")
-    //- script.
-    //-     window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"><\\/script>')
-    //- script(src="/public/javascript/bootstrap.bundle.min.js" crossorigin="anonymous")
-    //- script(src="/public/javascript/ionicons.js")
-    //- //script(src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js")
     script(src="/public/javascript/bs-custom-file-input.min.js")
     script.
         bsCustomFileInput.init()
         let btn = document.getElementById('btnResetForm')
         let form = document.querySelector('form')
-        btn.addEventListener('click', function () {
-            form.reset()
-        })
+        if (btn) {
+            btn.addEventListener('click', function () {
+                        form.reset()
+            })
+        }
     script.
       function setUploadButtonStats(fileInput) {
-      console.log("listener triggered");
       const uploadButton = document.getElementById("uploadFileButton");
       uploadButton.disabled = fileInput.value === "";
       }

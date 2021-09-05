@@ -12,6 +12,8 @@ Micoo is a pixel based screenshots comparison solution for visual regression tes
 * a methodology, about how to do visual regression test with service,
 * quick local setup and server side deployment with Docker Compose,
 * basic authentication with a passcode and API key,
+* different easy methods to view the mismatch,
+* ignoring rectangles to enable visual testing on dynamic and inconsistent UI elements,
 
 Micoo does `NOT`:
 * take screenshots from your SUT application,
