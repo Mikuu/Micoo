@@ -11,6 +11,7 @@ const fileService = require("../services/file-service");
 const ignoringService = require("../services/ignoring-service");
 const validatorUtils = require("../utils/validator-utils");
 const { authenticateJWT } = require("../utils/auth-utils");
+const expressUtils = require("../utils/express-utils");
 
 router.get("/env", function(req, res, next) {
     const env = {
@@ -40,7 +41,8 @@ router.post(
             try {
                 if (await projectService.isProjectNameExist(projectName)) {
                     const errorMessage = `project name '${req.body.projectName}' already exists`;
-                    res.render("error-miku-c", { errorMessage });
+                    // res.render("error-miku-c", { errorMessage });
+                    expressUtils.rendering(res, "error-miku-c", { errorMessage });
 
                     // res.status(400).send({
                     //     code: 400,
@@ -63,7 +65,8 @@ router.post(
                 );
                 await console.log(`project created, PID: ${project.pid}`);
 
-                res.redirect("/");
+                // res.redirect("/");
+                expressUtils.redirecting(res, "/");
             } catch (error) {
                 console.error(error);
                 next(error);
@@ -85,7 +88,8 @@ router.post("/project/clean/:pid", authenticateJWT, function(req, res, next) {
 
             await console.log(`cleaned project pid=${project.pid}`);
 
-            res.redirect(`/project/${project.pid}/page/1`);
+            // res.redirect(`/micoo/project/${project.pid}/page/1`);
+            expressUtils.redirecting(res, `/project/${project.pid}/page/1`);
         } catch (error) {
             console.error(error);
             next(error);
@@ -108,7 +112,8 @@ router.post("/project/delete/:pid", authenticateJWT, function(req, res, next) {
 
             await console.log(`deleted project pid=${project.pid}`);
 
-            res.redirect("/");
+            // res.redirect("/micoo/");
+            expressUtils.redirecting(res, "/");
         } catch (error) {
             console.error(error);
             next(error);
@@ -136,12 +141,13 @@ router.post("/project/image/:pid", authenticateJWT, function(req, res, next) {
         const project = await projectService.getProjectByPid(req.params.pid);
 
         if (!project) {
-            return res.render("error-miku-c", { errorMessage: `pid ${req.params.pid} not exist` });
+            // return res.render("error-miku-c", { errorMessage: `pid ${req.params.pid} not exist` });
+            return expressUtils.rendering(res, "error-miku-c", { errorMessage: `pid ${req.params.pid} not exist` });
         }
 
         const validationResult = validatorUtils.projectImageValidator(req.files.projectImage.name);
         if (validationResult !== true) {
-            return res.render("error-miku-c", { errorMessage: validationResult });
+            return expressUtils.rendering(res, "error-miku-c", { errorMessage: validationResult });
         }
 
         try {
@@ -162,7 +168,8 @@ router.post("/project/image/:pid", authenticateJWT, function(req, res, next) {
                 })();
 
                 console.log(`FBI --> Info: updated card image for project ${project.projectName}`);
-                res.redirect(`/project/${project.pid}/page/1`);
+                // res.redirect(`/micoo/project/${project.pid}/page/1`);
+                expressUtils.redirecting(res, `/project/${project.pid}/page/1`);
             });
         } catch (error) {
             console.error(error);
@@ -180,7 +187,7 @@ router.post("/project/config/:pid", authenticateJWT, function(req, res, next) {
             const project = await projectService.getProjectByPid(req.params.pid);
 
             if (!project) {
-                return res.render("error-miku-c", { errorMessage: `pid ${req.params.pid} not exist` });
+                return expressUtils.rendering(res, "error-miku-c", { errorMessage: `pid ${req.params.pid} not exist` });
             }
 
             const projectColorThreshold = Number(req.body.projectColorThreshold);
@@ -210,7 +217,8 @@ router.post("/project/config/:pid", authenticateJWT, function(req, res, next) {
                 console.error(`projectClusterSize ${req.body.projectIgnoringClusterSize} from PID ${req.params.pid} is not acceptable`);
             }
 
-            res.redirect(`/project/${project.pid}/page/1`);
+            // res.redirect(`/micoo/project/${project.pid}/page/1`);
+            expressUtils.redirecting(res, `/project/${project.pid}/page/1`);
 
         } catch (error) {
             console.error(error);

@@ -2,9 +2,9 @@ extends dashboard-breadcrumb-layout
 
 block breadcrumb
     li.breadcrumb-item
-        a(href="/project/" + pid + "/page/1") #{projectName}
+        a(href=contextPath + "/project/" + pid + "/page/1") #{projectName}
     li.breadcrumb-item
-        a(href="/build/" + bid) #{buildIndex}
+        a(href=contextPath + "/build/" + bid) #{buildIndex}
     li.breadcrumb-item.active(aria-current="page") #{caseName}
 
 block pageAction
@@ -44,14 +44,14 @@ block pageAction
             .d-flex.align-items-center.justify-content-center
 
                 if prevCase !== null
-                    a.d-flex.align-items-center.justify-content-center.font-weight-bold.case-nav-icon(href="/case/" + prevCase.cid)
+                    a.d-flex.align-items-center.justify-content-center.font-weight-bold.case-nav-icon(href=contextPath + "/case/" + prevCase.cid)
                         ion-icon(name="arrow-back-outline")
                 else
                     .d-flex.align-items-center.justify-content-center.font-weight-bold.case-nav-disabled-icon
                         ion-icon(name="arrow-back-outline")
 
                 if nextCase !== null
-                    a.d-flex.align-items-center.justify-content-center.font-weight-bold.case-nav-icon(href="/case/" + nextCase.cid)
+                    a.d-flex.align-items-center.justify-content-center.font-weight-bold.case-nav-icon(href=contextPath + "/case/" + nextCase.cid)
                         ion-icon(name="arrow-forward-outline")
                 else
                     .d-flex.align-items-center.justify-content-center.font-weight-bold.case-nav-disabled-icon
@@ -61,17 +61,17 @@ block pageAction
 
         .pl-3.pr-1.border-left
             if caseResult === "passed"
-                form.mb-0(action="/case/pass/" + cid method="post")
+                form.mb-0(action=contextPath + "/case/pass/" + cid method="post")
                     button#pass-case-button.btn.btn-sm.btn-outline-success(disabled type="submit") Passed
             else
-                form.mb-0(action="/case/pass/" + cid method="post")
+                form.mb-0(action=contextPath + "/case/pass/" + cid method="post")
                     button#pass-case-button.btn.btn-sm.btn-outline-success(type="submit") Passed
         .pl-2.pr-1
             if caseResult === "failed"
-                form.mb-0(action="/case/fail/" + cid method="post")
+                form.mb-0(action=contextPath + "/case/fail/" + cid method="post")
                     button#pass-case-button.btn.btn-sm.btn-outline-danger(disabled type="submit") Failed
             else
-                form.mb-0(action="/case/fail/" + cid method="post")
+                form.mb-0(action=contextPath + "/case/fail/" + cid method="post")
                     button#pass-case-button.btn.btn-sm.btn-outline-danger(type="submit") Failed
 
     #imageCompareModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='imageCompareModalLabel' aria-hidden='true')
@@ -168,13 +168,14 @@ block main
           .modal-body
             img(src=latestUrl style='max-width: 100%;')
 
-    script(src='/public/javascript/image-compare-viewer.min.js' crossorigin="anonymous")
-    script(src='/public/javascript/image-compare.js' crossorigin="anonymous")
-    script(src='/public/javascript/ignoring.js' crossorigin="anonymous")
-    script(src='/public/javascript/wheelzoom.js' crossorigin="anonymous")
-    script(src='/public/javascript/image-display.js' crossorigin="anonymous")
+    script(src=contextPath + '/public/javascript/image-compare-viewer.min.js' crossorigin="anonymous")
+    script(src=contextPath + '/public/javascript/image-compare.js' crossorigin="anonymous")
+    script(src=contextPath + '/public/javascript/ignoring.js' crossorigin="anonymous")
+    script(src=contextPath + '/public/javascript/wheelzoom.js' crossorigin="anonymous")
+    script(src=contextPath + '/public/javascript/image-display.js' crossorigin="anonymous")
     script.
+      const contextPath = "#{contextPath}";
       applyImageDisplay();
-      createImageCompareModal();
+      createImageCompareModal(contextPath);
       appendRectanglesOnDiffOverlay();
       enableIgnoring();

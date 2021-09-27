@@ -51,7 +51,7 @@ const setMaxSize = (baselineImageElement, latestImageElement) => {
     if (compareImageBaselineWidth * compareImageBaselineHeight * compareImageLatestWidth * compareImageLatestHeight) {
       compareImageMaxWidth = Math.max(compareImageBaselineWidth, compareImageLatestWidth);
       compareImageMaxHeight = Math.max(compareImageBaselineHeight, compareImageLatestHeight);
-      
+
       console.log(`compareImageMaxWidth: ${compareImageMaxWidth}, compareImageMaxHeight: ${compareImageMaxHeight}`);
 
       clearInterval(checkExist);
@@ -67,7 +67,7 @@ const enableOpenImageCompareModalButton = () => {
   }
 }
 
-const createImageCompareModal = () => {
+const createImageCompareModal = (contextPath) => {
   applyImageCompare();
 
   const imageCompareBaselineElement = document.getElementById("image-compare-baseline");
@@ -86,14 +86,14 @@ const createImageCompareModal = () => {
     imageCompareBaselineElement.style.backgroundSize = 'contain';
     imageCompareBaselineElement.style.backgroundImage = `url('${imageCompareBaselineElement.src}')`;
     imageCompareBaselineElement.style.backgroundRepeat = 'no-repeat';
-    imageCompareBaselineElement.src = "/public/image/transparent.webp";
+    imageCompareBaselineElement.src = contextPath + "/public/image/transparent.webp";
 
     imageCompareLatestElement.style.width = `${compareImageMaxWidth >= window.innerWidth ? window.innerWidth : compareImageMaxWidth}px`;
     imageCompareLatestElement.style.height = "100%";
     imageCompareLatestElement.style.backgroundSize = 'contain';
     imageCompareLatestElement.style.backgroundImage = `url('${imageCompareLatestElement.src}')`;
     imageCompareLatestElement.style.backgroundRepeat = 'no-repeat';
-    imageCompareLatestElement.src = "/public/image/transparent.webp";
+    imageCompareLatestElement.src = contextPath + "/public/image/transparent.webp";
 
     imageCompareLatestElement.parentElement.style.backgroundColor = "white";
   }

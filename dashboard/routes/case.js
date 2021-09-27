@@ -4,6 +4,8 @@ const projectService = require("../services/project-service");
 const caseService = require("../services/case-service");
 const ignoringService = require("../services/ignoring-service");
 const { authenticateJWT } = require("../utils/auth-utils");
+const expressUtils = require("../utils/express-utils");
+const envConfig = require("../config/env.config");
 
 let router = express.Router();
 
@@ -17,7 +19,28 @@ router.get("/:cid", authenticateJWT, function(req, res, next) {
 
             const view = testCase.linkBaseline ? (testCase.diffPercentage ? 3 : 2) : 1;
 
-            res.render("case-standalone", {
+            // res.render("case-standalone", {
+            //     pid: build.pid,
+            //     bid: build.bid,
+            //     cid: testCase.cid,
+            //     prevCase: prevCase,
+            //     nextCase: nextCase,
+            //     buildIndex: build.buildIndex,
+            //     projectName: project.projectName,
+            //     caseName: testCase.caseName,
+            //     caseResult: testCase.caseResult,
+            //     diffUrl: testCase.linkDiff,
+            //     latestUrl: testCase.linkLatest,
+            //     baselineUrl: testCase.linkBaseline,
+            //     diffPercentage: testCase.diffPercentage,
+            //     view: view,
+            //     hostUrl: `${envConfig.dashboardProtocol}://${req.get("host")}`,
+            //     rectangles: ignoring ? ignoring.rectangles : [],
+            //     rectanglesString: ignoring && ignoring.rectangles ? JSON.stringify(ignoring.rectangles) : "",
+            //     comprehensiveCaseResult: testCase.comprehensiveCaseResult,
+            // });
+
+            expressUtils.rendering(res, "case-standalone", {
                 pid: build.pid,
                 bid: build.bid,
                 cid: testCase.cid,
@@ -32,7 +55,7 @@ router.get("/:cid", authenticateJWT, function(req, res, next) {
                 baselineUrl: testCase.linkBaseline,
                 diffPercentage: testCase.diffPercentage,
                 view: view,
-                hostUrl: `http://${req.get("host")}`,
+                hostUrl: `${envConfig.dashboardProtocol}://${req.get("host")}`,
                 rectangles: ignoring ? ignoring.rectangles : [],
                 rectanglesString: ignoring && ignoring.rectangles ? JSON.stringify(ignoring.rectangles) : "",
                 comprehensiveCaseResult: testCase.comprehensiveCaseResult,
@@ -98,7 +121,9 @@ router.post("/pass/:cid", authenticateJWT, function(req, res, next) {
             await cleanTestCaseComprehensiveCaseResult(req.params.cid);
             await checkAndUpdateBuildResult(req.params.cid);
 
-            res.redirect(`/case/${req.params.cid}`);
+            // res.redirect(`/micoo/case/${req.params.cid}`);
+            expressUtils.redirecting(res, `/case/${req.params.cid}`);
+
             console.log(`set case passed, cid=${req.params.cid}`);
 
         } catch (error) {
@@ -116,7 +141,9 @@ router.post("/fail/:cid", authenticateJWT, function(req, res, next) {
             await cleanTestCaseComprehensiveCaseResult(req.params.cid);
             await checkAndUpdateBuildResult(req.params.cid);
 
-            res.redirect(`/case/${req.params.cid}`);
+            // res.redirect(`/micoo/case/${req.params.cid}`);
+            expressUtils.redirecting(res, `/case/${req.params.cid}`);
+
             console.log(`set case failed, cid=${req.params.cid}`);
 
         } catch (error) {

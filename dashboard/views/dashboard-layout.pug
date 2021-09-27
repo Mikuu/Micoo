@@ -5,20 +5,20 @@ html(lang="en")
         meta(charset="utf-8")
         meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
         // Bootstrap CSS
-        link(rel="stylesheet" href="/public/stylesheets/bootstrap.min.css" crossorigin="anonymous")
-        link(rel="stylesheet" href="/public/stylesheets/bootstrap-icons.css" crossorigin="anonymous")
+        link(rel="stylesheet" href=contextPath + "/public/stylesheets/bootstrap.min.css" crossorigin="anonymous")
+        link(rel="stylesheet" href=contextPath + "/public/stylesheets/bootstrap-icons.css" crossorigin="anonymous")
         // Icon
-        link(rel="stylesheet" href="/public/stylesheets/fontawesome.all.min.css" crossorigin="anonymous")
+        link(rel="stylesheet" href=contextPath + "/public/stylesheets/fontawesome.all.min.css" crossorigin="anonymous")
         // Image Compare
-        link(rel='stylesheet' href='/public/stylesheets/image-compare-modal.css' crossorigin="anonymous")
-        link(rel='stylesheet' href='/public/stylesheets/image-compare-viewer.min.css' crossorigin="anonymous")
+        link(rel='stylesheet' href=contextPath + '/public/stylesheets/image-compare-modal.css' crossorigin="anonymous")
+        link(rel='stylesheet' href=contextPath + '/public/stylesheets/image-compare-viewer.min.css' crossorigin="anonymous")
         // Image Ignoring
-        link(rel='stylesheet' href='/public/stylesheets/ignoring.css' crossorigin="anonymous")
+        link(rel='stylesheet' href=contextPath + '/public/stylesheets/ignoring.css' crossorigin="anonymous")
         // Image Modal Enlarge
-        link(rel='stylesheet' href='/public/stylesheets/image-enlarge-modal.css' crossorigin="anonymous")
+        link(rel='stylesheet' href=contextPath + '/public/stylesheets/image-enlarge-modal.css' crossorigin="anonymous")
         // Bootstrap Javascript
-        script(src="/public/javascript/jquery-3.5.1.slim.min.js" crossorigin="anonymous")
-        script(src="/public/javascript/bootstrap.bundle.min.js" crossorigin="anonymous")
+        script(src=contextPath + "/public/javascript/jquery-3.5.1.slim.min.js" crossorigin="anonymous")
+        script(src=contextPath + "/public/javascript/bootstrap.bundle.min.js" crossorigin="anonymous")
         title Micoo
         style.
             .bd-placeholder-img {
@@ -36,9 +36,9 @@ html(lang="en")
                 }
             }
         // expressing dashboard default javascript
-        script(async="" src="/public/javascript/app.js")
+        script(async="" src=contextPath + "/public/javascript/app.js")
         // expressing dashboard default style
-        link(href="/public/stylesheets/app.css" rel="stylesheet")
+        link(href=contextPath + "/public/stylesheets/app.css" rel="stylesheet")
     header
         #navbarHeader.bg-dark.collapse(style="")
             .container
@@ -67,19 +67,19 @@ html(lang="en")
                                   ion-icon(size='large' name='logo-github')
         .navbar.navbar-dark.bg-dark.shadow-sm.navbar-justify
             .container.d-flex.justify-content-between
-                a.navbar-brand.d-flex.align-items-center(href="/")
+                a.navbar-brand.d-flex.align-items-center(href=contextPath + "/")
                     h2 Micoo
                 .pl-2.pr-2.d-flex
                     button.navbar-toggler.collapsed(type='button' data-toggle='collapse' data-target='#navbarHeader' aria-controls='navbarHeader' aria-expanded='false' aria-label='Toggle navigation')
                         ion-icon(name='grid-outline')
-                    form.ml-3.mb-0.align-self-center(action='/auth/logout' method='post')
+                    form.ml-3.mb-0.align-self-center(action=contextPath + '/auth/logout' method='post')
                         button#log-out-outline.navbar-toggler.collapsed(type='submit')
                             ion-icon(name='log-out-outline')
 
     block body
-        
-    script(src="/public/javascript/ionicons.js")
-    script(src="/public/javascript/bs-custom-file-input.min.js")
+
+    script(src=contextPath + "/public/javascript/ionicons.js")
+    script(src=contextPath + "/public/javascript/bs-custom-file-input.min.js")
     footer.text-muted.text-center.font-weight-light
         .container
             p save your time by automation, spend it more in exploring

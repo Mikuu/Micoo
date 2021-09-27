@@ -3,6 +3,9 @@ const path = require("path");
 
 let fileServerHost, exchangeRootDir, mongodbUrl;
 
+const dashboardContextPath = process.env.MICOO_CONTEXT_PATH || "";
+const dashboardProtocol = process.env.MICOO_DASHBORD_PROTOCOL || "http";
+
 switch (process.env.MICOO_ENV) {
     case "docker":
         fileServerHost = process.env.MICOO_FS_HOST_URL;
@@ -21,8 +24,11 @@ const screenshotsPathToUrl = screenshotsPath => {
     return screenshotsPath.replace(exchangeRootDir, fileServerHost);
 };
 
-const errorImage = "/public/image/miku-error.webp";
-const defaultProjectBgImage = "/public/image/miku-bg.webp";
+// const errorImage = "public/image/miku-error.webp";
+// const defaultProjectBgImage = "public/image/miku-bg.webp";
+
+const errorImage = dashboardContextPath + "/public/image/miku-error.webp";
+const defaultProjectBgImage = dashboardContextPath + "/public/image/miku-bg.webp";
 
 // implementation cloned from micoo-File-Service
 // const allZip = path.join(exchangeRootDir, "all.zip");
@@ -69,4 +75,7 @@ module.exports = {
     projectInitializeFolders,
     projectImagePath,
     projectImageUrl,
+
+    dashboardContextPath,
+    dashboardProtocol,
 };

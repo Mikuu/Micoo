@@ -2,7 +2,7 @@ extends dashboard-breadcrumb-layout
 
 block breadcrumb
     li.breadcrumb-item
-        a(href="/project/" + pid + "/page/1") #{projectName}
+        a(href=contextPath + "/project/" + pid + "/page/1") #{projectName}
     li.breadcrumb-item.active(aria-current="page") #{buildIndex}
 
 block pageAction
@@ -19,17 +19,17 @@ block pageAction
         .pl-3.pr-1.border-left
 
             if ableToRebase
-                form.mb-0(action="/build/rebase/" + bid method="post")
+                form.mb-0(action=contextPath + "/build/rebase/" + bid method="post")
                     button#rebase-button.btn.btn-sm.btn-outline-success(type="submit") Rebase
             else
-                form.mb-0(action="/build/rebase/" + bid method="post")
+                form.mb-0(action=contextPath + "/build/rebase/" + bid method="post")
                     button#rebase-button.btn.btn-sm.btn-outline-success(disabled type="submit") Rebase
         .pl-2.pr-1
             if isBaseline
-                form.mb-0(action="/build/debase/" + bid method="post")
+                form.mb-0(action=contextPath + "/build/debase/" + bid method="post")
                     button#rebase-button.btn.btn-sm.btn-outline-warning(type="submit") Debase
             else
-                form.mb-0(action="/build/debase/" + bid method="post")
+                form.mb-0(action=contextPath + "/build/debase/" + bid method="post")
                     button#rebase-button.btn.btn-sm.btn-outline-warning(disabled type="submit") Debase
 
 block main
@@ -45,7 +45,7 @@ block main
             each testCase in allCases
                 .font-weight-light.row.pt-2.pb-2
                     .col.col-md-8
-                        a(href="/case/" + testCase.cid) #{testCase.caseName}
+                        a(href=contextPath + "/case/" + testCase.cid) #{testCase.caseName}
                     .col.col-md-2
                         if testCase.diffPercentage > 0
                             | #{Number(testCase.diffPercentage * 100).toFixed(4)}%

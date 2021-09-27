@@ -15,6 +15,7 @@ let statsRouter = require("./routes/stats");
 const authRouter = require("./routes/auth");
 
 let envConfig = require("./config/env.config");
+const expressUtils = require("./utils/express-utils");
 
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
@@ -39,7 +40,9 @@ apis: ['./routes/stats.js', './routes/engin-doc.js'],
 
 const swaggerSpec = swaggerJSDoc(options);
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+const CONTEXT_PATH = envConfig.dashboardContextPath;
+
+app.use(CONTEXT_PATH+"/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -49,17 +52,17 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
-app.use("/public", express.static(path.join(__dirname, "public")));
+app.use(CONTEXT_PATH, express.static(path.join(__dirname, "public")));
+app.use(CONTEXT_PATH+"/public", express.static(path.join(__dirname, "public")));
 app.use(favicon(__dirname + "/public/image/favicon.ico"));
 
-app.use("/", dashboardRouter);
-app.use("/admin", adminRouter);
-app.use("/project", projectRouter);
-app.use("/build", buildRouter);
-app.use("/case", caseRouter);
-app.use("/stats", statsRouter);
-app.use("/auth", authRouter);
+app.use(CONTEXT_PATH+"/", dashboardRouter);
+app.use(CONTEXT_PATH+"/admin", adminRouter);
+app.use(CONTEXT_PATH+"/project", projectRouter);
+app.use(CONTEXT_PATH+"/build", buildRouter);
+app.use(CONTEXT_PATH+"/case", caseRouter);
+app.use(CONTEXT_PATH+"/stats", statsRouter);
+app.use(CONTEXT_PATH+"/auth", authRouter);
 
 const databaseUtils = require("./utils/database-utils");
 
@@ -87,7 +90,8 @@ app.use(function(err, req, res, next) {
 
     // render the error page
     res.status(err.status || 500);
-    res.render("error-miku", { errorImage: envConfig.errorImage });
+    // res.render("error-miku", { errorImage: envConfig.errorImage });
+    expressUtils.rendering(res, "error-miku", { errorImage: envConfig.errorImage });
 });
 
 databaseUtils.connect();

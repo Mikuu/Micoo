@@ -3,6 +3,8 @@ const buildService = require("../services/build-service");
 const projectService = require("../services/project-service");
 const commonUtils = require("../utils/common-utils");
 const { authenticateJWT } = require("../utils/auth-utils");
+const expressUtils = require("../utils/express-utils");
+const envConfig = require("../config/env.config");
 
 let router = express.Router();
 
@@ -14,11 +16,17 @@ router.get("/:pid", authenticateJWT, function(req, res, next) {
     (async () => {
         try {
             console.log(`got pid: ${req.params.pid}`);
-            
+
             const project = await projectService.getProjectByPid(req.params.pid);
             const builds = await allBuilds(req.params.pid);
 
-            res.render("project", {
+            // res.render("project", {
+            //     projectName: project.projectName,
+            //     builds: builds,
+            //     timeFormatter: commonUtils.formatTime
+            // });
+
+            expressUtils.rendering(res, "project", {
                 projectName: project.projectName,
                 builds: builds,
                 timeFormatter: commonUtils.formatTime
@@ -75,7 +83,30 @@ router.get("/:pid/page/:page", authenticateJWT, function(req, res, next) {
                 url_next: paginatedBuilds.nextPage && `/project/${req.params.pid}/page/${paginatedBuilds.nextPage}`,
             };
 
-            res.render("project", {
+            // const navigatorUrls = {
+            //     url_prev: paginatedBuilds.prevPage && expressUtils.pathWithContextPath(`/project/${req.params.pid}/page/${paginatedBuilds.prevPage}`),
+            //     url_1: expressUtils.pathWithContextPath(`/project/${req.params.pid}/page/${navigators.navigator_1}`),
+            //     url_2: expressUtils.pathWithContextPath(`/project/${req.params.pid}/page/${navigators.navigator_2}`),
+            //     url_3: expressUtils.pathWithContextPath(`/project/${req.params.pid}/page/${navigators.navigator_3}`),
+            //     url_next: expressUtils.pathWithContextPath(paginatedBuilds.nextPage && `/project/${req.params.pid}/page/${paginatedBuilds.nextPage}`),
+            // };
+
+            // res.render("project", {
+            //     pid: project.pid,
+            //     projectName: project.projectName,
+            //     builds: paginatedBuilds.docs,
+            //     navigation: paginatedBuilds,
+            //     navigators: navigators,
+            //     navigatorUrls: navigatorUrls,
+            //     timeFormatter: commonUtils.formatTime,
+            //     apiKey: project.getAPIKey(),
+            //     projectColorThreshold: project.projectColorThreshold,
+            //     projectDetectAntialiasing: project.projectDetectAntialiasing,
+            //     projectIgnoringCluster: project.projectIgnoringCluster,
+            //     projectIgnoringClusterSize: project.projectIgnoringClusterSize,
+            // });
+
+            expressUtils.rendering(res, "project", {
                 pid: project.pid,
                 projectName: project.projectName,
                 builds: paginatedBuilds.docs,

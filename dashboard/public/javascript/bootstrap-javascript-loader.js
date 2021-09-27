@@ -1,7 +1,7 @@
 const checkAndIncludeBootstrapJS = () => {
 	const bootstrapJS = [
-		"/public/javascript/jquery-3.5.1.slim.min.js",
-		"/public/javascript/bootstrap.bundle.min.js"
+		"public/javascript/jquery-3.5.1.slim.min.js",
+		"public/javascript/bootstrap.bundle.min.js"
 	];
 
 	const isScriptAlreadyIncluded = (src) => {

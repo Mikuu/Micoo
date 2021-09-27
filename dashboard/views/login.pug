@@ -3,10 +3,10 @@ extend layout
 block content
   .d-flex.justify-content-center(style='width: 680px; height: 240px')
     .d-flex.justify-content-end.align-items-center.border-right.border-dark(style='padding-right: 48px')
-      img.mb-4(src='/public/image/micoo.webp' alt='')
+      img.mb-4(src=contextPath + '/public/image/micoo.webp' alt='')
     .d-flex.justify-content-start.align-items-center(style='padding-left: 48px')
       .align-self-center
-        form#submitForm.form-signin.p-0(method='POST' action='/auth/login')
+        form#submitForm.form-signin.p-0(method='POST' action=contextPath + '/auth/login')
           input#passcode.form-control(type='password' name='passcode' placeholder='please input passcode' style='width: 280px; background: transparent' required)
           button#submitPasscode.btn.btn-sm.btn-outline-dark.btn-block(type='submit') Sign in
         if loginFailed

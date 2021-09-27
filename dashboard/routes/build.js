@@ -4,6 +4,8 @@ const projectService = require("../services/project-service");
 const caseService = require("../services/case-service");
 const ignoringService = require("../services/ignoring-service");
 const { authenticateJWT } = require("../utils/auth-utils");
+const expressUtils = require("../utils/express-utils");
+const envConfig = require("../config/env.config");
 
 let router = express.Router();
 
@@ -30,7 +32,18 @@ router.get("/:bid", authenticateJWT, function(req, res, next) {
 
             const ableToRebase = !build.isBaseline && allCasesPassed(cases);
 
-            res.render("build-standalone", {
+            // res.render("build-standalone", {
+            //     pid: build.pid,
+            //     bid: build.bid,
+            //     isBaseline: build.isBaseline,
+            //     projectName: project.projectName,
+            //     buildIndex: build.buildIndex,
+            //     allCases: cases,
+            //     ableToRebase: ableToRebase,
+            //     hostUrl: `${envConfig.dashboardProtocol}://${req.get("host")}`,
+            // });
+
+            expressUtils.rendering(res, "build-standalone", {
                 pid: build.pid,
                 bid: build.bid,
                 isBaseline: build.isBaseline,
@@ -38,7 +51,7 @@ router.get("/:bid", authenticateJWT, function(req, res, next) {
                 buildIndex: build.buildIndex,
                 allCases: cases,
                 ableToRebase: ableToRebase,
-                hostUrl: `http://${req.get("host")}`,
+                hostUrl: `${envConfig.dashboardProtocol}://${req.get("host")}`,
             });
         } catch (error) {
             console.error(error);
@@ -55,7 +68,10 @@ router.post("/rebase/:bid", authenticateJWT, function(req, res, next) {
             await ignoringService.cleanProjectIgnoring(build.pid);
 
             await buildService.rebase(project.projectName, req.params.bid);
-            res.redirect(`/build/${req.params.bid}`);
+
+            // res.redirect(`/micoo/build/${req.params.bid}`);
+            expressUtils.redirecting(res, `/build/${req.params.bid}`);
+
             console.log(`rebased build, bid=${req.params.bid}`);
         } catch (error) {
             console.error(error);
@@ -72,7 +88,10 @@ router.post("/debase/:bid", authenticateJWT, function(req, res, next) {
             await ignoringService.cleanProjectIgnoring(build.pid);
 
             await buildService.debase(project, build);
-            res.redirect(`/build/${req.params.bid}`);
+
+            // res.redirect(`/micoo/build/${req.params.bid}`);
+            expressUtils.redirecting(res, `/build/${req.params.bid}`);
+
             console.log(`debased build, bid=${req.params.bid}`);
         } catch (error) {
             console.error(error);

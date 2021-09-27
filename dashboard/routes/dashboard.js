@@ -6,6 +6,7 @@ const buildService = require("../services/build-service");
 const commonUtils = require("../utils/common-utils");
 const appConfig = require("../config/app.config");
 const { authenticateJWT } = require("../utils/auth-utils");
+const expressUtils = require("../utils/express-utils");
 
 /****************************************************************
  * e.g.
@@ -48,7 +49,12 @@ const retrieveProjectInfo = async () => {
 router.get("/", authenticateJWT, function(req, res, next) {
     (async () => {
         try {
-            res.render("dashboard", {
+            // res.render("dashboard", {
+            //     projects: await retrieveProjectInfo(),
+            //     dashboardContent: appConfig.dashboardContent,
+            // });
+
+            expressUtils.rendering(res, "dashboard", {
                 projects: await retrieveProjectInfo(),
                 dashboardContent: appConfig.dashboardContent,
             });

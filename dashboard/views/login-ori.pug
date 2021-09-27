@@ -4,10 +4,10 @@ block content
   .container.p-3
     .wrapper.fadeInDown
       #formContent
-        form#submitForm(method='POST' action='/auth/login')
+        form#submitForm(method='POST' action=contextPath + '/auth/login')
           input#passcode.fadeIn.second(type='text' name='passcode' placeholder='passcode')
           input#submitPasscode.ml-3.fadeIn.fourth(type='submit' value='Log In')
     if loginFailed
       p.font-weight-light.text-lowercase.text-left incorrect passcode
-  script(src="/public/javascript/aes.js")
-  script(src="/public/javascript/en.js")
+  script(src=contextPath + "/public/javascript/aes.js")
+  script(src=contextPath + "/public/javascript/en.js")

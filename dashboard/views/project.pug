@@ -17,7 +17,7 @@ block projectAction
             i.fas.fa-trash-alt.fa-1x.action-fbi(aria-hidden="true")
 
         #projectConfigModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='projectConfigModalLabel' aria-hidden='true')
-              form(action='/admin/project/config/'+pid method='post')
+              form(action=contextPath + '/admin/project/config/'+pid method='post')
                 .modal-dialog.modal-dialog-centered(role='document')
                   .modal-content(style='background-color: #222427')
                     ul.list-group.config-list.m-2
@@ -62,7 +62,7 @@ block projectAction
         #changeProjectImageModal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="cleanProjectModalLabel" aria-hidden="true")
             .modal-dialog.modal-dialog-centered(role="document")
                 .modal-content(style="background-color: #222427")
-                    form(action="/admin/project/image/"+pid method="post" enctype="multipart/form-data")
+                    form(action=contextPath + "/admin/project/image/"+pid method="post" enctype="multipart/form-data")
                         .d-flex.flex-row.pt-3.pb-3.pl-5.pr-4.align-items-center(style="min-height: 120px;")
                             .custom-file
                                 input#customFile.custom-file-input(type="file" name="projectImage")
@@ -74,23 +74,23 @@ block projectAction
             .modal-dialog.modal-dialog-centered(role="document")
                 .modal-content(style="background-color: #222427")
                     .d-flex.flex-row.pt-3.pb-3.pl-5.pr-4
-                        img(src="/public/image/miku-wow.webp" alt="...")
+                        img(src=contextPath + "/public/image/miku-wow.webp" alt="...")
                         .modal-body.d-flex.align-items-center.justify-content-center.h3.font-weight-light.text-white
                             | Clean all test Builds?
                     .modal-footer
                         button.btn.btn-outline-success(type="button" data-dismiss="modal") I&apos;m joking
-                        form.mb-1(action="/admin/project/clean/"+pid method="post")
+                        form.mb-1(action=contextPath + "/admin/project/clean/"+pid method="post")
                             button.btn.btn-outline-danger(type="submit") Just do it
         #deleteProjectModal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="deleteProjectModalLabel" aria-hidden="true")
             .modal-dialog.modal-dialog-centered(role="document")
                 .modal-content(style="background-color: #222427")
                     .d-flex.flex-row.pt-3.pb-3.pl-5.pr-4
-                        img(src="/public/image/miku-wow.webp" alt="...")
+                        img(src=contextPath + "/public/image/miku-wow.webp" alt="...")
                         .modal-body.d-flex.align-items-center.justify-content-center.h3.font-weight-light.text-white
                             | Delete this Project?
                     .modal-footer
                         button.btn.btn-outline-success(type="button" data-dismiss="modal") I&apos;m joking
-                        form.mb-1(action="/admin/project/delete/"+pid method="post")
+                        form.mb-1(action=contextPath + "/admin/project/delete/"+pid method="post")
                             button.btn.btn-outline-danger(type="submit") Just do it
 
 block pageAction
@@ -99,51 +99,51 @@ block pageAction
 
             if navigation.hasPrevPage
                 li.page-item
-                    a.page-link(href=navigatorUrls.url_prev aria-label="Previous")
+                    a.page-link(href=contextPath + navigatorUrls.url_prev aria-label="Previous")
                         span(aria-hidden="true") «
                         span.sr-only Previous
             else
                 li.page-item.disabled
-                    a.page-link(href=navigatorUrls.url_prev aria-label="Previous")
+                    a.page-link(href=contextPath + navigatorUrls.url_prev aria-label="Previous")
                         span(aria-hidden="true") «
                         span.sr-only Previous
 
 
             if navigation.page === navigators.navigator_1
                 li.page-item.active
-                    a.page-link(href=navigatorUrls.url_1) #{navigators.navigator_1}
+                    a.page-link(href=contextPath + navigatorUrls.url_1) #{navigators.navigator_1}
             else
                 li.page-item
-                    a.page-link(href=navigatorUrls.url_1) #{navigators.navigator_1}
+                    a.page-link(href=contextPath + navigatorUrls.url_1) #{navigators.navigator_1}
 
 
             if navigators.navigator_2 <= navigation.totalPages
                 if navigation.page === navigators.navigator_2
                     li.page-item.active
-                        a.page-link(href=navigatorUrls.url_2) #{navigators.navigator_2}
+                        a.page-link(href=contextPath + navigatorUrls.url_2) #{navigators.navigator_2}
                 else
                     li.page-item
-                        a.page-link(href=navigatorUrls.url_2) #{navigators.navigator_2}
+                        a.page-link(href=contextPath + navigatorUrls.url_2) #{navigators.navigator_2}
 
 
 
             if navigators.navigator_3 <= navigation.totalPages
                 if navigation.page === navigators.navigator_3
                     li.page-item.active
-                        a.page-link(href=navigatorUrls.url_3) #{navigators.navigator_3}
+                        a.page-link(href=contextPath + navigatorUrls.url_3) #{navigators.navigator_3}
                 else
                     li.page-item
-                        a.page-link(href=navigatorUrls.url_3) #{navigators.navigator_3}
+                        a.page-link(href=contextPath + navigatorUrls.url_3) #{navigators.navigator_3}
 
 
             if navigation.hasNextPage
                 li.page-item
-                    a.page-link(href=navigatorUrls.url_next aria-label="Next")
+                    a.page-link(href=contextPath + navigatorUrls.url_next aria-label="Next")
                         span(aria-hidden="true") »
                         span.sr-only Next
             else
                 li.page-item.disabled
-                    a.page-link(href=navigatorUrls.url_next aria-label="Next")
+                    a.page-link(href=contextPath + navigatorUrls.url_next aria-label="Next")
                         span(aria-hidden="true") »
                         span.sr-only Next
 
@@ -162,7 +162,7 @@ block main
                  each build in builds
                      tr
                          th(scope="row")
-                             a(href="/build/" + build.bid) #{build.buildIndex}
+                             a(href=contextPath + "/build/" + build.bid) #{build.buildIndex}
                          td #{build.buildVersion}
                          td #{timeFormatter(build.createdAt)}
                          td #{build.caseCount}
@@ -181,7 +181,7 @@ block main
                                  .d-flex.align-items-center.justify-content-center.icon-baseline
                                      ion-icon(name="ribbon-outline")
 
-    script(src="/public/javascript/bs-custom-file-input.min.js")
+    script(src=contextPath + "/public/javascript/bs-custom-file-input.min.js")
     script.
         bsCustomFileInput.init()
         let btn = document.getElementById('btnResetForm')
@@ -196,7 +196,7 @@ block main
       const uploadButton = document.getElementById("uploadFileButton");
       uploadButton.disabled = fileInput.value === "";
       }
-      
+
       let fileInput = document.getElementById("customFile");
       fileInput.addEventListener('input', function (evt) {
       setUploadButtonStats(this);
