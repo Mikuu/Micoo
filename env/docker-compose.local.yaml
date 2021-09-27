@@ -34,6 +34,7 @@ services:
     environment:
       - MICOO_ENV=docker
       - MICOO_FS_HOST_URL=http://localhost:8123
+      - MICOO_CONTEXT_PATH=
       - MICOO_DB_USERNAME=micoo-user
       - MICOO_DB_PASSWORD=micoo-password
     volumes:
@@ -48,6 +49,7 @@ services:
     environment:
       - MICOO_ENV=docker
       - MICOO_FS_HOST_URL=http://localhost:8123
+      - MICOO_CONTEXT_PATH=
       - MICOO_DB_USERNAME=micoo-user
       - MICOO_DB_PASSWORD=micoo-password
     volumes:

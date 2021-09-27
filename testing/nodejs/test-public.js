@@ -2,13 +2,14 @@ import { newBuild, buildStats, latestBuildStats } from "micooc";
 
 async function testNewBuild() {
     // host for containerized service.
-    // const host = "http://localhost:8123/engine";
+    const host = "http://localhost:8123/engine";
+    // const host = "http://localhost:8123/micoo/asc/engine";
 
      // host for engine service lunched from local source code.
-    const host = "http://localhost:3002";
+    // const host = "http://localhost:3002";
 
-    const apiKey = "AK121c17ddc198daf21b";
-    const pid = "PID802384ce20cd4f268b530bf572517508";
+    const apiKey = "AK3301cf1192e967205b";
+    const pid = "PID26c7c17d88364f84b5249b487709daee";
     const buildVersion = "5fafc0478af24af2da45fa19ddd06c17dd5d0d45";
     const screenshotDirectory = "../latest";
 
@@ -16,21 +17,21 @@ async function testNewBuild() {
 }
 
 async function testBuildStats() {
-    const contextPath = "/micoo/ariman";
-   // const host = "http://localhost:8123";
-    const host = "http://localhost:3001" + contextPath;
+    const contextPath = "";
+   const host = "http://localhost:8123" + contextPath;
+    // const host = "http://localhost:3001" + contextPath;
     const bid = "BIDdb67dcb3231548cbae5574dd40c2e28e";
-    const apiKey = "AK121c17ddc198daf21b";
+    const apiKey = "AK3301cf1192e967205b";
 
     console.log(await buildStats(host, apiKey, bid));
 }
 
 async function testLatestBuildStats() {
-    const contextPath = "/micoo/ariman";
-   // const host = "http://localhost:8123";
-    const host = "http://localhost:3001" + contextPath;
-    const pid = "PID802384ce20cd4f268b530bf572517508";
-    const apiKey = "AK121c17ddc198daf21b";
+    const contextPath = "";
+   const host = "http://localhost:8123" + contextPath;
+    // const host = "http://localhost:3001" + contextPath;
+    const pid = "PID26c7c17d88364f84b5249b487709daee";
+    const apiKey = "AK3301cf1192e967205b";
 
     console.log(await latestBuildStats(host, apiKey, pid));
 }

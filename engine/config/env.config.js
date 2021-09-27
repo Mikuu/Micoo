@@ -3,6 +3,8 @@ const path = require("path");
 
 let fileServerHost, exchangeRootDir, mongodbUrl;
 
+const dashboardContextPath = process.env.MICOO_CONTEXT_PATH || "";
+
 switch (process.env.MICOO_ENV) {
     case "docker":
         fileServerHost = process.env.MICOO_FS_HOST_URL;
@@ -17,7 +19,7 @@ switch (process.env.MICOO_ENV) {
 }
 
 const screenshotsPathToUrl = screenshotsPath => {
-    return screenshotsPath.replace(exchangeRootDir, fileServerHost);
+    return screenshotsPath.replace(exchangeRootDir, fileServerHost + dashboardContextPath);
 };
 
 const localTestScreenshots = projectName => {
