@@ -12,6 +12,10 @@ const redirecting = (res, path) => {
     return res.redirect(envConfig.dashboardContextPath ? `${envConfig.dashboardContextPath}` + path : path);
 };
 
+const redirectingWithStatus = (res, path, status) => {
+    return res.status(status).redirect(envConfig.dashboardContextPath ? `${envConfig.dashboardContextPath}` + path : path);
+};
+
 const clearCookieAndRedirect = (res, authKey, path) => {
     return res
         .clearCookie(authKey)
@@ -28,4 +32,5 @@ module.exports = {
     clearCookieAndRedirect,
     renderingWithStatus,
     pathWithContextPath,
+    redirectingWithStatus,
 };

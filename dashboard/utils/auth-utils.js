@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const CryptoJS = require('crypto-js');
 const { StatusCodes } = require('http-status-codes');
+const expressUtils = require('./express-utils');
 
 const expireTime = "4h";
 const authKey = "MicooAuthToken";
@@ -19,24 +20,26 @@ const authenticateJWT = (req, res, next) => {
         jwt.verify(accessToken, credential.accessTokenSecret, error => {
             if (error) {
                 console.warn("WARN: incorrect-token access ...");
-                res.status(StatusCodes.UNAUTHORIZED).redirect('/auth/login');
+                // res.status(StatusCodes.UNAUTHORIZED).redirect('/auth/login');
+                expressUtils.redirectingWithStatus(res, '/auth/login', StatusCodes.UNAUTHORIZED);
             } else {
                 next();
             }
         });
     } else {
         console.warn("WARN: no-token access ...");
-        res.status(StatusCodes.UNAUTHORIZED).redirect('/auth/login');
+        // res.status(StatusCodes.UNAUTHORIZED).redirect('/auth/login');
+        expressUtils.redirectingWithStatus(res, '/auth/login', StatusCodes.UNAUTHORIZED);
     }
 };
 
 const authenticateAPIKey = (req, res, next) => {
     const apiKeyInRequest = req.get("x-api-key");
-        
+
     if (!apiKeyInRequest) {
-        res.status(StatusCodes.FORBIDDEN).send({ 
-            code: StatusCodes.FORBIDDEN, 
-            message: `missing API Key` 
+        res.status(StatusCodes.FORBIDDEN).send({
+            code: StatusCodes.FORBIDDEN,
+            message: `missing API Key`
         }).end();
     } else {
         next();
