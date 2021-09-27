@@ -4,7 +4,6 @@ const path = require("path");
 let fileServerHost, exchangeRootDir, mongodbUrl;
 
 const dashboardContextPath = process.env.MICOO_CONTEXT_PATH || "";
-const dashboardProtocol = process.env.MICOO_DASHBORD_PROTOCOL || "http";
 
 switch (process.env.MICOO_ENV) {
     case "docker":
@@ -77,5 +76,4 @@ module.exports = {
     projectImageUrl,
 
     dashboardContextPath,
-    dashboardProtocol,
 };

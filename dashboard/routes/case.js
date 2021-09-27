@@ -5,7 +5,6 @@ const caseService = require("../services/case-service");
 const ignoringService = require("../services/ignoring-service");
 const { authenticateJWT } = require("../utils/auth-utils");
 const expressUtils = require("../utils/express-utils");
-const envConfig = require("../config/env.config");
 
 let router = express.Router();
 
@@ -55,7 +54,6 @@ router.get("/:cid", authenticateJWT, function(req, res, next) {
                 baselineUrl: testCase.linkBaseline,
                 diffPercentage: testCase.diffPercentage,
                 view: view,
-                hostUrl: `${envConfig.dashboardProtocol}://${req.get("host")}`,
                 rectangles: ignoring ? ignoring.rectangles : [],
                 rectanglesString: ignoring && ignoring.rectangles ? JSON.stringify(ignoring.rectangles) : "",
                 comprehensiveCaseResult: testCase.comprehensiveCaseResult,

@@ -5,7 +5,6 @@ const caseService = require("../services/case-service");
 const ignoringService = require("../services/ignoring-service");
 const { authenticateJWT } = require("../utils/auth-utils");
 const expressUtils = require("../utils/express-utils");
-const envConfig = require("../config/env.config");
 
 let router = express.Router();
 
@@ -51,7 +50,6 @@ router.get("/:bid", authenticateJWT, function(req, res, next) {
                 buildIndex: build.buildIndex,
                 allCases: cases,
                 ableToRebase: ableToRebase,
-                hostUrl: `${envConfig.dashboardProtocol}://${req.get("host")}`,
             });
         } catch (error) {
             console.error(error);
