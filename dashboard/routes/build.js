@@ -28,9 +28,11 @@ router.get("/:bid", authenticateJWT, function(req, res, next) {
             const project = await projectService.getProjectByPid(build.pid);
             const cases = await caseService.getBuildCases(build.bid);
 
-            const ableToRebase = !build.isBaseline && allCasesPassed(cases);
+            const isAllPassed = allCasesPassed(cases);
+            const ableToRebase = !build.isBaseline && isAllPassed;
 
             res.render("build-standalone", {
+                isAllPassed,
                 pid: build.pid,
                 bid: build.bid,
                 isBaseline: build.isBaseline,
@@ -74,6 +76,28 @@ router.post("/debase/:bid", authenticateJWT, function(req, res, next) {
             await buildService.debase(project, build);
             res.redirect(`/build/${req.params.bid}`);
             console.log(`debased build, bid=${req.params.bid}`);
+        } catch (error) {
+            console.error(error);
+            next(error);
+        }
+    })();
+});
+
+router.post("/pass/:bid", authenticateJWT, function(req, res, next) {
+    (async () => {
+        try {
+            const build = await buildService.getBuildByBid(req.params.bid);
+            const cases = await caseService.getBuildCases(build.bid);
+
+            for (const item of cases) {
+                await caseService.passCase(item.cid);
+
+                await caseService.cleanComprehensiveCaseResult(item.cid);
+                await caseService.checkAndUpdateBuildResult(item.cid);
+            }
+
+            res.redirect(`/build/${req.params.bid}`);
+            console.log(`pass build, bid=${req.params.bid}`);
         } catch (error) {
             console.error(error);
             next(error);

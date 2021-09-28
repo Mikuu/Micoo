@@ -32,6 +32,11 @@ block pageAction
                 form.mb-0(action="/build/debase/" + bid method="post")
                     button#rebase-button.btn.btn-sm.btn-outline-warning(disabled type="submit") Debase
 
+        .pl-2.pr-1
+            if !isAllPassed
+                form.mb-0(action="/build/pass/" + bid method="post")
+                    button#rebase-button.btn.btn-sm.btn-outline-success(type="submit") All Passed
+
 block main
     .container.table-container
         .pr-5.pl-5.pt-3

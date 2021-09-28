@@ -18,6 +18,7 @@ const BuildSchema = new Schema({
     buildVersion: { type: String, default: "", trim: true, maxlength: 50 },
     buildIndex: { type: Number, default: 0 },
     isBaseline: { type: Boolean, default: false },
+    isAllPassed: { type: Boolean, default: false },
     caseCount: { type: Number, default: 0 },
     createdAt: { type: Date, default: Date.now },
     caseFailedCount: { type: Number, default: 0 },
