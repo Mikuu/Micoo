@@ -10,7 +10,7 @@ block breadcrumb
 block pageAction
     .d-flex.justify-content-end.align-items-center(style="height: 35px;")
 
-        if baselineUrl || latestUrl
+        if baselineUrl
             button#openIgnoring.btn(type='button' data-toggle='modal' data-target='#ignoringModal')
                 if rectangles.length
                     span.text-warning.pr-1 *
