@@ -31,7 +31,7 @@ Follow below example to load plugin `micoocypress` in your Cypress tests.
 ```javascript
 // cypress/plugins/index.js
 
-const micoocypress = require("./micoocypress");
+const micoocypress = require("micoocypress");
 
 const micooption = {
   host: "http://localhost:8123/engine",

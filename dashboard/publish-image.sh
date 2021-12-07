@@ -1,2 +1,21 @@
-docker image tag micoo-dashboard:dev ariman/micoo-dashboard:latest
-docker image push ariman/micoo-dashboard:latest
+#!/usr/bin/env bash
+
+while getopts v: flag
+do
+    # shellcheck disable=SC2220
+    case "${flag}" in
+        v) version=${OPTARG};;
+    esac
+done
+
+if [[ -z "$version" ]]; then
+  echo "missing version argument, e.g. -v 0.1.3"
+else
+  echo "building version: $version ..."
+
+  docker image tag micoo-dashboard:"$version" ariman/micoo-dashboard:"$version"
+  docker image tag micoo-dashboard:latest ariman/micoo-dashboard:latest
+
+  docker push ariman/micoo-dashboard:"$version"
+  docker push ariman/micoo-dashboard:latest
+fi
