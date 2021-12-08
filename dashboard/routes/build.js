@@ -21,6 +21,17 @@ const allCasesPassed = allCases => {
     return allCasesPassed;
 };
 
+const passBuild = async (pid, bid, allTestCaseCount) => {
+    await buildService.updateTestCaseCount(pid, bid, {
+        passed: allTestCaseCount,
+        failed: 0,
+        undeterminedCount: 0,
+        passedByIgnoringRectangles: 0
+    });
+
+    await buildService.updateBuildResult(bid, "passed");
+};
+
 router.get("/:bid", authenticateJWT, function(req, res, next) {
     (async () => {
         try {
@@ -28,9 +39,11 @@ router.get("/:bid", authenticateJWT, function(req, res, next) {
             const project = await projectService.getProjectByPid(build.pid);
             const cases = await caseService.getBuildCases(build.bid);
 
-            const ableToRebase = !build.isBaseline && allCasesPassed(cases);
+            const isAllPassed = allCasesPassed(cases);
+            const ableToRebase = !build.isBaseline && isAllPassed;
 
             res.render("build-standalone", {
+                isAllPassed,
                 pid: build.pid,
                 bid: build.bid,
                 isBaseline: build.isBaseline,
@@ -74,6 +87,28 @@ router.post("/debase/:bid", authenticateJWT, function(req, res, next) {
             await buildService.debase(project, build);
             res.redirect(`/build/${req.params.bid}`);
             console.log(`debased build, bid=${req.params.bid}`);
+        } catch (error) {
+            console.error(error);
+            next(error);
+        }
+    })();
+});
+
+router.post("/pass/:bid", authenticateJWT, function(req, res, next) {
+    (async () => {
+        try {
+            const build = await buildService.getBuildByBid(req.params.bid);
+            const cases = await caseService.getBuildCases(build.bid);
+
+            for (const testCase of cases) {
+                await caseService.passCase(testCase.cid);
+                await caseService.cleanComprehensiveCaseResult(testCase.cid);
+            }
+
+            await passBuild(build.pid, build.bid, cases.length);
+
+            res.redirect(`/build/${req.params.bid}`);
+            console.log(`pass build, bid=${req.params.bid}`);
         } catch (error) {
             console.error(error);
             next(error);

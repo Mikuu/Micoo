@@ -7,8 +7,8 @@ async function testNewBuild() {
      // host for engine service lunched from local source code.
     const host = "http://localhost:3002";
 
-    const apiKey = "AK9bac8f6a49645b3ef8";
-    const pid = "PID961c369a748c4bdf9fae369bcde4475c";
+    const apiKey = "AK71fbae5ecf770a1df3";
+    const pid = "PIDad0e493329d542729a69606028d7aeaf";
     const buildVersion = "5fafc0478af24af2da45fa19ddd06c17dd5d0d45";
     const screenshotDirectory = "../latest";
 
@@ -19,7 +19,7 @@ async function testBuildStats() {
    // const host = "http://localhost:8123";
     const host = "http://localhost:3001";
     const bid = "BIDdb67dcb3231548cbae5574dd40c2e28e";
-    const apiKey = "AK9bac8f6a49645b3ef8";
+    const apiKey = "AK71fbae5ecf770a1df3";
 
     console.log(await buildStats(host, apiKey, bid));
 }
@@ -27,8 +27,8 @@ async function testBuildStats() {
 async function testLatestBuildStats() {
    // const host = "http://localhost:8123";
     const host = "http://localhost:3001";
-    const pid = "PID961c369a748c4bdf9fae369bcde4475c";
-    const apiKey = "AK9bac8f6a49645b3ef8";
+    const pid = "PIDad0e493329d542729a69606028d7aeaf";
+    const apiKey = "AK71fbae5ecf770a1df3";
 
     console.log(await latestBuildStats(host, apiKey, pid));
 }
