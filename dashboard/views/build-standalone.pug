@@ -36,11 +36,21 @@ block pageAction
 
         .pl-2.pr-1
             if !isAllPassed
-                form.mb-0(action="/build/pass/" + bid method="post")
-                    button#rebase-button.btn.btn-sm.btn-outline-success(type="submit") All Passed
+                button#rebase-button.btn.btn-sm.btn-outline-success(type="button"  data-toggle="modal" data-target="#allPassedModal") All Passed
             else
-                form.mb-0(action="/build/pass/" + bid method="post")
-                     button#rebase-button.btn.btn-sm.btn-outline-success(disabled type="submit") All Passed
+                button#rebase-button.btn.btn-sm.btn-outline-success(disabled type="button"  data-toggle="modal" data-target="#allPassedModal") All Passed
+
+        #allPassedModal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="allPassedModalLabel" aria-hidden="true")
+                    .modal-dialog.modal-dialog-centered(role="document")
+                        .modal-content(style="background-color: #222427")
+                            .d-flex.flex-row.pt-3.pb-3.pl-5.pr-4
+                                img(src="/public/image/miku-wow.webp" alt="...")
+                                .modal-body.d-flex.align-items-center.justify-content-center.h3.font-weight-light.text-white
+                                    | Pass all test cases in this build?
+                            .modal-footer
+                                button.btn.btn-outline-success(type="button" data-dismiss="modal") I&apos;m joking
+                                form.mb-1(action="/build/pass/" + bid method="post")
+                                    button.btn.btn-outline-danger(type="submit") Just do it
 
 block main
     .container.table-container
