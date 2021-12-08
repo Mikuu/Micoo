@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const buildService = require("./build-service");
 const { CaseSchema } = require("../models/case");
 
 const Case = mongoose.model("Case", CaseSchema);
@@ -73,43 +72,6 @@ const cleanComprehensiveCaseResult = async cid => {
     }
 };
 
-
-const checkAndUpdateBuildResult = async cid => {
-    const allCases = await getAllCasesByCid(cid);
-
-    let [ passedCount, failedCount, undeterminedCount, passedByIgnoringRectanglesCount ] = [ 0, 0, 0, 0 ];
-    for (const testCase of allCases) {
-        switch (testCase.caseResult) {
-            case "undetermined":
-                undeterminedCount += 1;
-                break;
-            case "failed":
-                failedCount += 1;
-                break;
-            case "passed":
-                passedCount += 1;
-                break;
-        }
-
-        if (testCase.comprehensiveCaseResult === "passed") {
-            passedByIgnoringRectanglesCount += 1;
-        }
-    }
-
-    await buildService.updateTestCaseCount(allCases[0].pid, allCases[0].bid, {
-        passed: passedCount,
-        failed: failedCount,
-        undeterminedCount: undeterminedCount,
-        passedByIgnoringRectangles: passedByIgnoringRectanglesCount
-    });
-
-    const buildResult = undeterminedCount ? "undetermined"
-        : failedCount > passedByIgnoringRectanglesCount ? "failed" : "passed";
-
-    await buildService.updateBuildResult(allCases[0].bid, buildResult);
-};
-
-
 module.exports = {
     getBuildCases,
     getAllCasesByCid,
@@ -120,5 +82,4 @@ module.exports = {
     deleteByPid,
     getPlainTestCaseIgnoringRectangles,
     cleanComprehensiveCaseResult,
-    checkAndUpdateBuildResult,
 };

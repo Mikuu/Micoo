@@ -7,6 +7,41 @@ const { authenticateJWT } = require("../utils/auth-utils");
 
 let router = express.Router();
 
+const checkAndUpdateBuildResult = async cid => {
+    const allCases = await caseService.getAllCasesByCid(cid);
+
+    let [ passedCount, failedCount, undeterminedCount, passedByIgnoringRectanglesCount ] = [ 0, 0, 0, 0 ];
+    for (const testCase of allCases) {
+        switch (testCase.caseResult) {
+            case "undetermined":
+                undeterminedCount += 1;
+                break;
+            case "failed":
+                failedCount += 1;
+                break;
+            case "passed":
+                passedCount += 1;
+                break;
+        }
+
+        if (testCase.comprehensiveCaseResult === "passed") {
+            passedByIgnoringRectanglesCount += 1;
+        }
+    }
+
+    await buildService.updateTestCaseCount(allCases[0].pid, allCases[0].bid, {
+        passed: passedCount,
+        failed: failedCount,
+        undeterminedCount: undeterminedCount,
+        passedByIgnoringRectangles: passedByIgnoringRectanglesCount
+    });
+
+    const buildResult = undeterminedCount ? "undetermined"
+        : failedCount > passedByIgnoringRectanglesCount ? "failed" : "passed";
+
+    await buildService.updateBuildResult(allCases[0].bid, buildResult);
+};
+
 router.get("/:cid", authenticateJWT, function(req, res, next) {
     (async () => {
         try {
@@ -61,7 +96,7 @@ router.post("/pass/:cid", authenticateJWT, function(req, res, next) {
             await caseService.passCase(req.params.cid);
 
             await cleanTestCaseComprehensiveCaseResult(req.params.cid);
-            await caseService.checkAndUpdateBuildResult(req.params.cid);
+            await checkAndUpdateBuildResult(req.params.cid);
 
             res.redirect(`/case/${req.params.cid}`);
             console.log(`set case passed, cid=${req.params.cid}`);
@@ -79,7 +114,7 @@ router.post("/fail/:cid", authenticateJWT, function(req, res, next) {
             await caseService.failCase(req.params.cid);
 
             await cleanTestCaseComprehensiveCaseResult(req.params.cid);
-            await caseService.checkAndUpdateBuildResult(req.params.cid);
+            await checkAndUpdateBuildResult(req.params.cid);
 
             res.redirect(`/case/${req.params.cid}`);
             console.log(`set case failed, cid=${req.params.cid}`);

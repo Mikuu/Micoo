@@ -20,11 +20,13 @@ block pageAction
 
             if ableToRebase
                 form.mb-0(action="/build/rebase/" + bid method="post")
-                    button#rebase-button.btn.btn-sm.btn-outline-success(type="submit") Rebase
+                    button#rebase-button.btn.btn-sm.btn-outline-primary(type="submit") Rebase
             else
                 form.mb-0(action="/build/rebase/" + bid method="post")
-                    button#rebase-button.btn.btn-sm.btn-outline-success(disabled type="submit") Rebase
+                    button#rebase-button.btn.btn-sm.btn-outline-primary(disabled type="submit") Rebase
+
         .pl-2.pr-1
+
             if isBaseline
                 form.mb-0(action="/build/debase/" + bid method="post")
                     button#rebase-button.btn.btn-sm.btn-outline-warning(type="submit") Debase
@@ -36,6 +38,9 @@ block pageAction
             if !isAllPassed
                 form.mb-0(action="/build/pass/" + bid method="post")
                     button#rebase-button.btn.btn-sm.btn-outline-success(type="submit") All Passed
+            else
+                form.mb-0(action="/build/pass/" + bid method="post")
+                     button#rebase-button.btn.btn-sm.btn-outline-success(disabled type="submit") All Passed
 
 block main
     .container.table-container

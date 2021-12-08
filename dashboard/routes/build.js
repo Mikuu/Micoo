@@ -21,6 +21,17 @@ const allCasesPassed = allCases => {
     return allCasesPassed;
 };
 
+const passBuild = async (pid, bid, allTestCaseCount) => {
+    await buildService.updateTestCaseCount(pid, bid, {
+        passed: allTestCaseCount,
+        failed: 0,
+        undeterminedCount: 0,
+        passedByIgnoringRectangles: 0
+    });
+
+    await buildService.updateBuildResult(bid, "passed");
+};
+
 router.get("/:bid", authenticateJWT, function(req, res, next) {
     (async () => {
         try {
@@ -89,12 +100,12 @@ router.post("/pass/:bid", authenticateJWT, function(req, res, next) {
             const build = await buildService.getBuildByBid(req.params.bid);
             const cases = await caseService.getBuildCases(build.bid);
 
-            for (const item of cases) {
-                await caseService.passCase(item.cid);
-
-                await caseService.cleanComprehensiveCaseResult(item.cid);
-                await caseService.checkAndUpdateBuildResult(item.cid);
+            for (const testCase of cases) {
+                await caseService.passCase(testCase.cid);
+                await caseService.cleanComprehensiveCaseResult(testCase.cid);
             }
+
+            await passBuild(build.pid, build.bid, cases.length);
 
             res.redirect(`/build/${req.params.bid}`);
             console.log(`pass build, bid=${req.params.bid}`);
