@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+#########################################################################
+# Publish local docker image with specific version to docker hub.
+# Usage:
+#   e.g. ./build-image.sh -v 0.1.3
+#
+#########################################################################
 
 while getopts v: flag
 do
