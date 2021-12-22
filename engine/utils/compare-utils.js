@@ -1,7 +1,7 @@
 const nativeImageDiff = require("native-image-diff");
 const libpng = require("node-libpng");
 const looksSame = require("looks-same");
-
+const { processLogger } = require("../utils/common-utils");
 const fileUtils = require("../utils/file-utils");
 
 const comparePng = (baselineFile, latestFile, projectColorThreshold, projectDetectAntialiasing) => {
@@ -48,7 +48,7 @@ const comparePng = (baselineFile, latestFile, projectColorThreshold, projectDete
 const compare = (baselineFile, latestFile, projectColorThreshold, projectDetectAntialiasing) => {
     const diffPercentage = comparePng(baselineFile, latestFile, projectColorThreshold, projectDetectAntialiasing);
 
-    console.log(`compared "${baselineFile}" with "${latestFile}", diffPercentage: ${diffPercentage}`);
+    processLogger(`compared "${baselineFile}" with "${latestFile}", diffPercentage: ${diffPercentage}`);
 };
 
 // change looksSame diffCluster to ignoringRectangles.

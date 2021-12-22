@@ -22,6 +22,20 @@ const response = message => {
     };
 };
 
+const compareInChildProcess = (bid) => {
+    const { fork } = require('child_process');
+    const child = fork("services/compare-service-child.js", [bid], { silent: false });
+
+    child.on("message", (message) => {
+        const [code, processId] = message.split(":");
+        if (code === "child-compare-done") {
+            console.log(`FBI --> got message from child process CPID=${processId}, completed compare, killing child process ...`);
+            child.kill('SIGINT');
+            console.log(`FBI --> child process CPID=${processId} terminated`);
+        }
+    });
+};
+
 /* Initialize Build */
 router.post("/build/initialize", authenticateAPIKey, function(req, res, next) {
     (async () => {
@@ -46,11 +60,18 @@ router.post("/build/initialize", authenticateAPIKey, function(req, res, next) {
             const build = await buildService.initialize(req.query.pid, req.query.buildVersion);
             await console.log(`build initialized, BID: ${build.bid}`);
 
-            const response = { pid: build.pid, bid: build.bid, buildIndex: build.buildIndex };
-            res.send(response);
 
-            // Never use 'await' here, run comparing asynchronously.
-            compareService.comprehensiveCompare(project, build);
+            // // Never use 'await' here, run comparing asynchronously.
+            // compareService.comprehensiveCompare(project, build);
+
+            const processInChildProcess = true;
+            if (processInChildProcess) {
+                compareInChildProcess(build.bid);
+
+                const response = { pid: build.pid, bid: build.bid, buildIndex: build.buildIndex };
+                res.send(response);
+            }
+
         } catch (error) {
             console.error(error);
             next(error);

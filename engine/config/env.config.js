@@ -1,18 +1,19 @@
-const os = require("os");
 const path = require("path");
 
-let fileServerHost, exchangeRootDir, mongodbUrl;
+let fileServerHost, exchangeRootDir, mongodbUrl, bulkCompareMemoryList;
 
 switch (process.env.MICOO_ENV) {
     case "docker":
         fileServerHost = process.env.MICOO_FS_HOST_URL;
         exchangeRootDir = "/exchange";
         mongodbUrl = `mongodb://${process.env.MICOO_DB_USERNAME}:${process.env.MICOO_DB_PASSWORD}@micoo-mongodb:27017/micoo`;
+        bulkCompareMemoryList = process.env.MICOO_COMP_MEM_LIMIT ? process.env.MICOO_COMP_MEM_LIMIT : 500;
         break;
     default:
         fileServerHost = "http://localhost:8123";
         exchangeRootDir = "../exchange";
         mongodbUrl = `mongodb://${process.env.MICOO_DB_USERNAME}:${process.env.MICOO_DB_PASSWORD}@localhost:27017/micoo`;
+        bulkCompareMemoryList = process.env.MICOO_COMP_MEM_LIMIT ? process.env.MICOO_COMP_MEM_LIMIT : 500;
         break;
 }
 
@@ -54,9 +55,7 @@ module.exports = {
     allZip,
     mongodbUrl,
     exchangeRootDir,
-
-    // localTestScreenshotsLatestPath: "screenshots/latest",
-    // localTestScreenshotsBaselinePath: "screenshots/baseline",
+    bulkCompareMemoryList,
 
     localTestScreenshots,
     localTestScreenshotsLatestPath,

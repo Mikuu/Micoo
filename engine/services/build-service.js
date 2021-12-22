@@ -17,6 +17,12 @@ const finalize = async (bid, buildResult, caseCount) => {
     await build.finalize(buildResult, caseCount);
 };
 
+const getBuildByBid = async bid => {
+    const build = await Build.findOne({ bid: bid });
+    console.log(`FBI --> build.pid ${build.pid}`);
+    return build;
+};
+
 const stats = async bid => {
     const build = await Build.findOne({ bid: bid });
     if (build) {
@@ -56,4 +62,5 @@ module.exports = {
     stats,
     latestStats,
     updateTestCaseCount,
+    getBuildByBid,
 };
