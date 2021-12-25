@@ -1,9 +1,9 @@
 {
   "name": "micoo-engine",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "private": true,
   "scripts": {
-    "start": "PORT=3002 node ./bin/www"
+    "start": "PORT=3002 node --expose-gc ./bin/www"
   },
   "dependencies": {
     "check-disk-space": "^2.1.0",

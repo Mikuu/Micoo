@@ -3,18 +3,22 @@ const compareUtils = require("../utils/compare-utils");
 const caseService = require("../services/case-service");
 const buildService = require("../services/build-service");
 const ignoringService = require("../services/ignoring-service");
+const { freeMemory } = require("../utils/memory-utils");
+const { bulkCompareMemoryList } = require("../config/env.config");
+const { processLogger } = require("../utils/common-utils");
 
-const doCompare = (projectName, projectColorThreshold, projectDetectAntialiasing) => {
-    let latestScreenshot, baselineScreenshot;
-    for (latestScreenshot of screenshotsService.localTestCaseScreenshots(projectName)) {
-        baselineScreenshot = screenshotsService.withBaselineScreenshots(projectName, latestScreenshot);
+const doCompare = async (projectName, projectColorThreshold, projectDetectAntialiasing) => {
+    for (const latestScreenshot of screenshotsService.localTestCaseScreenshots(projectName)) {
+        const baselineScreenshot = screenshotsService.withBaselineScreenshots(projectName, latestScreenshot);
         if (baselineScreenshot) {
-            console.log(`FBI --> Info: to compare, baseline: "${baselineScreenshot}" -> latest: "${latestScreenshot}"`);
+            processLogger(`FBI --> Info: to compare, baseline: "${baselineScreenshot}" -> latest: "${latestScreenshot}"`);
 
             compareUtils.compare(baselineScreenshot, latestScreenshot, projectColorThreshold, projectDetectAntialiasing);
         } else {
-            console.log(`FBI --> Info: no baseline for latest: "${latestScreenshot}"`);
+            processLogger(`FBI --> Info: no baseline for latest: "${latestScreenshot}"`);
         }
+
+        await freeMemory(bulkCompareMemoryList);
     }
 };
 
@@ -94,7 +98,7 @@ const checkAndHandleIgnoring = async (project, build, createdCases) => {
 
     for (const compareCase of Object.values(createdCases)) {
         if (compareCase.diffPercentage === 0) {
-            // console.log(
+            // childProcessLogger(
             //     `COMPARE-SERVICE: testCase pid=${project.pid}, bid=${build.bid}, caseName=${compareCase.caseName} ` +
             //     `is same to baseline, not to ignoring`
             // );
@@ -104,7 +108,7 @@ const checkAndHandleIgnoring = async (project, build, createdCases) => {
         const ignoring = await ignoringService.getPlainIgnoring(project.pid, compareCase.caseName);
 
         if (!ignoring) {
-            // console.log(
+            // childProcessLogger(
             //     `COMPARE-SERVICE: testCase pid=${project.pid}, bid=${build.bid}, caseName=${compareCase.caseName} ` +
             //     `has no ignoringRectangles, not to ignoring`
             // );
@@ -119,11 +123,11 @@ const checkAndHandleIgnoring = async (project, build, createdCases) => {
         const diffRectangles = diffClusters.map(cluster => compareUtils.clusterToRectangle(cluster));
         const isRectanglesAllIgnored = compareUtils.isRectanglesAllIgnored(ignoring.rectangles, diffRectangles);
 
-        // console.log("allowed ignoring:");
-        // console.log(ignoring.rectangles);
-        // console.log("detected rectangles");
+        // childProcessLogger("allowed ignoring:");
+        // childProcessLogger(ignoring.rectangles);
+        // childProcessLogger("detected rectangles");
         // console.dir(diffRectangles);
-        // console.log(`isRectangleAllIgnored: `+isRectanglesAllIgnored);
+        // childProcessLogger(`isRectangleAllIgnored: `+isRectanglesAllIgnored);
 
         await caseService.setIgnoringRectangles(project.pid, build.bid, compareCase.caseName, ignoring.rectangles);
         await caseService.setComprehensiveCaseResult(
@@ -136,44 +140,44 @@ const checkAndHandleIgnoring = async (project, build, createdCases) => {
 };
 
 const comprehensiveCompare = async (project, build) => {
-    const loggerHeader = `projectId=${project.pid} | build=${build.bid} | `;
+    const loggerHeader = `PID=${project.pid} | BID=${build.bid} | `;
 
-    console.log(`${loggerHeader} Start Comparing ............................................................... \n\n`);
+    processLogger(`${loggerHeader} Start Comparing ............................................................... \n\n`);
     const projectName = project.projectName.toLowerCase();
 
-    console.log(`${loggerHeader} create project compare root directory ..............................................`);
+    processLogger(`${loggerHeader} create project compare root directory ..............................................`);
     screenshotsService.createScreenshotsRootDirectory(projectName);
-    console.log(`${loggerHeader} create project compare root directory .................................... completed`);
+    processLogger(`${loggerHeader} create project compare root directory .................................... completed`);
 
-    console.log(`${loggerHeader} moving in baseline .................................................................`);
+    processLogger(`${loggerHeader} moving in baseline .................................................................`);
     await screenshotsService.moveInBaseline(projectName);
-    console.log(`${loggerHeader} moving in baseline ..................................................... completed\n`);
+    processLogger(`${loggerHeader} moving in baseline ..................................................... completed\n`);
 
-    console.log(`${loggerHeader} moving in test .....................................................................`);
+    processLogger(`${loggerHeader} moving in test .....................................................................`);
     await screenshotsService.moveInTestScreenshots(projectName);
-    console.log(`${loggerHeader} moving in test ......................................................... completed\n`);
+    processLogger(`${loggerHeader} moving in test ......................................................... completed\n`);
 
-    console.log(`${loggerHeader} comparing ..........................................................................`);
+    processLogger(`${loggerHeader} comparing ..........................................................................`);
     await doCompare(projectName, project.projectColorThreshold, project.projectDetectAntialiasing);
-    console.log(`${loggerHeader} comparing .............................................................. completed\n`);
+    processLogger(`${loggerHeader} comparing .............................................................. completed\n`);
 
-    console.log(`${loggerHeader} generating build artifacts .........................................................`);
+    processLogger(`${loggerHeader} generating build artifacts .........................................................`);
     await generateBuildArtifacts(projectName, build.buildIndex);
-    console.log(`${loggerHeader} generating build artifacts ............................................. completed\n`);
+    processLogger(`${loggerHeader} generating build artifacts ............................................. completed\n`);
 
-    console.log(`${loggerHeader} generating case in DB ..............................................................`);
+    processLogger(`${loggerHeader} generating case in DB ..............................................................`);
     const createdCases = await generateCaseInDatabase(project.pid, projectName, build.bid, build.buildIndex);
-    console.log(`${loggerHeader} generating case in DB .................................................. completed\n`);
+    processLogger(`${loggerHeader} generating case in DB .................................................. completed\n`);
 
-    console.log(`${loggerHeader} check and handle ignoring ..........................................................`);
+    processLogger(`${loggerHeader} check and handle ignoring ..........................................................`);
     await checkAndHandleIgnoring(project, build, createdCases);
-    console.log(`${loggerHeader} check and handle ignoring .............................................. completed\n`);
+    processLogger(`${loggerHeader} check and handle ignoring .............................................. completed\n`);
 
-    console.log(`${loggerHeader} updating build .....................................................................`);
+    processLogger(`${loggerHeader} updating build .....................................................................`);
     await updateBuild(build.bid);
-    console.log(`${loggerHeader} updating build ......................................................... completed\n`);
+    processLogger(`${loggerHeader} updating build ......................................................... completed\n`);
 
-    console.log(`${loggerHeader} ................................................................... Compare Done\n\n`);
+    processLogger(`${loggerHeader} ................................................................... Compare Done\n\n`);
 };
 
 module.exports = {

@@ -50,6 +50,7 @@ services:
       - MICOO_FS_HOST_URL=http://localhost:8123
       - MICOO_DB_USERNAME=micoo-user
       - MICOO_DB_PASSWORD=micoo-password
+      - MICOO_COMP_MEM_LIMIT=500
     volumes:
       - "exchange-volume:/exchange"
     networks:

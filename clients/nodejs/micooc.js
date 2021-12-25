@@ -49,6 +49,22 @@ const screenshotFilenameFilter = screenshotFilename => {
     return true;
 };
 
+const uploadTestScreenshotsSeq = async (uploadScreenshotsUrl, apiKey, pid, screenshotsDirectory) => {
+    let counter = 0;
+    for (const screenshot of fs.readdirSync(screenshotsDirectory)) {
+        const screenshotFile = path.join(screenshotsDirectory, screenshot);
+        const fstats = fs.lstatSync(screenshotFile);
+        if (fstats.isFile() && screenshotFilenameFilter(path.basename(screenshotFile))) {
+            await uploadFile(uploadScreenshotsUrl, apiKey, pid, screenshotFile);
+            counter += 1;
+        }
+    }
+
+    return counter;
+};
+
+// Deprecated.
+// When there are more than 150 screenshot files, async way will make the system IO and container hang.
 const uploadTestScreenshots = async (uploadScreenshotsUrl, apiKey, pid, screenshotsDirectory) => {
     let counter = 0;
     const promises = fs.readdirSync(screenshotsDirectory).map(async screenshot => {
@@ -112,7 +128,7 @@ const newBuild = async (host, apiKey, pid, buildVersion, screenshotsDirectory) =
     const initializeBuildUrl = host + "/slave/build/initialize";
     const uploadScreenshotsUrl = host + "/slave/images/project-tests";
 
-    const uploadedScreenshotsCount = await uploadTestScreenshots(uploadScreenshotsUrl, apiKey, pid, screenshotsDirectory);
+    const uploadedScreenshotsCount = await uploadTestScreenshotsSeq(uploadScreenshotsUrl, apiKey, pid, screenshotsDirectory);
     if (uploadedScreenshotsCount) {
         return await triggerNewBuildAdv(initializeBuildUrl, apiKey, pid, buildVersion)
     }

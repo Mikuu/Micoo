@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
-const { execSync, spawnSync } = require("child_process");
+const { execSync } = require("child_process");
+const { processLogger } = require("./common-utils");
 
 const moveFiles = (sourceDirectory, destDirectory, direction) => {
     fs.readdirSync(sourceDirectory).map(eachFile => {
@@ -31,7 +32,7 @@ const moveFiles = (sourceDirectory, destDirectory, direction) => {
          */
         const output = execSync(`cp "${fullPathSourceFile}" "${fullPathDestinationFile}"`);
         if (output.toString()) {
-            console.warn(`copy file failed: ${output.toString()}`);
+            processLogger(`copy file failed: ${output.toString()}`);
         }
 
         // const copy = spawnSync("cp", [fullPathSourceFile, fullPathDestinationFile]);
@@ -39,7 +40,7 @@ const moveFiles = (sourceDirectory, destDirectory, direction) => {
         //     console.log(`copy file failed: ${copy.stderr.toString()}`);
         // }
 
-        console.log(`copied file: ${fullPathSourceFile} -> ${fullPathDestinationFile}`);
+        processLogger(`copied file: ${fullPathSourceFile} -> ${fullPathDestinationFile}`);
     });
 };
 
@@ -48,7 +49,7 @@ const moveInBaselineFilesAccordingToLatestFiles = (baselineDirectory, latestDire
      * - must be called after moved Test to Latest.
      * - 'latestDirectory' should be the path in the file-server.
      * */
-    console.log(`\nFBI --> info: copy baseline files to build path, starting ...`);
+    processLogger(`\nFBI --> info: copy baseline files to build path, starting ...`);
     const baselineFilesBasename = fs
         .readdirSync(baselineDirectory)
         .map(baselineFile => path.basename(baselineFile, ".baseline.png"));
@@ -62,11 +63,11 @@ const moveInBaselineFilesAccordingToLatestFiles = (baselineDirectory, latestDire
                 const latestFileToCopyTo = path.join(latestDirectory, latestFileBasename + ".baseline.png");
                 fs.copyFileSync(baselineFileToCopyFrom, latestFileToCopyTo);
 
-                console.log(`copied baseline ${baselineFileToCopyFrom} to latest ${latestFileToCopyTo}`);
+                processLogger(`copied baseline ${baselineFileToCopyFrom} to latest ${latestFileToCopyTo}`);
             }
         }
     });
-    console.log(`FBI --> info: ... copy baseline files to build path, done. \n`);
+    processLogger(`FBI --> info: ... copy baseline files to build path, done. \n`);
 };
 
 const isLinkedLatestAndBaseline = (latestFilename, baselineFilename) => {
