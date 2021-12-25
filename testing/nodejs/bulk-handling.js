@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-const cloneCounting = 334;
+const cloneCounting = 100;
 const sourcePath = "../baseline/big-size";
 const sourceFiles = fs.readdirSync(sourcePath);
 

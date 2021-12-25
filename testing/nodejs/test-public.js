@@ -1,7 +1,7 @@
 import { newBuild, buildStats, latestBuildStats } from "micooc";
 
-const pid = "PID74651dd2ca024cadb3b3338a9c2feaea";
-const apiKey = "AKfeee37157323da4f60";
+const pid = "PID52fdd2bc947a4c2791b468cd91940c89";
+const apiKey = "AK42ab15e3eeafdcfbb1";
 
 async function testNewBuild() {
     // host for containerized service.
