@@ -29,23 +29,29 @@ router.get("/login", function(req, res, next) {
     })();
 });
 
-router.post("/login", (req, res) => {
+router.post("/login", (req, res, next) => {
     (async () => {
         try {
-            const { passcode } = req.body;
+            let { passcode } = req.body;
             const storedPasscode = await getPasscode();
 
-            const decryptedPasscode = decryptPasscode(passcode, storedPasscode);
-            
-            if (decryptedPasscode === storedPasscode) {
-                const accessToken = jwt.sign({ user: 'authenticated'}, credential.accessTokenSecret, { expiresIn: expireTime});
-                res.cookie(authKey, accessToken);
-                res.redirect('/');
+            if (!storedPasscode) {
+                // user send login post request before properly initialization which hadn't saved passcode before.
+                passcode = await initializeAuth();
+                res.render('initialize', { passcode: passcode });
 
             } else {
-                res.status(StatusCodes.FORBIDDEN).render('login', { loginFailed: true });
+                const decryptedPasscode = decryptPasscode(passcode, storedPasscode);
+
+                if (decryptedPasscode !== storedPasscode) {
+                    res.status(StatusCodes.FORBIDDEN).render('login', { loginFailed: true });
+                } else {
+                    const accessToken = jwt.sign({ user: 'authenticated'}, credential.accessTokenSecret, { expiresIn: expireTime});
+                    res.cookie(authKey, accessToken);
+                    res.redirect('/');
+                }
             }
-            
+
         }  catch (error) {
             console.error(error);
             next(error);
