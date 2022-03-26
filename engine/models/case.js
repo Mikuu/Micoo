@@ -9,8 +9,8 @@ const Schema = mongoose.Schema;
  * Build Schema
  */
 const RectangleSchema = new Schema({
-    x: { type: Number, default: null, min: [1, 'Must be greater than 0, got {VALUE}'] },
-    y: { type: Number, default: null, min: [1, 'Must be greater than 0, got {VALUE}'] },
+    x: { type: Number, default: null, min: [0, 'Must be 0 or greater, got {VALUE}'] },
+    y: { type: Number, default: null, min: [0, 'Must be 0 or greater, got {VALUE}'] },
     width: { type: Number, default: null, min: [1, 'Must be greater than 0, got {VALUE}'] },
     height: { type: Number, default: null, min: [1, 'Must be greater than 0, got {VALUE}'] }
 });
