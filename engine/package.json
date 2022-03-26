@@ -1,6 +1,6 @@
 {
   "name": "micoo-engine",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "private": true,
   "scripts": {
     "start": "PORT=3002 node --expose-gc ./bin/www"
