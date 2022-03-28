@@ -88,6 +88,7 @@ router.get("/:pid/page/:page", authenticateJWT, function(req, res, next) {
                 projectDetectAntialiasing: project.projectDetectAntialiasing,
                 projectIgnoringCluster: project.projectIgnoringCluster,
                 projectIgnoringClusterSize: project.projectIgnoringClusterSize,
+                preserveIgnoringOnRebase: project.preserveIgnoringOnRebase,
             });
         } catch (error) {
             console.error(error);
