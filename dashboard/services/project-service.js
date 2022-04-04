@@ -59,6 +59,11 @@ const updateProjectIgnoringClusterSize = async (pid, projectIgnoringClusterSize)
     await project.updateProjectIgnoringClusterSize(projectIgnoringClusterSize);
 };
 
+const updateEnablePreserveIgnoringOnRebase = async (pid, enablePreserveIgnoringOnRebase) => {
+    const project = await getProjectByPid(pid);
+    await project.updatePreserveIgnoringOnRebase(enablePreserveIgnoringOnRebase);
+};
+
 module.exports = {
     createProject,
     getAllProjects,
@@ -70,5 +75,6 @@ module.exports = {
     updateProjectColorThreshold,
     updateProjectDetectAntialiasing,
     updateEnableProjectIgnoringCluster,
-    updateProjectIgnoringClusterSize
+    updateProjectIgnoringClusterSize,
+    updateEnablePreserveIgnoringOnRebase
 };

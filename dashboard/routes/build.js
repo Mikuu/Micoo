@@ -65,7 +65,10 @@ router.post("/rebase/:bid", authenticateJWT, function(req, res, next) {
         try {
             const build = await buildService.getBuildByBid(req.params.bid);
             const project = await projectService.getProjectByPid(build.pid);
-            await ignoringService.cleanProjectIgnoring(build.pid);
+
+            if (!project.preserveIgnoringOnRebase) {
+                await ignoringService.cleanProjectIgnoring(build.pid);
+            }
 
             await buildService.rebase(project.projectName, req.params.bid);
             res.redirect(`/build/${req.params.bid}`);
@@ -82,7 +85,10 @@ router.post("/debase/:bid", authenticateJWT, function(req, res, next) {
         try {
             const build = await buildService.getBuildByBid(req.params.bid);
             const project = await projectService.getProjectByPid(build.pid);
-            await ignoringService.cleanProjectIgnoring(build.pid);
+
+            if (!project.preserveIgnoringOnRebase) {
+                await ignoringService.cleanProjectIgnoring(build.pid);
+            }
 
             await buildService.debase(project, build);
             res.redirect(`/build/${req.params.bid}`);

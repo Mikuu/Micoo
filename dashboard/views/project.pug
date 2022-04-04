@@ -55,6 +55,12 @@ block projectAction
                               option(selected)= val
                             else
                               option= val
+                      li.list-group-item.config-item.d-flex.justify-content-between.flex-row
+                        .font-weight-light.text-white Preserve Ignoring on Rebase
+                        if preserveIgnoringOnRebase
+                          input#preserveIgnoringOnRebase.form-check-input(type='checkbox' name='preserveIgnoringOnRebase' style='position: unset' checked)
+                        else
+                          input#preserveIgnoringOnRebase.form-check-input(type='checkbox' name='preserveIgnoringOnRebase' style='position: unset')
                     .modal-footer
                       button.btn.btn-outline-info(type='button' data-dismiss='modal') Cancel
                       button.btn.btn-outline-success(type='submit') Update

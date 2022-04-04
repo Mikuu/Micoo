@@ -20,6 +20,7 @@ const ProjectSchema = new Schema({
     projectDetectAntialiasing: { type: Boolean, default: true },
     projectIgnoringCluster: { type: Boolean, default: true },
     projectIgnoringClusterSize: { type: Number, default: 50, min: 1, max: 5000 },
+    preserveIgnoringOnRebase: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now },
 });
 

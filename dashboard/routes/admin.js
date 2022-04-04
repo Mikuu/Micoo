@@ -210,6 +210,12 @@ router.post("/project/config/:pid", authenticateJWT, function(req, res, next) {
                 console.error(`projectClusterSize ${req.body.projectIgnoringClusterSize} from PID ${req.params.pid} is not acceptable`);
             }
 
+            if (req.body.preserveIgnoringOnRebase === "on") {
+                await projectService.updateEnablePreserveIgnoringOnRebase(project.pid, true);
+            } else {
+                await projectService.updateEnablePreserveIgnoringOnRebase(project.pid, false);
+            }
+
             res.redirect(`/project/${project.pid}/page/1`);
 
         } catch (error) {
