@@ -6,13 +6,13 @@
     "start": "PORT=3001 node ./bin/www"
   },
   "dependencies": {
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.20.1",
     "bootstrap-icons": "^1.5.0",
     "check-disk-space": "^2.1.0",
     "cookie-parser": "^1.4.5",
     "crypto-js": "^4.0.0",
     "debug": "~2.6.9",
-    "express": "~4.16.1",
+    "express": "~4.18.2",
     "express-fileupload": "^1.1.9",
     "express-validator": "^6.5.0",
     "http-errors": "^1.6.3",
