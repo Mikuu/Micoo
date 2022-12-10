@@ -9,7 +9,7 @@
     "check-disk-space": "^2.1.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
-    "express": "~4.16.1",
+    "express": "~4.17.3",
     "express-fileupload": "^1.1.9",
     "form-data": "^3.0.0",
     "http-errors": "~1.6.3",
