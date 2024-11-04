@@ -1,0 +1,64 @@
+version: "3.7"
+services:
+
+  micoo-nginx:
+    image: mattastach/micoo-nginx:latest
+    container_name: micoo-nginx
+    ports:
+      - "8123:80"
+    networks:
+      - nginx-network
+    volumes:
+      - "exchange-volume:/exchange"
+    depends_on:
+      - micoo-dashboard
+      - micoo-engine
+
+  micoo-mongodb:
+    image: mattastach/micoo-mongodb:latest
+    container_name: micoo-mongodb
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mgadmin
+      - MONGO_INITDB_ROOT_PASSWORD=Password1
+      - MONGO_INITDB_DATABASE=micoo
+    networks:
+      - micoo-network
+    volumes:
+      - "database-volume:/data/db"
+
+  micoo-dashboard:
+    image: ariman/micoo-dashboard:latest
+    container_name: micoo-dashboard
+    environment:
+      - MICOO_ENV=docker
+      - MICOO_FS_HOST_URL=http://localhost:8123
+      - MICOO_DB_USERNAME=micoo-user
+      - MICOO_DB_PASSWORD=micoo-password
+    volumes:
+      - "exchange-volume:/exchange"
+    networks:
+      - micoo-network
+      - nginx-network
+
+  micoo-engine:
+    image: ariman/micoo-engine:latest
+    container_name: micoo-engine
+    environment:
+      - MICOO_ENV=docker
+      - MICOO_FS_HOST_URL=http://localhost:8123
+      - MICOO_DB_USERNAME=micoo-user
+      - MICOO_DB_PASSWORD=micoo-password
+      - MICOO_COMP_MEM_LIMIT=500
+    volumes:
+      - "exchange-volume:/exchange"
+    networks:
+      - micoo-network
+      - nginx-network
+
+volumes:
+  database-volume:
+  exchange-volume:
+
+networks:
+  micoo-network:
+  nginx-network:

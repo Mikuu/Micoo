@@ -1,0 +1,11 @@
+FROM nginx
+
+RUN mkdir /initializer
+
+COPY initializer/initializer.sh /initializer/initializer.sh
+
+COPY ../nginx.reverse-proxy.conf /etc/nginx/nginx.conf
+
+EXPOSE 80
+
+ENTRYPOINT ["bash", "/initializer/initializer.sh"]
